@@ -66,7 +66,6 @@ describe('MovableParentDirective', () => {
         movingHandle.dispatchEvent(new MouseEvent('mousedown', getCurrentPosition()));
         fixture.detectChanges();
         fixture.whenStable();
-        // debugger;
         testZoneDocumentReference.dispatchEvent(new MouseEvent('mousemove', getMovementDelta(step)))
         fixture.detectChanges();
         fixture.whenStable();
@@ -76,7 +75,6 @@ describe('MovableParentDirective', () => {
     }
   
       beforeEach(async () => {
-        // dummyBody = getDummyBody();
       fixture = await TestBed.configureTestingModule({
         declarations: [TestComponent, MovablePointComponent, MovableParentDirective],
         schemas:      [ CUSTOM_ELEMENTS_SCHEMA ]
@@ -95,14 +93,25 @@ describe('MovableParentDirective', () => {
   });
 
   it('should move parent element on mousedown, mousemove, mouseup, handler is 3 levels nested', async()=>{
-      console.log('Directive ELEMEnt')
-      console.log(fixture.debugElement.query(By.directive(MovableParentDirective)))
-      console.log('getCURRNE posiont' + getCurrentPosition().clientX + " " + getCurrentPosition().clientY)
     makeMove(100);
     let positionAfterMovement = getCurrentPosition();
-    console.log('positionAfterMOvement '  + positionAfterMovement.clientX + ' ' + positionAfterMovement.clientY)
-    console.dir(elementThatShouldBeMoved)
     expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
             .toEqual({x: 100 + positionOfNotMovedElement.x, y: 100 + positionOfNotMovedElement.y});
+  })
+
+  it('Should have proper position after moving 10 times in a raw', async() =>{
+    makeMove(50);
+    makeMove(25);
+    makeMove(10);
+    makeMove(53);
+    makeMove(10);
+    makeMove(22);
+    makeMove(67);
+    makeMove(99);
+    makeMove(444)
+    makeMove(500);
+    let positionAfterMovement = getCurrentPosition();         
+    expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
+            .toEqual({x: 500 + positionOfNotMovedElement.x, y: 500 + positionOfNotMovedElement.y});                
   })
 });

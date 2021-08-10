@@ -73,7 +73,7 @@ describe('MovableDirective', () => {
     fixture.detectChanges();
     fixture.whenStable();
     
-    movableElement.dispatchEvent(new Event('mousedown'))
+    movableElement.dispatchEvent(new MouseEvent('mousedown'), {clientX: 0, clientY: 0})
     fixture.detectChanges();
     fixture.whenStable();
 
@@ -91,7 +91,7 @@ describe('MovableDirective', () => {
 
     let endPositionExpected = {x: startPosition.x + 100, y: startPosition.y + 100};
     let endPositionInReality = {x: movableElement.offsetLeft, y: movableElement.offsetTop}
-    expect(endPositionExpected).toBe(endPositionInReality);
+    expect(endPositionExpected).toEqual(endPositionInReality);
 
 
   }))

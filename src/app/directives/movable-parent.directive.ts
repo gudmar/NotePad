@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, EventEmitter, Output } from '@angular/core';
 
 @Directive({
-  selector: '[MovableParent]'
+  selector: '[movableparent]'
 })
 export class MovableParentDirective {
   @Input('nestedLevel') nestedLevel:number = 0;
@@ -31,10 +31,13 @@ export class MovableParentDirective {
   @HostListener('document:mousemove', ['$event'])
   doMouseMove(data: any){
     if (this.isInMoveState) {
+      // console.log(`Before movement: ${this.elementToMove.offsetLeft} ${this.elementToMove.offsetTop}`)
       let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
       let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
+      // console.log('Corrected POINT from parent move:  ' + correctedPosition.x + ' ' +correctedPosition.y)
+      // console.log(`After movement: ${this.elementToMove.offsetLeft} ${this.elementToMove.offsetTop}`)
     }
   } 
 

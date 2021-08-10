@@ -61,17 +61,20 @@ describe('MovableParentDirective', () => {
     let testZoneDocumentReference: HTMLElement;
     let positionOfNotMovedElement: {x: number, y: number};
     let getCurrentPosition = function() {return {clientX: elementThatShouldBeMoved.offsetLeft, clientY: elementThatShouldBeMoved.offsetTop}}
-    let getMovementDelta = function(step: number) {return {clientX: step, clientY: step}}
-    let makeMove = function(step: number){
+    let getMovementDelta = function(stepX: number, stepY:number) {return {clientX: stepX, clientY: stepY}}
+    let makeMoveAsym = function(stepX: number, stepY: number){
         movingHandle.dispatchEvent(new MouseEvent('mousedown', getCurrentPosition()));
         fixture.detectChanges();
         fixture.whenStable();
-        testZoneDocumentReference.dispatchEvent(new MouseEvent('mousemove', getMovementDelta(step)))
+        testZoneDocumentReference.dispatchEvent(new MouseEvent('mousemove', getMovementDelta(stepX, stepY)))
         fixture.detectChanges();
         fixture.whenStable();
-        testZoneDocumentReference.dispatchEvent(new MouseEvent('mouseup', getMovementDelta(step)))
+        testZoneDocumentReference.dispatchEvent(new MouseEvent('mouseup', getMovementDelta(stepX, stepY)))
         fixture.detectChanges();
-        fixture.whenStable();
+        fixture.whenStable();       
+    }
+    let makeMove = function(step: number){
+        makeMoveAsym(step, step);
     }
   
       beforeEach(async () => {
@@ -110,5 +113,18 @@ describe('MovableParentDirective', () => {
     for (let step of steps){
         moveAndCheck(step);
     }            
+  })
+
+  it('Should have a proper position after moving a few times in raw with pageX != pageY', async()=>{
+    let moveAndCheck = function(stepX: number, stepY: number){
+        makeMoveAsym(stepX, stepY);
+        let positionAfterMovement = getCurrentPosition();         
+        expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
+                .toEqual({x: stepX + positionOfNotMovedElement.x, y: stepY + positionOfNotMovedElement.y});            
+    }
+    let steps = [[50, 0], [0, 25], [5, 10], [53, 200], [10, 220], [67, 99], [99, 67], [444, 45], [500, 300]];
+    for (let step of steps){
+        moveAndCheck(step[0], step[1]);
+    }       
   })
 });

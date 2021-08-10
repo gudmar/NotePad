@@ -100,18 +100,15 @@ describe('MovableParentDirective', () => {
   })
 
   it('Should have proper position after moving 10 times in a raw', async() =>{
-    makeMove(50);
-    makeMove(25);
-    makeMove(10);
-    makeMove(53);
-    makeMove(10);
-    makeMove(22);
-    makeMove(67);
-    makeMove(99);
-    makeMove(444)
-    makeMove(500);
-    let positionAfterMovement = getCurrentPosition();         
-    expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
-            .toEqual({x: 500 + positionOfNotMovedElement.x, y: 500 + positionOfNotMovedElement.y});                
+    let moveAndCheck = function(step: number){
+        makeMove(step);
+        let positionAfterMovement = getCurrentPosition();         
+        expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
+                .toEqual({x: step + positionOfNotMovedElement.x, y: step + positionOfNotMovedElement.y});            
+    }
+    let steps = [50, 25, 10, 53, 10, 22, 67, 99, 444, 500]
+    for (let step of steps){
+        moveAndCheck(step);
+    }            
   })
 });

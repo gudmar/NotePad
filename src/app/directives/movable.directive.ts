@@ -44,8 +44,11 @@ export class MovableDirective {
     if (this.isInMoveState) {
       console.log('I am i mouse  move and state is true')
       let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
+      console.log(data.pageX)
+      console.log(`Old cords are: ${this.elRef.nativeElement.offsetLeft} ${this.elRef.nativeElement.offsetTop}`)
       this.elRef.nativeElement.style.left = newCords.x + 'px';
       this.elRef.nativeElement.style.top = newCords.y + 'px';
+      console.log("New cords are :" + newCords.x + ' ' + newCords.y)
     }
   }  
 

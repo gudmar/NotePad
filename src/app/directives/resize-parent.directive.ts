@@ -3,7 +3,7 @@ import { MovableParentDirective } from './movable-parent.directive';
 import { ConstantPool } from '@angular/compiler';
 
 @Directive({
-  selector: '[ResizeParent]'
+  selector: '[resizeparent]'
 })
 export class ResizeParentDirective extends MovableParentDirective{
   @Input('minWidth') minWidth: number = 50;

@@ -9,6 +9,8 @@ import { ConcatSource } from 'webpack-sources';
 import { start } from 'repl';
 
 
+// <movable-point class="resize" resizeparent nestedLevel = '1'></movable-point>
+// <div class="resize" resizeparent nestedLevel = '1'></div>
 @Component({
     selector: 'test-resize-component',
     template: ` 
@@ -21,7 +23,8 @@ import { start } from 'repl';
         </div>
     `,
     styles: [`
-            .playgronud{
+
+        .playgronud{
             position: relative;
             top: 0px;
             left: 0px;
@@ -30,18 +33,31 @@ import { start } from 'repl';
         }
         .resizable-component-wrapper{
             position: absolute;
-            border: solid thin blue;
+            background-color: rgb(220, 220, 220);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
         .resize{
+            box-sizing: border-box;
+            
             align-self: flex-end;
-            position: relative;
+            
             right: -25px;
             bottom: -25px;
             z-index: 100;
+        }
+        .resize-B{
+            box-sizing: border-box;
+            position: relative;
+            width: 10px;
+            height: 10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background-color: green;
+
         }
         .move{
             position: relative;
@@ -49,6 +65,7 @@ import { start } from 'repl';
         .content-placeholder{
             width: 100%;
             height: calc(100% - 30px);
+            background-color: rgb(200, 200, 230);
         }
     `]
 })
@@ -158,11 +175,59 @@ describe('ResizeParentDirective', () => {
     expect(positionAfterMovement).toEqual({x: 130, y: 200})
     expect(sizeAfterChange).toEqual(expectedSize);
   })
-  it('should resize parent after element was moved multiple times', async() => {
 
+  it('should resize parent a couple times', async() => {
+    let transformationArray = [
+        {resizeTo: {x: 350, y: 300}},
+        {resizeTo: {x: 350, y: 300}},
+        {resizeTo: {x: 350, y: 300}},
+
+    ]
+    let singleTransformationAndCheck = function(transformationDescriptor: any){
+        let expectedSize = getExpectedSize(
+            transformationDescriptor.resizeTo.x, 
+            transformationDescriptor.resizeTo.y
+        )
+        let positionAfterMovement = getCurrentPosition();
+
+        resizeElement(transformationDescriptor.resizeTo.x, transformationDescriptor.resizeTo.y);
+        let sizeAfterChange = getCurrentSize();
+        expect(sizeAfterChange).toEqual(expectedSize);
+    }
+    transformationArray.forEach(singleTransformationAndCheck);
+  })
+
+  it('should resize parent multiple times after element was moved multiple times', async() => {
+    let transformationArray = [
+        {moveTo: {x: 200, y: 130}, resizeTo: {x: 350, y: 300}},
+        {moveTo: {x: 200, y: 130}, resizeTo: {x: 350, y: 300}},
+        {moveTo: {x: 200, y: 130}, resizeTo: {x: 350, y: 300}},
+        {moveTo: {x: 100, y: 30}, resizeTo: {x: 350, y: 300}},
+        {moveTo: {x: 110, y: 40}, resizeTo: {x: 350, y: 300}},
+        {moveTo: {x: 120, y: 50}, resizeTo: {x: 350, y: 300}},
+    ]
+    let singleTransformationAndCheck = function(transformationDescriptor: any){
+        let positionBeforeTransformation = getCurrentPosition();
+        let expectedSize = getExpectedSize(
+            transformationDescriptor.resizeTo.x - transformationDescriptor.moveTo.x, 
+            transformationDescriptor.resizeTo.y - transformationDescriptor.moveTo.y
+        )
+        moveElementTo(transformationDescriptor.moveTo.x, transformationDescriptor.moveTo.y);
+        let positionAfterMovement = getCurrentPosition();
+        resizeElement(transformationDescriptor.resizeTo.x, transformationDescriptor.resizeTo.y);
+        let sizeAfterChange = getCurrentSize();
+        // if (transformationDescriptor.moveTo.y == 30) debugger;
+        expect(positionAfterMovement).toEqual(transformationDescriptor.moveTo);
+        expect(sizeAfterChange).toEqual(expectedSize);
+    }
+    transformationArray.forEach(singleTransformationAndCheck);
   })
 
   it('should resize nested content element after element was moved, element was resized', async()=>{
 
   })
 });
+
+
+// Problem leźy w komponentcie movable-point. Zmieniana jest clientHeight  chyba movable-point z 25 na 23!!. Jak widać po zastąpieniu prostrzym 
+// elementem działa.

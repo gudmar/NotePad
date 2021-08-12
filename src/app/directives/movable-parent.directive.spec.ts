@@ -53,7 +53,7 @@ import { ConcatSource } from 'webpack-sources';
     }
 
 
-describe('MovableParentDirective', () => {
+xdescribe('MovableParentDirective', () => {
     let testComponent: TestComponent;
     let fixture: ComponentFixture<TestComponent>
     let elementThatShouldBeMoved: HTMLElement;

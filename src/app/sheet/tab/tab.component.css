@@ -1,0 +1,35 @@
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-shape{
+    cursor: pointer;
+}
+.active{
+    z-index: 100;
+    font-weight: bold;
+    cursor: default;
+}
+
+.tab-shape{
+    position: absolute;
+    /* width: 20px; */
+    height: 0px;
+    border-bottom-width: 1.2rem;
+    border-left-width: 0.6rem;
+    border-right-width: 0.6rem;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-color: limegreen;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top: none;
+}
+.tab-content{
+    position: relative;
+    background-color: transparent;
+}

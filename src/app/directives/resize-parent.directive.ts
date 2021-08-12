@@ -18,6 +18,7 @@ export class ResizeParentDirective extends MovableParentDirective{
   calculateDotOffset(data:any){
     this.resizeDotOffset = {x: data.pageX - this.elRef.nativeElement.offsetLeft - this.elementToMove.offsetLeft, 
                             y: data.pageY - this.elRef.nativeElement.offsetTop - this.elementToMove.offsetTop}
+  // debugger;                      
   }
 
   @HostListener('document:mouseMove', ['$event'])
@@ -30,13 +31,15 @@ export class ResizeParentDirective extends MovableParentDirective{
     }
     let parentOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop}
     
-    
+    // debugger;
 
     if (this.isInMoveState) {
+      // debugger
       let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
       let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
-      this.elementToMove.style.width = calculatedSize().width + 'px';
-      this.elementToMove.style.height = calculatedSize().height + 'px';
+      let cs = calculatedSize()
+      this.elementToMove.style.width = cs.width + 'px';
+      this.elementToMove.style.height = cs.height + 'px';
     }
   }
 

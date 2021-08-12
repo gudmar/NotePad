@@ -41,7 +41,7 @@ import { ConcatSource } from 'webpack-sources';
 
 
 
-describe('MovableDirective', () => {
+xdescribe('MovableDirective', () => {
   let testComponent: TestComponent;
   let fixture: ComponentFixture<TestComponent>
   let dummyBody: HTMLElement

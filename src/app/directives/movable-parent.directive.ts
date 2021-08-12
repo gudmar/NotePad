@@ -52,6 +52,7 @@ export class MovableParentDirective {
   calculateNewPosition(cordsFromEvent: {x: number, y: number}){
     let elementToMoveOffset = {x: this.elRef.nativeElement.offsetLeft, y: this.elRef.nativeElement.offsetTop};
     let offset = this.clickOffset;
+    // debugger;
     return {x: cordsFromEvent.x - offset.x, y: cordsFromEvent.y - offset.y}
   }
 

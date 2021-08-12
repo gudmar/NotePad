@@ -31,13 +31,10 @@ export class MovableParentDirective {
   @HostListener('document:mousemove', ['$event'])
   doMouseMove(data: any){
     if (this.isInMoveState) {
-      // console.log(`Before movement: ${this.elementToMove.offsetLeft} ${this.elementToMove.offsetTop}`)
       let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
       let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
-      // console.log('Corrected POINT from parent move:  ' + correctedPosition.x + ' ' +correctedPosition.y)
-      // console.log(`After movement: ${this.elementToMove.offsetLeft} ${this.elementToMove.offsetTop}`)
     }
   } 
 
@@ -52,7 +49,6 @@ export class MovableParentDirective {
   calculateNewPosition(cordsFromEvent: {x: number, y: number}){
     let elementToMoveOffset = {x: this.elRef.nativeElement.offsetLeft, y: this.elRef.nativeElement.offsetTop};
     let offset = this.clickOffset;
-    // debugger;
     return {x: cordsFromEvent.x - offset.x, y: cordsFromEvent.y - offset.y}
   }
 

@@ -75,7 +75,6 @@ class TestComponent {
         this.eventData = {};
     }
     getEventData(data:any){
-        console.log('event data written')
         this.eventData = data;
     }
 }
@@ -92,6 +91,7 @@ describe('ResizeParentDirective', () => {
     let moveHandle: HTMLElement;
     let resizeHandle: HTMLElement;
     let internalElementThatMustResizeWithParent: HTMLElement;
+    
     let positonBeforeMove: {x:number, y:number};
     let sizeBeforeResize: {w: number, h: number};
 
@@ -107,6 +107,7 @@ describe('ResizeParentDirective', () => {
           moveHandle = fixture.nativeElement.querySelector('.move');
           resizeHandle = fixture.nativeElement.querySelector('.resize');
           internalElementThatMustResizeWithParent = fixture.nativeElement.querySelector('.content-placeholder');
+          
           positonBeforeMove = getCurrentPosition();
     })
 
@@ -144,6 +145,10 @@ describe('ResizeParentDirective', () => {
 
 
     function getExpectedSize(w: number, h: number) {return {w: w - positonBeforeMove.x, h: h - positonBeforeMove.y}}
+    function getExpectedSizeOfInternalElement(w: number, h: number) {
+        let internalElementMarginFromCssDeclaration = 30;
+        return {w: w - positonBeforeMove.x, h: h - positonBeforeMove.y - internalElementMarginFromCssDeclaration}
+    }
     
     function getCordsRelativeToResizingHandle(pageCords:{x: number, y: number}){
         let currentMovablePosition = getCurrentPosition();
@@ -216,7 +221,6 @@ describe('ResizeParentDirective', () => {
         let positionAfterMovement = getCurrentPosition();
         resizeElement(transformationDescriptor.resizeTo.x, transformationDescriptor.resizeTo.y);
         let sizeAfterChange = getCurrentSize();
-        // if (transformationDescriptor.moveTo.y == 30) debugger;
         expect(positionAfterMovement).toEqual(transformationDescriptor.moveTo);
         expect(sizeAfterChange).toEqual(expectedSize);
     }
@@ -224,10 +228,10 @@ describe('ResizeParentDirective', () => {
   })
 
   it('should resize nested content element after element was moved, element was resized', async()=>{
-
+    let contentElementStartSize = getInternalElementSize();
+    resizeElement(399, 299);
+    let contentElementAfterChangeSize = getInternalElementSize();
+    let expectedInternalElementSize = getExpectedSizeOfInternalElement(399, 299);
+    expect(contentElementAfterChangeSize).toEqual(expectedInternalElementSize);
   })
 });
-
-
-// Problem leźy w komponentcie movable-point. Zmieniana jest clientHeight  chyba movable-point z 25 na 23!!. Jak widać po zastąpieniu prostrzym 
-// elementem działa.

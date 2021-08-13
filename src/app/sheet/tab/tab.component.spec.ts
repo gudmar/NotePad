@@ -7,7 +7,6 @@ describe('TabComponent', () => {
   let fixture: ComponentFixture<TabComponent>;
   let shapeElement: HTMLElement;
   
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TabComponent ]
@@ -20,7 +19,6 @@ describe('TabComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     shapeElement = fixture.nativeElement.querySelector('.tab-shape');
-    
   });
 
   it('should create', () => {
@@ -34,4 +32,16 @@ describe('TabComponent', () => {
     fixture.nativeElement.click();
     expect(component.onThisTabSelect).toHaveBeenCalled();
   }))
+  it('Should change color on bgColor property change', ()=> {
+    let getCurrentBGcolor = function(){
+      return window.getComputedStyle(shapeElement).borderBottomColor
+    }
+    fixture.detectChanges();
+    expect(getCurrentBGcolor()).toBe('rgb(255, 255, 255)')
+    component.bgColor = 'green';
+    fixture.detectChanges();
+    expect(getCurrentBGcolor()).toBe('rgb(0, 128, 0)')
+    
+  })
+
 });

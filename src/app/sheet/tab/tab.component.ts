@@ -25,9 +25,7 @@ export class TabComponent implements OnInit {
   get isActive() {return this._isActive}
   @Output() tabChosen: EventEmitter<string> = new EventEmitter();
 
-  constructor(private idProvider: UniqueIdProviderService,) { 
-    
-  }
+  constructor(private idProvider: UniqueIdProviderService,) { }
 
   @HostListener('click')
   onThisTabSelect(){
@@ -37,5 +35,4 @@ export class TabComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

@@ -44,4 +44,14 @@ describe('TabComponent', () => {
     
   })
 
+  it('Should change title, after title property changed', ()=>{
+    let getTitle = function(){return shapeElement.innerText}
+    let newTitleForTests = "Some other title";
+    fixture.detectChanges();
+    expect(getTitle()).toBe('newTab');
+    component.tabTitle = newTitleForTests;
+    fixture.detectChanges();
+    expect(getTitle()).toBe(newTitleForTests);
+  })
+
 });

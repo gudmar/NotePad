@@ -1,10 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {Component, DebugElement, ViewChild, HostListener,  CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { TabComponent } from './tab.component';
 
-xdescribe('TabComponent', () => {
+describe('TabComponent', () => {
   let component: TabComponent;
   let fixture: ComponentFixture<TabComponent>;
+  let shapeElement: HTMLElement;
+  
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,22 +19,19 @@ xdescribe('TabComponent', () => {
     fixture = TestBed.createComponent(TabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    shapeElement = fixture.nativeElement.querySelector('.tab-shape');
+    
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Should launch an event when clicked', fakeAsync(()=>{
+    let eventWasLaunched = false;
+    fixture.componentInstance.uniqueId = 'someID'
+    spyOn(component, 'onThisTabSelect')
+    fixture.nativeElement.click();
+    expect(component.onThisTabSelect).toHaveBeenCalled();
+  }))
 });
-
-// <div class="tab-wrapper">
-//     <div class="tab-shape" [ngClass] = "tabShapeClasses" [style.border-bottom-color] = "bgColor">{{tabTitle}}</div>
-// </div>
-
-// @Input() tabTitle: string = "newTab";
-// @Input() uniqueId: string = this.idProviderInstance.getUniqueId();
-// @Input() bgColor: string = 'white'
-// @Input() set isActive(val: boolean) {
-//   this.tabShapeClasses.active = val;
-//   this._isActive = val;
-// };
-// @Output() tabChosen = new EventEmitter<string>();

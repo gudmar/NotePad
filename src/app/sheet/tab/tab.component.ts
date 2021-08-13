@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener} from '@angular/core';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'tab',
@@ -21,7 +22,8 @@ export class TabComponent implements OnInit {
     this.tabShapeClasses.active = val;
     this._isActive = val;
   };
-  @Output() tabChosen = new EventEmitter<string>();
+  get isActive() {return this._isActive}
+  @Output() tabChosen: EventEmitter<string> = new EventEmitter();
 
   constructor(private idProvider: UniqueIdProviderService,) { 
     
@@ -30,6 +32,7 @@ export class TabComponent implements OnInit {
   @HostListener('click')
   onThisTabSelect(){
     this.tabChosen.emit(this.uniqueId)
+    
   }
 
   ngOnInit(): void {

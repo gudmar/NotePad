@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'page',
@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page.component.css']
 })
 export class PageComponent implements OnInit {
-
+  @Input() uniqueId: string = '';
+  @Input() bgColor: string = '';
+  @Input() notes: any[] = [];
+  
   constructor() { }
 
   ngOnInit(): void {

@@ -1,1 +1,8 @@
-<p>work-book works!</p>
+<div class="workbook">
+    <sheet *ngFor="let item of listOfSheets" [uniqueId] = "extractSheetId(item)" 
+                [bgColor]=" extractSheedDescriptor(item).bgColor" 
+                [pages]=" extractSheedDescriptor(item).pages"
+                [startPageId] = "extractSheedDescriptor(item).startPageId"
+    >
+    </sheet>
+</div>

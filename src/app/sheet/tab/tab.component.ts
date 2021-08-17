@@ -30,7 +30,6 @@ export class TabComponent implements OnInit {
   @HostListener('click')
   onThisTabSelect(){
     this.tabChosen.emit(this.uniqueId)
-    
   }
 
   ngOnInit(): void {

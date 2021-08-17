@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
+import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 
 @Component({
   selector: 'tab-menu',
@@ -10,11 +11,12 @@ import { UniqueIdProviderService } from '../../services/unique-id-provider.servi
 })
 export class TabMenuComponent implements OnInit {
   @Input() pages: any[] = [];
+  @Input() currentId: string = '';
+  @Output() tabChosen: EventEmitter<string> = new EventEmitter()
   listOfTabs: string[] = ['newTab']
   addButtonId: string = "addButtonId"
-  uuidProvider: UniqueIdProviderService;
-  constructor(uuidProvider: UniqueIdProviderService) { 
-    this.uuidProvider = uuidProvider;
+
+  constructor(private uuidProvider: UniqueIdProviderService, private descriptorParser: DescriptorToDataService) { 
   }
 
   get newId(){return this.uuidProvider.getUniqueId()}
@@ -22,11 +24,20 @@ export class TabMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getPageIds(){
-    return Object.keys(this.pages);
+  getPageId(descriptorItem: {uniqueId: any}){
+    return this.descriptorParser.getDescriptorsId(descriptorItem)
   }
-  getPageTitles(){
-    let titles: string[] = [];
-    this.pages.forEach((item) => {return item.title})
+
+  getPageConfigurationData(descriptorItem: {uniqueId: any}){
+    return this.descriptorParser.getDescriptorValues(descriptorItem)
+  }
+
+  isThisPageActive(pageDescriptor: {uniqueId: any}){
+    return this.getPageId(pageDescriptor) === this.currentId
+  }
+
+  tabWantsToBeActive(data:any){
+    this.currentId = data;
+    this.tabChosen.emit(data);
   }
 }

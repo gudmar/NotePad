@@ -1,6 +1,6 @@
 <div class="sheet">
     <div class="tab-menu-container">
-        <tab-menu></tab-menu>
+        <tab-menu [pages] = "pages" [currentId] = "currentPageId" (tabChosen) = "displayPageById($event)"></tab-menu>
     </div>
     <div class="page-container">
         <page [notes] = "getCurrentPagesNotes()" [bgColor] = "getCurrentPagesColor()" [uniqueId] = "currentPageId"></page>

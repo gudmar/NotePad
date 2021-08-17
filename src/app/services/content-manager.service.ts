@@ -83,6 +83,10 @@ export class ContentManagerService {
     
   }
 
+  getNextAddedPage(){
+    let color = this.colorProvider.getNextColor();
+    return this.getPage(color, 'mock-page', '');
+  }
   getFreshCalendar(){
     return {}
   }

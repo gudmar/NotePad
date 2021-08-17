@@ -1,3 +1,6 @@
 <div class="tab-wrapper">
-    <div class="tab-shape" [ngClass] = "tabShapeClasses" [style.border-bottom-color] = "bgColor">{{tabTitle}}</div>
+    <div class="tab-shape" [ngClass] = "tabShapeClasses" [style.border-bottom-color] = "bgColor">
+        {{tabTitle}}
+        <span *ngIf="!setBehind">&#8285;</span>
+    </div>
 </div>

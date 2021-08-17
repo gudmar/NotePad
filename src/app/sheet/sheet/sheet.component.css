@@ -1,0 +1,19 @@
+
+.sheet{
+    --menu-height: 1.4rem;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.tab-menu-container{
+    position: relative;
+    width: 100%;
+    height: var(--menu-height);
+}
+
+.page-container{
+    position: relative;
+    width: 100%;
+    height: calc( 100% - var(--menu-height));
+}

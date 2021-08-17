@@ -3,7 +3,7 @@
         <tab-menu></tab-menu>
     </div>
     <div class="page-container">
-        <page></page>
+        <page [notes] = "getCurrentPagesNotes()" [bgColor] = "getCurrentPagesColor()" [uniqueId] = "currentPageId"></page>
     </div>
     
 </div>

@@ -12,9 +12,10 @@ import { SheetComponent } from './sheet/sheet/sheet.component';
 import { TabComponent } from './sheet/tab/tab.component';
 import { TabMenuComponent } from './sheet/tab-menu/tab-menu.component';
 import { UniqueIdProviderService} from './services/unique-id-provider.service';
-import { NextColorGeneratorService } from './services/next-color-generator.service'
+import { NextColorGeneratorService } from './services/next-color-generator.service';
+import { ContentManagerService } from './services/content-manager.service';
 import { PageComponent } from './sheet/page/page.component';
-import { WorkBookComponent } from './work-book/work-book.component'
+import { WorkBookComponent } from './work-book/work-book.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { WorkBookComponent } from './work-book/work-book.component'
   ],
   providers: [
               UniqueIdProviderService,
-              NextColorGeneratorService
+              NextColorGeneratorService,
+              ContentManagerService
             ],
   bootstrap: [AppComponent]
 })

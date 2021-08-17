@@ -14,6 +14,7 @@ import { TabMenuComponent } from './sheet/tab-menu/tab-menu.component';
 import { UniqueIdProviderService} from './services/unique-id-provider.service';
 import { NextColorGeneratorService } from './services/next-color-generator.service';
 import { ContentManagerService } from './services/content-manager.service';
+import { DescriptorToDataService } from './services/descriptor-to-data.service'
 import { PageComponent } from './sheet/page/page.component';
 import { WorkBookComponent } from './work-book/work-book.component';
 
@@ -38,7 +39,8 @@ import { WorkBookComponent } from './work-book/work-book.component';
   providers: [
               UniqueIdProviderService,
               NextColorGeneratorService,
-              ContentManagerService
+              ContentManagerService,
+              DescriptorToDataService
             ],
   bootstrap: [AppComponent]
 })

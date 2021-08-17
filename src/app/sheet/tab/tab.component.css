@@ -15,7 +15,7 @@
 }
 
 .tab-shape{
-    position: absolute;
+    position: relative;
     /* width: 20px; */
     height: 0px;
     border-bottom-width: 1.2rem;
@@ -28,6 +28,8 @@
     border-left-color: transparent;
     border-right-color: transparent;
     border-top: none;
+    margin-left: -0.3rem;
+    margin-right: -0.3rem;
 }
 .tab-content{
     position: relative;

@@ -1,4 +1,11 @@
 <div class="tab-menu">
-    <ng-container #tabs></ng-container>
-    <tab [tabTitle] = "'+'" [uniqueId] = "addButtonId" [bgColor] = "'green'" [isActive] = "true"></tab>
+    <!-- <tab [tabTitle] = "'+'" [uniqueId] = "addButtonId" [bgColor] = "'green'" [isActive] = "true"></tab> -->
+    <tab *ngFor = "let page of pages" 
+          [uniqueId] = "getPageId(page)" 
+          [bgColor] = "getPageConfigurationData(page).bgColor" 
+          [isActive]= 'isThisPageActive(page)'
+          [tabTitle]= "getPageConfigurationData(page).title"
+          (tabChosen) = "tabWantsToBeActive($event)"
+    >
+    </tab>
 </div>

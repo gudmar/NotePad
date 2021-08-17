@@ -16,6 +16,15 @@ export class NextColorGeneratorService {
 
   constructor() {}
 
+  restart(){
+    this.hueGenerator.restart();
+    this.lightGenerator.restart();
+    this.saturatoinGenerator.restart();
+    this.specialColorGetter.restart();
+    this.light = -1;
+    this.saturation = -1;
+  }
+
   wereAllLightValuesUsed(){
     return this.lightGenerator.wereAllUsed() && this.hueGenerator.wereAllUsed()
   }
@@ -72,6 +81,11 @@ class NextValueGetter{
     if (this.nextIndex == this.arrayOfValues.length) {this.wereAllValuesUsed = true; this.nextIndex = 0}
     else this.wereAllValuesUsed = false;
     return output
+  }
+
+  restart(){
+    this.nextIndex = 0;
+    this.wereAllValuesUsed = false;
   }
 }
 

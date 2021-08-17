@@ -7,11 +7,30 @@
 
 .tab-shape{
     cursor: pointer;
+    z-index: 1;
+    transition: 0.3s;
 }
 .active{
     z-index: 100;
     font-weight: bold;
-    cursor: default;
+    cursor: not-allowed;
+}
+
+.active-behind{
+    z-index: 0;
+    cursor: pointer;
+}
+
+.active-behind:hover{
+    transform: scale(1.2);
+    transition: 0.3s;
+    z-index: 101;
+}
+
+.tab-shape:not(.active):hover{
+    transform: scale(1.2);
+    transition: 0.3s;
+    z-index: 101;
 }
 
 .tab-shape{

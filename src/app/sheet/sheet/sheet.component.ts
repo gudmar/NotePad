@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
+import { ContentManagerService } from '../../services/content-manager.service';
 
 @Component({
   selector: 'sheet',
@@ -15,7 +16,7 @@ export class SheetComponent implements OnInit {
   currentPageId: string = this.startPageId;
   
 
-  constructor(private descriptorParser: DescriptorToDataService) { }
+  constructor(private descriptorParser: DescriptorToDataService, private contentManager: ContentManagerService) { }
 
   ngOnInit(): void {
     this.currentPageId = this.startPageId;
@@ -44,6 +45,10 @@ export class SheetComponent implements OnInit {
 
   displayPageById(data: any){
     this.currentPageId = data;
+  }
+
+  addNewPage(){
+    this.pages.push(this.contentManager.getNextAddedPage());
   }
 
 }

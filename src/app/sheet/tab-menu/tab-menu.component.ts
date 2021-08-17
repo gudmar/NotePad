@@ -12,9 +12,8 @@ import { DescriptorToDataService } from '../../services/descriptor-to-data.servi
 export class TabMenuComponent implements OnInit {
   @Input() pages: any[] = [];
   @Input() currentId: string = '';
-  @Output() tabChosen: EventEmitter<string> = new EventEmitter()
-  listOfTabs: string[] = ['newTab']
-  addButtonId: string = "addButtonId"
+  @Output() tabChosen: EventEmitter<string> = new EventEmitter();
+  @Output() addNewPage: EventEmitter<any> = new EventEmitter();
 
   constructor(private uuidProvider: UniqueIdProviderService, private descriptorParser: DescriptorToDataService) { 
   }
@@ -39,5 +38,9 @@ export class TabMenuComponent implements OnInit {
   tabWantsToBeActive(data:any){
     this.currentId = data;
     this.tabChosen.emit(data);
+  }
+
+  addNewTabToView(data: any){
+    this.addNewPage.emit(data);
   }
 }

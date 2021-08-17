@@ -8,4 +8,14 @@
           (tabChosen) = "tabWantsToBeActive($event)"
     >
     </tab>
+    <tab aria-role = "Add new page"
+        [setBehind] = "true"
+        [uniqueId] = "'addToPage'"
+        [bgColor] = "'black'"
+        [isActive] = "true"
+        [tabTitle] = "'+'"
+        [style.color] = "'white'"
+        (tabChosen) = "addNewTabToView($event)"
+    >
+    </tab>
 </div>

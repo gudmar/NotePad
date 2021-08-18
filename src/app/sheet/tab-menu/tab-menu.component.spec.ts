@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed,  } from '@angular/core/testing';
 import { EventEmitter, Output, Component, HostListener } from '@angular/core'
 import { TabMenuComponent } from './tab-menu.component';
+import { fips } from 'crypto';
 
 
 describe('TabMenuComponent', () => {
@@ -33,11 +34,11 @@ describe('TabMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should create 5 tabs, after pages with 5 positions is send. Because of add button, 6 elements alltogether', () => {
+  it('should create 5 tabs, after pages with 5 positions is send. Because of add button, 6 elements alltogether', () => {
     component.pages = pages_5;
     fixture.detectChanges();
     let elements = fixture.nativeElement.querySelectorAll('tab')

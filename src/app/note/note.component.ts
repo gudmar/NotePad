@@ -7,6 +7,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 })
 export class NoteComponent implements OnInit {
   thisElement: ElementRef;
+  
   constructor(thisElement: ElementRef) { 
     this.thisElement = thisElement;
   }

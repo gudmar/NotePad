@@ -1,4 +1,11 @@
 <div class="page" [style.backgroundColor] = "bgColor">
     {{notes}}
-    <page-menu></page-menu>
+    <page-menu 
+        (deleteMe) = "deleteThisPage()"
+        (addAfterMe) = "addAfterThisPage()"
+        (editMode) = "enterEditMode()"
+        (exitEditMode) = "exitEditMode()"
+    >
+    <note *ngFor="let note of notes"></note>
+    </page-menu>
 </div>

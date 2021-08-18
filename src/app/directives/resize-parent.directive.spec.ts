@@ -1,6 +1,6 @@
 import { ResizeParentDirective } from './resize-parent.directive';
 import { MovableParentDirective} from './movable-parent.directive';
-import {Component, DebugElement, ElementRef, ViewChild, HostListener,  CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, DebugElement, ElementRef, ViewChild, HostListener, Input, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import { MovablePointComponent } from '../movable-point/movable-point.component'
@@ -20,6 +20,14 @@ import { start } from 'repl';
                 <div class = "content-placeholder"></div>
                 <movable-point class="resize" resizeparent nestedLevel = '1'></movable-point>
               </div>
+        </div>
+
+        <div class = "playgronud">
+        <div class="resizable-component-wrapper secondElement" (click) = "getEventData($event)">
+            <movable-point class="move" movableparent nestedLevel = '1'></movable-point>
+            <div class = "content-placeholder"></div>
+            <movable-point class="resize" resizeparent nestedLevel = '1' [initialWidth] = "initialWidth" [initialHeight] = "initialWidth"></movable-point>
+          </div>
         </div>
     `,
     styles: [`
@@ -71,6 +79,8 @@ import { start } from 'repl';
 })
 class TestComponent {
     eventData: any;
+    @Input() initialWidth: number = 200;
+    @Input() initialHeight: number = 200;
     constructor(){
         this.eventData = {};
     }
@@ -91,6 +101,7 @@ xdescribe('ResizeParentDirective', () => {
     let moveHandle: HTMLElement;
     let resizeHandle: HTMLElement;
     let internalElementThatMustResizeWithParent: HTMLElement;
+    let secondResizableElement: HTMLElement;
     
     let positonBeforeMove: {x:number, y:number};
     let sizeBeforeResize: {w: number, h: number};
@@ -107,12 +118,15 @@ xdescribe('ResizeParentDirective', () => {
           moveHandle = fixture.nativeElement.querySelector('.move');
           resizeHandle = fixture.nativeElement.querySelector('.resize');
           internalElementThatMustResizeWithParent = fixture.nativeElement.querySelector('.content-placeholder');
+
+          secondResizableElement = fixture.nativeElement.querySelector('.secondElement')
           
           positonBeforeMove = getCurrentPosition();
     })
 
     function getCurrentPosition(){return {x: movableElement.offsetLeft, y: movableElement.offsetTop}}
     function getCurrentSize(){return {w: movableElement.offsetWidth, h: movableElement.offsetHeight}}
+    function getCurrentSizeOfSecondElement(){return {w: secondResizableElement.offsetWidth, h: secondResizableElement.offsetHeight}}
     function getInternalElementSize(){
         return {w: internalElementThatMustResizeWithParent.offsetWidth, h: internalElementThatMustResizeWithParent.offsetHeight}
     }
@@ -166,6 +180,8 @@ xdescribe('ResizeParentDirective', () => {
     resizeElement(200, 250);
     let sizeAfterChange = getCurrentSize();
     let expectedSize = getExpectedSize(200, 250);
+    // debugger
+    console.dir(movableElement)
     expect(sizeAfterChange).toEqual(expectedSize);
   })
 
@@ -233,5 +249,12 @@ xdescribe('ResizeParentDirective', () => {
     let contentElementAfterChangeSize = getInternalElementSize();
     let expectedInternalElementSize = getExpectedSizeOfInternalElement(399, 299);
     expect(contentElementAfterChangeSize).toEqual(expectedInternalElementSize);
+  })
+
+  it('should allow to set initial width and height', () => {
+      fixture.detectChanges();
+      let actualSize = getCurrentSizeOfSecondElement();
+      let expectedSize = getExpectedSize(200, 200);
+      expect(actualSize).toEqual(expectedSize)
   })
 });

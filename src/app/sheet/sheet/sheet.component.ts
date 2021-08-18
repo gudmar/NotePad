@@ -20,8 +20,6 @@ export class SheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentPageId = this.startPageId;
-    console.log(this.pages)
-    console.log(this.currentPageId)
   }
 
   getCurrentPagesNotes(){

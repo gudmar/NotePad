@@ -29,8 +29,7 @@ xdescribe('MovablePointComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     testedComponent = fixture.nativeElement.querySelector('movable-point');
-    console.log('testedComponet')
-    console.log(testedComponent)
+
   });
   
 

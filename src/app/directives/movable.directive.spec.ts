@@ -85,10 +85,6 @@ xdescribe('MovableDirective', () => {
     fixture.detectChanges();
     fixture.whenStable();
 
-    console.log('Owner document!!! Important finding !')
-    console.log(fixture.nativeElement.ownerDocument)
-
-
     let endPositionExpected = {x: startPosition.x + 100, y: startPosition.y + 100};
     let endPositionInReality = {x: movableElement.offsetLeft, y: movableElement.offsetTop}
     expect(endPositionExpected).toEqual(endPositionInReality);

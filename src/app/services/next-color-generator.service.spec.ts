@@ -82,7 +82,6 @@ describe('NextColorGeneratorService', () => {
       `hsl(330, 100%, 80%)`,      
     ]
     for(let expectedOutput of expectedOutputs){
-      console.log(expectedOutput)
       expect(serviceInstance.getNextColor()).toBe(expectedOutput);
     }
 
@@ -124,12 +123,10 @@ describe('NextColorGeneratorService', () => {
       `hsl(150, 50%, 80%)`,
     ]
     for(let expectedOutput of expectedOutputs){
-      console.log(expectedOutput)
       expect(serviceInstance.getNextColor()).toBe(expectedOutput);
     }
     serviceInstance.restart();
     for(let expectedOutput of expectedOutputs){
-      console.log(expectedOutput)
       expect(serviceInstance.getNextColor()).toBe(expectedOutput);
     }    
   })

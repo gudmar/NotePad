@@ -6,9 +6,14 @@
 }
 
 .tab-shape{
+    position: relative;
     cursor: pointer;
     z-index: 1;
     transition: 0.3s;
+    text-overflow: ellipsis; 
+    /*ellipsis will not */
+    /* max-height: 1.2rem;
+    line-height: 1.1rem; */
 }
 .active{
     z-index: 100;
@@ -49,6 +54,12 @@
     border-top: none;
     margin-left: -0.3rem;
     margin-right: -0.3rem;
+}
+.tab-shape>span{
+    position: relative;
+    height: 1rem;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
 }
 .tab-content{
     position: relative;

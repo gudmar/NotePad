@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NoteComponent } from '../../note/note.component'
 
 @Component({
   selector: 'page',
@@ -25,6 +26,11 @@ export class PageComponent implements OnInit {
   addAfterThisPage() {this.addPageAfterThisPageEvent.emit();}
   enterEditMode() {this.isInEditMode = true}
   exitEditMode() {this.isInEditMode = false;}
+
+  getUUIDTracker(index: number, item: any):any{
+    // debugger
+    return item.uniqueId
+  }
 
 }
 

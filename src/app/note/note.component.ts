@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
 
 @Component({
   selector: 'note',
@@ -7,7 +7,12 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 })
 export class NoteComponent implements OnInit {
   thisElement: ElementRef;
-  
+  @Input() initialWidth: number = 100;
+  @Input() initialHeight: number = 100;
+  @Input() initialTop: number = 30;
+  @Input() initialLeft: number = 30;
+  @Input() content: string = '';
+  @Input() uniqueId: string = '';
   constructor(thisElement: ElementRef) { 
     this.thisElement = thisElement;
   }

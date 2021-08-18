@@ -62,8 +62,6 @@ export class ContentManagerService {
       return [ that.getSheet(colors[0], titles[0], pages, Object.keys(pages[1])[0]) ]
     }
     let sheets = createSheets()
-    console.log('I am mocking contoent')
-    console.dir(sheets)
     return {
       sheets: sheets,
       calendarInputs: {}

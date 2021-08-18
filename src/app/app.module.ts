@@ -17,6 +17,7 @@ import { ContentManagerService } from './services/content-manager.service';
 import { DescriptorToDataService } from './services/descriptor-to-data.service'
 import { PageComponent } from './sheet/page/page.component';
 import { WorkBookComponent } from './work-book/work-book.component';
+import { PageMenuComponent } from './sheet/page/page-menu/page-menu.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { WorkBookComponent } from './work-book/work-book.component';
     TabComponent,
     TabMenuComponent,
     PageComponent,
-    WorkBookComponent
+    WorkBookComponent,
+    PageMenuComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,58 @@
+.page-menu-toggle-button{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: rgba(230, 230, 230);
+    color: black;
+    opacity: 0.5;
+    transition: 0.3s;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.wrapper{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+.page-menu-toggle-button:hover{
+    opacity: 1;
+    transition: 0.3s;
+}
+.page-menu-wrapper{
+    position: absolute;
+    top: 3rem;
+    right: -5rem;
+    height: 5rem;
+    width: 2rem;
+    transition: 0.4s;
+}
+
+.wrapper:hover > .page-menu-wrapper{
+    right: 1rem;
+    transition: 0.4s;
+}
+
+.page-menu-button{
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    background-color: rgba(230, 230, 230);
+    transition: 0.3s;
+}
+.page-menu-button:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: 0.3s;
+    background-color: rgba(255, 255, 200);
+    z-index: 5;
+}
+.center{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}

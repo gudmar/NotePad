@@ -1,4 +1,7 @@
 .wrapper{
     position: relative;
-    height: 220vh;
+    height: 100vh;
+}
+body{
+    /* height: 100%; */
 }

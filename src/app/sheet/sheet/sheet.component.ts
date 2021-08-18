@@ -9,11 +9,19 @@ import { ContentManagerService } from '../../services/content-manager.service';
   styleUrls: ['./sheet.component.css']
 })
 export class SheetComponent implements OnInit {
+  
+  currentPageNotes: string[] = [];
   @Input() uniqueId: string = '';
   @Input() bgColor: string = 'white';
   @Input() pages: any[] = [];
   @Input() startPageId:string = '';
-  currentPageId: string = this.startPageId;
+  private _currentPageId: string = this.startPageId;
+  set currentPageId(val: string) {
+    this._currentPageId = val;
+    this.currentPageNotes = this.getPageNotesById(val)
+    console.dir(this.pages)
+  } 
+  get currentPageId() {return this._currentPageId}
   
 
   constructor(private descriptorParser: DescriptorToDataService, private contentManager: ContentManagerService) { }
@@ -22,9 +30,14 @@ export class SheetComponent implements OnInit {
     this.currentPageId = this.startPageId;
   }
 
-  getCurrentPagesNotes(){
-    let pageDescriptor = this.getCurrentPageDescriptor();
-    return pageDescriptor == undefined ? undefined : pageDescriptor.notes;
+  // getCurrentPagesNotes(){
+  //   let pageDescriptor = this.getCurrentPageDescriptor();
+  //   return pageDescriptor == undefined ? undefined : pageDescriptor.notes;
+  // }
+
+  getPageNotesById(id: string){
+    let pageDescriptor = this.getPageDescriptorById(id);
+    return pageDescriptor == undefined ? undefined : pageDescriptor.notes;    
   }
   
   getCurrentPagesColor(){
@@ -33,7 +46,11 @@ export class SheetComponent implements OnInit {
   }
 
   getCurrentPageDescriptor(){
-    let serachedObject = this.descriptorParser.getElementFromArrayById(this.pages, this.currentPageId)
+    return this.getPageDescriptorById(this.currentPageId)
+  }
+
+  getPageDescriptorById(id: string){
+    let serachedObject = this.descriptorParser.getElementFromArrayById(this.pages, id)
     return serachedObject == undefined ? undefined : serachedObject.content
   }
 
@@ -42,6 +59,7 @@ export class SheetComponent implements OnInit {
   }
 
   displayPageById(data: any){
+    console.log('Changing page')
     this.currentPageId = data;
   }
 

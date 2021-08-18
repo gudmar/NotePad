@@ -1,7 +1,17 @@
 <div class="note-wrapper">
-    <movable-point movableparent [nestedLevel]="2" #movableHandel data-role="move-whole-object"></movable-point>
+    <movable-point movableparent [nestedLevel]="2"
+                   [initialTop] = "initialTop"
+                   [initialLeft] = "initialLeft"
+                   #movableHandle
+                   data-role="move-whole-object"
+    >
+    </movable-point>
         <div class="note-content-wrapper">
-            <span contenteditable="true"></span>
+            <span contenteditable="true" [innerHTML] = "content"></span>
         </div>
-    <movable-point  data-role="resize" resizeparent [nestedLevel]="2"></movable-point>
+    <movable-point  data-role="resize" 
+                    resizeparent [nestedLevel]="2"
+                    [initialWidth] = "initialWidth"
+                    [initialHeight] = "initialHeight"
+    ></movable-point>
 </div>

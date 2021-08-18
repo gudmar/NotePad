@@ -37,6 +37,17 @@ export class ContentManagerService {
     let colors:string[] = [];
     let titles: string[] = [];
     let that = this;
+    let noteSizes = [[200, 100], [120, 220], [50, 60], [60, 50], [80, 90]]
+    let notePositions = [[100, 100], [220, 120], [100, 200], [200, 250], [80, 400]]
+    let getArrayOfNotes = function(){
+      let notes: any[] = [];
+      for (let i = 0; i < 5; i++){
+         let note = that.getNote(noteSizes[i][0], noteSizes[i][1], notePositions[i][0], notePositions[i][1], noteContent);
+         console.log(note.uniqueId)
+         notes.push(note)
+      }
+      return notes;
+    }
     let getColors = function(nr: number) {
       for (let i = 0; i < nr; i++){
         colors.push(that.colorProvider.getNextColor())
@@ -47,13 +58,15 @@ export class ContentManagerService {
         titles.push(`title ${i}`)
       }
     }
-    let noteContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper, augue sit amet tempor imperdiet, felis quam lobortis arcu, nec lobortis arcu augue quis lectus. Sed elit lectus, dictum in rhoncus cursus, dignissim nec neque. Etiam blandit sapien lectus, non porttitor orci porta non. Sed iaculis pretium ultricies. Maecenas sagittis suscipit libero non rutrum. Aliquam pharetra augue in massa semper vehicula. Sed at metus et tortor condimentum placerat non vitae nulla. Sed viverra elit a nunc ullamcorper, sed sagittis orci iaculis. Integer sollicitudin turpis vitae nulla finibus, ut vehicula nibh varius. Nunc placerat rutrum tellus sed facilisis. Aenean iaculis urna eget velit sodales mattis. Nam a nunc euismod, viverra ligula sit amet, tempor neque. Vivamus non vulputate odio. Vestibulum at sollicitudin felis. Mauris condimentum luctus ipsum id facilisis.'
+    let noteContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper, augue sit amet tempor imperdiet, .'
     let getPages = function(nr: number){
       getColors(nr)
       getTitles(nr)
+      
       let pages = [];
       for (let i = 0; i < nr; i++){
-        pages.push(that.getPage(colors[i], titles[i], noteContent))
+        let arrayOfNotes = getArrayOfNotes();
+        pages.push(that.getPage(colors[i], titles[i], arrayOfNotes))
       }
       return pages;
     }
@@ -83,7 +96,7 @@ export class ContentManagerService {
 
   getNextAddedPage(){
     let color = this.colorProvider.getNextColor();
-    return this.getPage(color, 'mock-page', '');
+    return this.getPage(color, 'mock-page', []);
   }
   getFreshCalendar(){
     return {}
@@ -93,7 +106,7 @@ export class ContentManagerService {
     return this.getSheet(startColor, 'newSheet', [freshPage], Object.keys(freshPage)[0])
     }
   getFreshPage(startColor: string){
-    return this.getPage(startColor, 'newPage', '');
+    return this.getPage(startColor, 'newPage', []);
   }
   getSheet(color: string, title: string, pages:any[], startPageId: string){
     let id = this.idProvider.getUniqueId();
@@ -107,7 +120,7 @@ export class ContentManagerService {
     return output
   }
 
-  getPage(color: string, title: string, content: string){
+  getPage(color: string, title: string, content: any[]){
     let id = this.idProvider.getUniqueId();
     let output = {[id]: {}}
     output[id] = {
@@ -116,5 +129,17 @@ export class ContentManagerService {
       title: title
     }
     return output;
+  }
+
+  getNote(initialWidth: number, initialHeight: number, initialTop: number, initialLeft: number, content: string){
+    let output = {
+      uniqueId: this.idProvider.getUniqueId(),
+      initialWidth: initialWidth,
+      initialHeight: initialHeight,
+      initialTop: initialTop,
+      initialLeft: initialLeft,
+      content: content
+    }
+    return output
   }
 }

@@ -19,14 +19,12 @@ export class ResizeParentDirective extends MovableParentDirective{
 
   @HostListener('mousedown', ['$event'])
   calculateDotOffset(data:any){
-    console.log('I am in mouseDown')
     this.resizeDotOffset = {x: data.pageX - this.elRef.nativeElement.offsetLeft - this.elementToMove.offsetLeft, 
                             y: data.pageY - this.elRef.nativeElement.offsetTop - this.elementToMove.offsetTop}
   }
 
   @HostListener('document:mouseMove', ['$event'])
   doMouseMove(data:any){
-    console.log('I am in mouse move')
     let that = this;
     let calculatedSize = function(){
       let width = data.pageX - parentOffset.x - that.resizeDotOffset.x; 
@@ -41,8 +39,6 @@ export class ResizeParentDirective extends MovableParentDirective{
       let cs = calculatedSize()
       this.elementToMove.style.width = cs.width + 'px';
       this.elementToMove.style.height = cs.height + 'px';
-      console.log('elemetn to move')
-      console.log(this.elementToMove)
     }
   }
 

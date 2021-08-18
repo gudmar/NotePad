@@ -8,7 +8,10 @@
         </tab-menu>
     </div>
     <div class="page-container">
-        <page [notes] = "getCurrentPagesNotes()" [bgColor] = "getCurrentPagesColor()" [uniqueId] = "currentPageId"></page>
+        <page [notes] = "currentPageNotes" 
+              [bgColor] = "getCurrentPagesColor()" 
+              [uniqueId] = "currentPageId">
+        </page>
     </div>
     
 </div>

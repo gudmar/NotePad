@@ -5,6 +5,8 @@ import { Directive, ElementRef, HostListener, Input, EventEmitter, Output } from
 })
 export class MovableParentDirective {
   @Input('nestedLevel') nestedLevel:number = 0;
+  @Input('initialTop') initialTop: number = 0;
+  @Input('initialLeft') initialLeft: number = 0;
   elRef: ElementRef;
   elementToMove: HTMLElement;
   isInMoveState: boolean = false;
@@ -35,6 +37,7 @@ export class MovableParentDirective {
       let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
+      // debugger
     }
   } 
 
@@ -54,5 +57,9 @@ export class MovableParentDirective {
 
   ngOnInit(){
     this.elementToMove = this.getElementToMove();
+    this.isInMoveState = true;
+    this.doMouseMove({pageX: this.initialLeft, pageY: this.initialTop});
+    // debugger;
+    this.isInMoveState = false;
   }
 }

@@ -10,6 +10,7 @@
     transition: 0.3s;
     border-top-left-radius: 50%;
     border-top-right-radius: 50%;
+    cursor: default;
 }
 .wrapper{
     position: absolute;
@@ -36,6 +37,7 @@
     transition: 0.4s;
 }
 
+
 .page-menu-button{
     position: relative;
     width: 2rem;
@@ -50,9 +52,17 @@
     background-color: rgba(255, 255, 200);
     z-index: 5;
 }
+.page-menu-button:active{
+    transform: scale(0.9);
+    transition: 0.3s;
+    background-color: rgb(200, 255, 200);
+}
 .center{
     display: flex;
     align-content: center;
     justify-content: center;
     align-items: center;
+}
+.active{
+    background-color: rgb(180, 180, 180);
 }

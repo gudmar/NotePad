@@ -16,17 +16,17 @@ import { start } from 'repl';
     template: ` 
         <div class = "playgronud">
             <div class="resizable-component-wrapper" (click) = "getEventData($event)">
-                <movable-point class="move" movableparent nestedLevel = '1'></movable-point>
+                <movable-point class="move"  [initialTop] = "'off'" [initialLeft] = "'off'"  movableparent nestedLevel = '1'></movable-point>
                 <div class = "content-placeholder"></div>
-                <movable-point class="resize"  [initialTop] = "'off'" [initialLeft] = "'off'"  resizeparent nestedLevel = '1'></movable-point>
+                <movable-point class="resize"  resizeparent nestedLevel = '1'></movable-point>
               </div>
         </div>
 
         <div class = "playgronud">
         <div class="resizable-component-wrapper secondElement" (click) = "getEventData($event)">
-            <movable-point class="move" movableparent nestedLevel = '1'></movable-point>
+            <movable-point class="move" movableparent   [initialTop] = "'off'" [initialLeft] = "'off'"   nestedLevel = '1'></movable-point>
             <div class = "content-placeholder"></div>
-            <movable-point class="resize" resizeparent nestedLevel = '1' [initialWidth] = "initialWidth" [initialHeight] = "initialWidth"></movable-point>
+            <movable-point class="resize" resizeparent nestedLevel = '1'  [initialWidth] = "initialWidth" [initialHeight] = "initialWidth"></movable-point>
           </div>
         </div>
     `,

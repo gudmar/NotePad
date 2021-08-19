@@ -1,9 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input, Host } from '@angular/core';
+import { CommunicationService } from '../services/communication.service'
 
 @Component({
   selector: 'note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.css']
+  styleUrls: ['./note.component.css'],
+  // providers: [CommunicationService]
 })
 export class NoteComponent implements OnInit {
   @Input() initialWidth: number = 100;
@@ -14,16 +16,24 @@ export class NoteComponent implements OnInit {
   @Input() uniqueId: string = '';
   @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
   @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
-  constructor() { }
+  constructor(private messenger: CommunicationService) { }
 
   informAboutMovement(data: any){
     this.noteWasMoved.emit(data)
-    console.log(data)
+    this.messenger.inform('noteWasMoved', {
+      objectId: this.uniqueId,
+      pageX: data.pageX,
+      pageY: data.pageY
+    })
   }
 
   informAboutResize(data: any){
-    this.noteWasResized.emit(data)
-    console.log(data)
+    this.noteWasResized.emit(data);
+    this.messenger.inform('noteWasResized', {
+      objectId: this.uniqueId,
+      newWidth: data.width,
+      newHeight: data.height
+    })
   }
 
   moveThisNote(data: any){

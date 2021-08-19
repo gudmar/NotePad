@@ -9,6 +9,7 @@ export class MovableParentDirective {
   @Input('initialLeft') initialLeft: number = 0;
   @Input('movableElementId') movableElementId: string = ''; 
   @Output() elementMoved: EventEmitter<{movedElementId: string, pageX: number, pageY:number}> = new EventEmitter();
+  doNotInformAboutChanges: boolean = false;
   elRef: ElementRef;
   elementToMove: HTMLElement;
   isInMoveState: boolean = false;
@@ -29,8 +30,10 @@ export class MovableParentDirective {
 
   @HostListener('document:mouseup', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
-    this.isInMoveState = false;
-    this.dispatchEventOnMovedElement({pageX: event.pageX, pageY: event.pageY})
+    if (this.isInMoveState){
+      this.dispatchEventOnMovedElement({pageX: event.pageX, pageY: event.pageY})
+      this.isInMoveState = false;  
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -40,9 +43,29 @@ export class MovableParentDirective {
       let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
-      // debugger
     }
   } 
+
+  setInitialPosition(position:{pageX: number, pageY: number, [prop: string]: any}){
+    let that = this
+    let correct = function(p:{x:number, y:number}){
+      let dx = p.x - that.elementToMove.offsetLeft;
+      let dy = p.y - that.elementToMove.offsetTop;
+      return {x: p.x - dx, y: p.y -dy}
+    }
+    this.elementToMove.style.left = position.pageX + 'px';
+    this.elementToMove.style.top = position.pageY + 'px';
+    let positionBeforeCorrection = this.getElementsAbsolutePosition(this.elementToMove)
+    console.log({x: position.pageX, y: position.pageY})
+    console.log(positionBeforeCorrection)
+    let delta = {x: position.pageX - positionBeforeCorrection.x, y: position.pageY - positionBeforeCorrection.y}
+    console.log(delta)
+    let positionCorrectedWithInternalOffset = correct({x: position.pageX + delta.x, y: position.pageY + delta.y})
+    this.elementToMove.style.left = positionCorrectedWithInternalOffset.x + 'px';
+    this.elementToMove.style.top = positionCorrectedWithInternalOffset.y + 'px';
+    // this.elementToMove.style.left = position.pageX + delta.x + 'px';
+    // this.elementToMove.style.top  = position.pageY + delta.y + 'px';
+  }
 
 
   dispatchEventOnMovedElement(data: {pageX: number, pageY: number}){
@@ -51,7 +74,7 @@ export class MovableParentDirective {
       pageX: data.pageX,
       pageY: data.pageY
     }
-    this.elementMoved.emit(eventData)
+    if (!this.doNotInformAboutChanges) this.elementMoved.emit(eventData)
   }
 
   getElementToMove(){
@@ -68,11 +91,21 @@ export class MovableParentDirective {
     return {x: cordsFromEvent.x - offset.x, y: cordsFromEvent.y - offset.y}
   }
 
+  getElementsAbsolutePosition(element: HTMLElement){
+    let scrollTop = window.pageYOffset;
+    let scrollLeft = window.pageXOffset;
+    let positionRelativeToViewport = element.getBoundingClientRect();
+    return {x: scrollTop + positionRelativeToViewport.left, y: scrollLeft + positionRelativeToViewport.top }
+  }
+
   ngOnInit(){
+    // this.doNotInformAboutChanges = true;
     this.elementToMove = this.getElementToMove();
-    this.isInMoveState = true;
-    this.doMouseMove({pageX: this.initialLeft, pageY: this.initialTop});
-    // debugger;
-    this.isInMoveState = false;
+    this.setInitialPosition({pageX: this.initialLeft, pageY: this.initialTop});
+    // this.isInMoveState = true;
+    // this.doMouseMove({pageX: this.initialLeft, pageY: this.initialTop});
+    // // debugger;
+    // this.isInMoveState = false;
+    // this.doNotInformAboutChanges = false;
   }
 }

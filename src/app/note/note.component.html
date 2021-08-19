@@ -4,6 +4,8 @@
                    [initialLeft] = "initialLeft"
                    #movableHandle
                    data-role="move-whole-object"
+                   (elementMoved) = "informAboutMovement($event)"
+                   [movableElementId] = "'moveId'"
     >
     </movable-point>
         <div class="note-content-wrapper">
@@ -13,5 +15,7 @@
                     resizeparent [nestedLevel]="2"
                     [initialWidth] = "initialWidth"
                     [initialHeight] = "initialHeight"
+                    [movableElementId] = "'resizeId'"
+                    (elementResized) = "informAboutResize($event)"
     ></movable-point>
 </div>

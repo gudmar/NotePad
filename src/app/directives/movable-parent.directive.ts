@@ -7,6 +7,8 @@ export class MovableParentDirective {
   @Input('nestedLevel') nestedLevel:number = 0;
   @Input('initialTop') initialTop: number = 0;
   @Input('initialLeft') initialLeft: number = 0;
+  @Input('movableElementId') movableElementId: string = ''; 
+  @Output() elementMoved: EventEmitter<{movedElementId: string, pageX: number, pageY:number}> = new EventEmitter();
   elRef: ElementRef;
   elementToMove: HTMLElement;
   isInMoveState: boolean = false;
@@ -28,6 +30,7 @@ export class MovableParentDirective {
   @HostListener('document:mouseup', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
     this.isInMoveState = false;
+    this.dispatchEventOnMovedElement({pageX: event.pageX, pageY: event.pageY})
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -40,6 +43,16 @@ export class MovableParentDirective {
       // debugger
     }
   } 
+
+
+  dispatchEventOnMovedElement(data: {pageX: number, pageY: number}){
+    let eventData = {
+      movedElementId: this.movableElementId,
+      pageX: data.pageX,
+      pageY: data.pageY
+    }
+    this.elementMoved.emit(eventData)
+  }
 
   getElementToMove(){
     let elementToMove = this.elRef.nativeElement;

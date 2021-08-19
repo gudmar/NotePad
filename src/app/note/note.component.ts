@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, Host } from '@angular/core';
 
 @Component({
   selector: 'note',
@@ -6,15 +6,24 @@ import { Component, OnInit, ElementRef, Input } from '@angular/core';
   styleUrls: ['./note.component.css']
 })
 export class NoteComponent implements OnInit {
-  thisElement: ElementRef;
   @Input() initialWidth: number = 100;
   @Input() initialHeight: number = 100;
   @Input() initialTop: number = 30;
   @Input() initialLeft: number = 30;
   @Input() content: string = '';
   @Input() uniqueId: string = '';
-  constructor(thisElement: ElementRef) { 
-    this.thisElement = thisElement;
+  @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
+  @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
+  constructor() { }
+
+  informAboutMovement(data: any){
+    this.noteWasMoved.emit(data)
+    console.log(data)
+  }
+
+  informAboutResize(data: any){
+    this.noteWasResized.emit(data)
+    console.log(data)
   }
 
   moveThisNote(data: any){

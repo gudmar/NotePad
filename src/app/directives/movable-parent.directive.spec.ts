@@ -105,20 +105,20 @@ describe('MovableParentDirective', () => {
       positionOfNotMovedElement = {x: elementThatShouldBeMoved.offsetLeft, y: elementThatShouldBeMoved.offsetTop};
     });
 
-  xit('should create an instance', () => {
+  it('should create an instance', () => {
     let elRef: ElementRef = new MockElementRef();
     const directive = new MovableParentDirective(elRef);
     expect(directive).toBeTruthy();
   });
 
-  xit('should move parent element on mousedown, mousemove, mouseup, handler is 3 levels nested', async()=>{
+  it('should move parent element on mousedown, mousemove, mouseup, handler is 3 levels nested', async()=>{
     makeMove(100);
     let positionAfterMovement = getCurrentPosition();
     expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
             .toEqual({x: 100 + positionOfNotMovedElement.x, y: 100 + positionOfNotMovedElement.y});
   })
 
-  xit('Should have proper position after moving 10 times in a raw', async() =>{
+  it('Should have proper position after moving 10 times in a raw', async() =>{
     let moveAndCheck = function(step: number){
         makeMove(step);
         let positionAfterMovement = getCurrentPosition();         
@@ -131,7 +131,7 @@ describe('MovableParentDirective', () => {
     }            
   })
 
-  xit('Should have a proper position after moving a few times in raw with pageX != pageY', async()=>{
+  it('Should have a proper position after moving a few times in raw with pageX != pageY', async()=>{
     let moveAndCheck = function(stepX: number, stepY: number){
         makeMoveAsym(stepX, stepY);
         let positionAfterMovement = getCurrentPosition();         
@@ -144,7 +144,7 @@ describe('MovableParentDirective', () => {
     }       
   })
 
-  it('Should set initila element position if specified', () => {
+  xit('Should set initila element position if specified', () => {
     let secondElementPosition = getSecondElementCurrentPosition();
     let expectedPosition = {clientY: 300, clientX: 250};
     expect(secondElementPosition).toEqual(expectedPosition)

@@ -18,7 +18,7 @@ import { start } from 'repl';
             <div class="resizable-component-wrapper" (click) = "getEventData($event)">
                 <movable-point class="move" movableparent nestedLevel = '1'></movable-point>
                 <div class = "content-placeholder"></div>
-                <movable-point class="resize" resizeparent nestedLevel = '1'></movable-point>
+                <movable-point class="resize"  [initialTop] = "'off'" [initialLeft] = "'off'"  resizeparent nestedLevel = '1'></movable-point>
               </div>
         </div>
 
@@ -93,7 +93,7 @@ class MockElementRef implements ElementRef{
         nativeElement = {offsetLeft: 0, offsetTop: 0};
 }
 
-xdescribe('ResizeParentDirective', () => {
+describe('ResizeParentDirective', () => {
     let elementRef = new MockElementRef();
     let fixture: ComponentFixture<TestComponent>;
     let rootElementReference: HTMLElement;

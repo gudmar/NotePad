@@ -6,6 +6,8 @@ import { MovablePointComponent } from '../movable-point/movable-point.component'
 import { ConstantPool } from '@angular/compiler';
 import { ConcatSource } from 'webpack-sources';
 
+
+
 @Component(
     {
       selector: 'test-component-wrapper',
@@ -14,7 +16,7 @@ import { ConcatSource } from 'webpack-sources';
         <div class = "this-should-be-moved">
             <div class = "add-nested-level">
                 <div class = "add-nested-level">
-                    <movable-point movableparent [nestedLevel] = "4" id="grabThisToMoveParent"></movable-point>
+                    <movable-point movableparent [initialTop] = "'off'" [initialLeft] = "'off'" [nestedLevel] = "4" id="grabThisToMoveParent"></movable-point>
                 </div>
             </div>
         </div>
@@ -28,7 +30,8 @@ import { ConcatSource } from 'webpack-sources';
               </div>
           </div>
       </div>
-    </div>
+      </div>
+      
       `,
       styles: [`
         .wrapper{
@@ -105,20 +108,20 @@ describe('MovableParentDirective', () => {
       positionOfNotMovedElement = {x: elementThatShouldBeMoved.offsetLeft, y: elementThatShouldBeMoved.offsetTop};
     });
 
-  it('should create an instance', () => {
+  xit('should create an instance', () => {
     let elRef: ElementRef = new MockElementRef();
     const directive = new MovableParentDirective(elRef);
     expect(directive).toBeTruthy();
   });
 
-  it('should move parent element on mousedown, mousemove, mouseup, handler is 3 levels nested', async()=>{
+  xit('should move parent element on mousedown, mousemove, mouseup, handler is 3 levels nested', async()=>{
     makeMove(100);
     let positionAfterMovement = getCurrentPosition();
     expect({x: positionAfterMovement.clientX, y: positionAfterMovement.clientY})
             .toEqual({x: 100 + positionOfNotMovedElement.x, y: 100 + positionOfNotMovedElement.y});
   })
 
-  it('Should have proper position after moving 10 times in a raw', async() =>{
+  xit('Should have proper position after moving 10 times in a raw', async() =>{
     let moveAndCheck = function(step: number){
         makeMove(step);
         let positionAfterMovement = getCurrentPosition();         
@@ -131,7 +134,15 @@ describe('MovableParentDirective', () => {
     }            
   })
 
-  it('Should have a proper position after moving a few times in raw with pageX != pageY', async()=>{
+  function getElementsAbsolutePosition(element: HTMLElement){
+    let scrollTop = window.pageYOffset;
+    let scrollLeft = window.pageXOffset;
+    let positionRelativeToViewport = element.getBoundingClientRect();
+    return {x: scrollTop + positionRelativeToViewport.left, y: scrollLeft + positionRelativeToViewport.top }
+  }
+
+  it(' #1 Should have a proper position after moving a few times in raw with pageX != pageY', async()=>{
+
     let moveAndCheck = function(stepX: number, stepY: number){
         makeMoveAsym(stepX, stepY);
         let positionAfterMovement = getCurrentPosition();         
@@ -140,7 +151,13 @@ describe('MovableParentDirective', () => {
     }
     let steps = [[50, 0], [0, 25], [5, 10], [53, 200], [10, 220], [67, 99], [99, 67], [444, 45], [500, 300]];
     for (let step of steps){
+      let movedElement = fixture.nativeElement.querySelector('.this-should-be-moved')
+      console.log('before movement: ' + step[0] + ' ' + step[1])
+      console.log(movedElement.getBoundingClientRect())
+      console.log(getElementsAbsolutePosition(movedElement))
         moveAndCheck(step[0], step[1]);
+      console.log(getElementsAbsolutePosition(movedElement))
+      console.log(movedElement.getBoundingClientRect())
     }       
   })
 

@@ -5,8 +5,8 @@ import { Directive, ElementRef, HostListener, Input, EventEmitter, Output } from
 })
 export class MovableParentDirective {
   @Input('nestedLevel') nestedLevel:number = 0;
-  @Input('initialTop') initialTop: number = 0;
-  @Input('initialLeft') initialLeft: number = 0;
+  @Input('initialTop') initialTop: number | "off" = 0;
+  @Input('initialLeft') initialLeft: number | "off" = 0;
   @Input('movableElementId') movableElementId: string = ''; 
   @Output() elementMoved: EventEmitter<{movedElementId: string, pageX: number, pageY:number}> = new EventEmitter();
   doNotInformAboutChanges: boolean = false;
@@ -90,6 +90,9 @@ export class MovableParentDirective {
 
   ngOnInit(){
     this.elementToMove = this.getElementToMove();
-    this.setInitialPosition({pageX: this.initialLeft, pageY: this.initialTop});
+    if (this.initialLeft != "off" && this.initialTop != "off")
+    {
+      this.setInitialPosition({pageX: this.initialLeft, pageY: this.initialTop});  
+    }
   }
 }

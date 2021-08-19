@@ -13,7 +13,7 @@ export class ResizeParentDirective extends MovableParentDirective{
   @Input('initialHeight') initialHeight: number = 50;
   @Input('movableElementId') movableElementId: string = '';
   @Output() elementResized: EventEmitter<{movedElementId: string, width: number, height:number}> = new EventEmitter();
-
+  
   resizeDotOffset:{x:number, y:number} = {x:0, y:0}
   movableParentTopLeftCords: {x: number, y: number} = {x: 0, y: 0};
   constructor(elRef: ElementRef) { 
@@ -48,18 +48,31 @@ calculatedSize(data:{pageX: number, pageY:number}){
     }
   }
 
+  setInitialSize(position: {width: number, height: number, [props: string]: any}){
+    this.elementToMove.style.width = position.width + 'px';
+    this.elementToMove.style.height = position.height + 'px';
+    // this.elRef.nativeElement.style.top = this.elRef.nativeElement.offsetTop + position.height
+    // this.elRef.nativeElement.style.left = this.elRef.nativeElement.offsetLeft + position.width
+  }
+
   @HostListener('document:mouseup', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
+    if (this.isInMoveState){
+      let calculatedWidthAndHeight = this.calculatedSize(event)
+      this.dispatchEventOnMovedElement({pageX: calculatedWidthAndHeight.width, pageY: calculatedWidthAndHeight.height})  
+    }
     this.isInMoveState = false;
-    let calculatedWidthAndHeight = this.calculatedSize(event)
-    this.dispatchEventOnMovedElement({pageX: calculatedWidthAndHeight.width, pageY: calculatedWidthAndHeight.height})
   }
 
   ngOnInit(){
+    
+    // this.doNotInformAboutChanges = true;
     this.elementToMove = this.getElementToMove();
-    this.isInMoveState = true;
-    this.doMouseMove({pageX:this.initialWidth, pageY: this.initialHeight})
-    this.isInMoveState = false;
+    this.setInitialSize({width: this.initialWidth, height: this.initialHeight})
+    // this.isInMoveState = true;
+    // this.doMouseMove({pageX:this.initialWidth, pageY: this.initialHeight})
+    // this.isInMoveState = false;
+    // this.doNotInformAboutChanges = false;
   }
 
   dispatchEventOnMovedElement(data: {pageX: number, pageY: number}){
@@ -68,7 +81,7 @@ calculatedSize(data:{pageX: number, pageY:number}){
       width: data.pageX,
       height: data.pageY
     }
-    this.elementResized.emit(eventData)
+    if (!this.doNotInformAboutChanges) this.elementResized.emit(eventData)
   }
 
 }

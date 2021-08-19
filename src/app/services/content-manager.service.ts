@@ -41,7 +41,7 @@ export class ContentManagerService {
     let notePositions = [[100, 100], [220, 120], [100, 200], [200, 250], [80, 400]]
     let getArrayOfNotes = function(){
       let notes: any[] = [];
-      for (let i = 0; i < 5; i++){
+      for (let i = 2; i < 3; i++){
          let note = that.getNote(noteSizes[i][0], noteSizes[i][1], notePositions[i][0], notePositions[i][1], noteContent);
          console.log(note.uniqueId)
          notes.push(note)

@@ -18,6 +18,7 @@ import { DescriptorToDataService } from './services/descriptor-to-data.service'
 import { PageComponent } from './sheet/page/page.component';
 import { WorkBookComponent } from './work-book/work-book.component';
 import { PageMenuComponent } from './sheet/page/page-menu/page-menu.component';
+import { CommunicationService } from './services/communication.service'
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { PageMenuComponent } from './sheet/page/page-menu/page-menu.component';
               UniqueIdProviderService,
               NextColorGeneratorService,
               ContentManagerService,
+              CommunicationService,
               DescriptorToDataService
             ],
   bootstrap: [AppComponent]

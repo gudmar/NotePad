@@ -23,16 +23,19 @@ export class PageComponent implements OnInit {
   constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
-    this.messenger.subscribe(this.uniqueId, this.reactToDataFromMessengar.bind(this), ['noteWasMoved', 'noteWasResized']);
+    this.messenger.subscribe(this.uniqueId, this.reactToDataFromMessengar.bind(this), ['noteWasMoved', 'noteWasResized', 'noteContentChanged']);
   }
 
   reactToDataFromMessengar(eventType: string, data: any){
     if (eventType === 'noteWasMoved') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteWasResized') {this.updateTargetNoteState(data.objectId, data)}
+    if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data); console.log(data)}
     console.log(`event ${eventType} received in page component `)
   }
 
-  updateTargetNoteState(noteId: string, newState: {objectId: string, newHeight?:number, newWidth?:number, pageX?:number, pageY?:number}){
+  updateTargetNoteState(noteId: string, newState: {
+          objectId: string, content?: string, newHeight?:number, newWidth?:number, pageX?:number, pageY?:number
+        }){
     let that = this;
     let singleMatch = function(element: any){return element.uniqueId === noteId}
     let indexOfElementToUpdate = this.notes.findIndex(singleMatch);
@@ -44,7 +47,7 @@ export class PageComponent implements OnInit {
         if (key == 'newHeight') this.notes[indexOfElementToUpdate].initialHeight = newState[key];
         if (key == 'pageX') this.notes[indexOfElementToUpdate].initialLeft = newState[key];
         if (key == 'pageY') this.notes[indexOfElementToUpdate].initialTop = newState[key];
-        // if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
+        if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
       }
       console.log(this.notes)
     } else {

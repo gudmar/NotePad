@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input, Host } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, Host, ViewChild, ElementRef } from '@angular/core';
 import { CommunicationService } from '../services/communication.service'
 
 @Component({
@@ -16,6 +16,8 @@ export class NoteComponent implements OnInit {
   @Input() uniqueId: string = '';
   @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
   @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
+  @Output() noteContentChanged: EventEmitter<any> = new EventEmitter();
+  @ViewChild('contentHolder') contentHolder: any;
   constructor(private messenger: CommunicationService) { }
 
   informAboutMovement(data: any){
@@ -33,6 +35,15 @@ export class NoteComponent implements OnInit {
       objectId: this.uniqueId,
       newWidth: data.width,
       newHeight: data.height
+    })
+  }
+
+  informAboutContentChange(data: any){
+    this.noteContentChanged.emit(data);
+    console.dir(this.contentHolder)
+    this.messenger.inform('noteContentChanged', {
+      objectId: this.uniqueId,
+      content: this.contentHolder.nativeElement.innerHTML
     })
   }
 

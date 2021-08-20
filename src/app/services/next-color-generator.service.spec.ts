@@ -130,4 +130,15 @@ describe('NextColorGeneratorService', () => {
       expect(serviceInstance.getNextColor()).toBe(expectedOutput);
     }    
   })
+
+  it('Should return proper colors after given color', () => {
+    let serviceInstance = new NextColorGeneratorService();
+    let testCases = [
+      {input: 'yellow', output: 'hsl(120, 100%, 80%)'}
+    ]
+    let colorAfter = function(color: string) { return serviceInstance.getColorAfterGiven(color) }
+    for (let test of testCases){
+      expect(colorAfter(test.input)).toBe(test.output)
+    }
+  })
 });

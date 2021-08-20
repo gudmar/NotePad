@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WbButtonComponent } from './wb-button.component';
 
-describe('WbButtonComponent', () => {
+xdescribe('WbButtonComponent', () => {
   let component: WbButtonComponent;
   let fixture: ComponentFixture<WbButtonComponent>;
 

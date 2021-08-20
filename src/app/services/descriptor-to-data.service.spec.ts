@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DescriptorToDataService } from './descriptor-to-data.service';
 
-describe('DescriptorToDataService', () => {
+xdescribe('DescriptorToDataService', () => {
   let service: DescriptorToDataService;
 
   beforeEach(() => {

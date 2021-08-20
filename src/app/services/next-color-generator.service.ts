@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ColorToRGBService } from './color-to-rgba.service';
+import { Rgb2HslService } from './rgb-2-hsl.service'
 
 // generate an iterator returning in loop some colors, that are not too bright to be readable, and that would repeat not too often
 
@@ -58,6 +60,32 @@ export class NextColorGeneratorService {
     return `hsl(${hue}, ${this.saturation}%, ${this.light}%)`
   }
 
+  getColorAfterGiven(color: string){
+    let colorAsHSL = this.colorToHSLValues(color);
+    let colorAsHSLString = `hsl(${colorAsHSL.h}, ${colorAsHSL.s}%, ${colorAsHSL.l}%)`;
+    let indexOfSpecialColor = this.specialColorGetter.peepNextValue(colorAsHSLString);
+    if (indexOfSpecialColor > 0) return this.specialColorGetter.peepNextValue(colorAsHSLString);
+    let isFirstSpecialColor = this.hueGenerator.areValuesUsed(colorAsHSL.h) && 
+        this.saturatoinGenerator.areValuesUsed(colorAsHSL.s) &&
+        this.lightGenerator.areValuesUsed(colorAsHSL.l)
+    if (isFirstSpecialColor) return this.specialColorGetter.peepFirstValue();
+    let hue = this.hueGenerator.peepNextValue(colorAsHSL.h)
+    let saturation = this.saturatoinGenerator.peepNextValue(colorAsHSL.s)
+    let light = this.lightGenerator.peepNextValue(colorAsHSL.l)
+    return `hsl(${hue}, ${saturation}%, ${light}%)`
+
+  }
+
+
+
+  colorToHSLValues(colorAsString: string){
+    let color2rgb = new ColorToRGBService();
+    let toHSLconverter = new Rgb2HslService();
+    let rgbValues: number[] = color2rgb.transform(colorAsString);
+    let hslValues = toHSLconverter.convert(rgbValues[0], rgbValues[1], rgbValues[2])
+    return hslValues
+  }
+
 }
 
 class NextValueGetter{
@@ -87,6 +115,26 @@ class NextValueGetter{
     this.nextIndex = 0;
     this.wereAllValuesUsed = false;
   }
+
+  peepNextValue(currentValue: any){
+    let indexOfCurrnet = this.getIndexOfValue(currentValue);
+    if (indexOfCurrnet == -1)  return -1;
+    if (indexOfCurrnet == this.arrayOfValues.length - 1) return this.arrayOfValues[0]
+    return this.arrayOfValues[indexOfCurrnet + 1]
+  }
+
+  peepFirstValue(){
+    return this.arrayOfValues[0];
+  }
+
+  areValuesUsed(currentValue: any){
+    return this.getIndexOfValue(currentValue) == 0 ? true : false;
+  }
+
+  private getIndexOfValue(value: any){
+    function singleMatch(element: any) { return value === element}
+    return this.arrayOfValues.findIndex(singleMatch);
+  }
 }
 
 
@@ -98,6 +146,28 @@ function configureNextValueGetter(arrayOfValues: any[], getValueFromArrayByIndex
     }
   }
  }
+
+class HSLorRGBValuesGetter {
+  constructor(){}
+  // removeWrappingString(hslString: string){
+  //   let indexOfOppener = Array.from(hslString).findIndex((element:string)=> {return element == '('? true : false})
+  //   let indexOfCloser = Array.from(hslString).length - 1;
+  //   return hslString.slice(indexOfOppener, indexOfCloser);
+  // }
+  // getValues(hslOrRgbString:string){
+  //   let comaSeparatedValues = this.removeWrappingString(hslOrRgbString);
+  //   let arrayOfStrings = comaSeparatedValues.split(',');
+  //   // 0: h or r, 1: g or s, 2 : b or l
+  //   return [parseFloat(arrayOfStrings[0]), parseFloat(arrayOfStrings[1]), parseFloat(arrayOfStrings[2])]
+  // }
+  colorToHSLValues(colorAsString: string){
+    let color2rgb = new ColorToRGBService();
+    let toHSLconverter = new Rgb2HslService();
+    let rgbValues: number[] = color2rgb.transform(colorAsString);
+    let hslValues = toHSLconverter.convert(rgbValues[0], rgbValues[1], rgbValues[2])
+    return hslValues
+  }
+}
 
 @configureNextValueGetter(['hsl(60, 0%, 100%)', 'hsl(60, 0%, 80%)'])
 class SpecialColorsGetter extends NextValueGetter{}

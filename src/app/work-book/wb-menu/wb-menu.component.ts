@@ -23,6 +23,13 @@ export class WbMenuComponent implements OnInit {
     this.sheetSwitched.emit(data);
   }
 
+  saveContent(data: any){
+    console.log('Content saved')
+  }
+  loadContent(data: any){
+    console.log('Content loaded')
+  }
+
   getSheetsId(descriptor: any){return this.descriptorTranslator.getDescriptorsId(descriptor)}
   getSheetsTitle(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).title}
   getSheetsBgColor(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).bgColor}

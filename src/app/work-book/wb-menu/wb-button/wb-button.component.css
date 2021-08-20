@@ -1,0 +1,47 @@
+.wb-button{
+    position: relative;
+    /* width: 2rem; */
+    height: 50%;
+    background-color: rgb(100, 100, 150);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: 0.3s;
+    border-radius: 78% 22% 58% 42% / 21% 54% 46% 79%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    padding: 8px;
+    margin: 10px;
+}
+.wb-button:hover{
+    transition: 0.3s;
+    background-color: rgb(150, 150, 100);
+    cursor: pointer;
+}
+.wb-button:hover>span{
+    transition: 0.3s;
+    transform: scale(1.2);
+}
+
+.wb-button:active{
+    transition: 0.3s;
+    background-color: yellow;
+    color: black;
+}
+
+.wb-button:active>span{
+    transition: 0.3s;
+    transform: scale(0.9);
+}
+
+.wb-button>span{
+    position: relative;
+    display: inline-block;
+    font-size: 1.5rem;
+}
+.pushed{
+    transition: 0.3s;
+    background-color: rgb(100, 100, 50);
+    color: yellow;
+}

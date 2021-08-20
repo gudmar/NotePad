@@ -20,7 +20,8 @@ import { WorkBookComponent } from './work-book/work-book.component';
 import { PageMenuComponent } from './sheet/page/page-menu/page-menu.component';
 import { CommunicationService } from './services/communication.service';
 import { WbMenuComponent } from './work-book/wb-menu/wb-menu.component';
-import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component'
+import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component';
+import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-
     WorkBookComponent,
     PageMenuComponent,
     WbMenuComponent,
-    WbMenuEntryComponent
+    WbMenuEntryComponent,
+    WbButtonComponent
   ],
   imports: [
     BrowserModule,

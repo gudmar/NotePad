@@ -1,13 +1,53 @@
 <div class="wb-menu-wrapper">
-    <wb-menu-entry *ngFor="let sheet of sheets" 
-                [title]="getSheetsTitle(sheet)"
-                [isActive]="checkIfSheetIsActive(sheet)"
-                [uniqueId] = "getSheetsId(sheet)"
-                (sheetChanged) = "switchSheet($event)"
-    >
-    </wb-menu-entry>
-    <wb-menu-entry [title]="'Add +'" [isActive]="true" [bgColor]="'black'"></wb-menu-entry>
+    <div class="wb-menu-sheets">
+        <wb-menu-entry *ngFor="let sheet of sheets" 
+                    [title]="getSheetsTitle(sheet)"
+                    [isActive]="checkIfSheetIsActive(sheet)"
+                    [uniqueId] = "getSheetsId(sheet)"
+                    (sheetChanged) = "switchSheet($event)"
+        >
+        </wb-menu-entry>
+        <wb-menu-entry [title]="'Add +'" [isActive]="true" [bgColor]="'black'"></wb-menu-entry>
+    </div>
+    <div class="wb-menu-options">
+        <wb-button [uniqueId] = "'saveContentId'"
+                   [isPushed] = "false"
+                   [pictogram] = "'Save'"
+                   (wasClicked) = "saveContent($event)"
+        >
+        </wb-button>
+        <wb-button [uniqueId] = "'loadContentId'"
+                [isPushed] = "false"
+                [pictogram] = "'Load'"
+                (wasClicked) = "loadContent($event)"
+        >
+        </wb-button>
+
+    </div>
 </div>
+
+<!-- load: &#128193;
+save: &#x1F4BE; -->
+
+
+
+<!-- export class WbButtonComponent implements OnInit {
+    @Input() uniqueId: string = '';
+    @Input() pictogram: string = '';
+    @Input() isPushed: boolean = false;
+    @Output() wasClicked: EventEmitter<any> = new EventEmitter();
+    dynamicClass: any = {
+      pushed: false
+    }
+    constructor() { }
+  
+    ngOnInit(): void {
+    }
+  
+    @HostListener('click')
+    onClick(){
+      this.wasClicked.emit()
+    } -->
 
 
 

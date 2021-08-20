@@ -6,3 +6,11 @@
     flex-direction: column;
     background-color: rgb(210, 210, 230);
 }
+.wb-menu-options{
+    position: relative;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

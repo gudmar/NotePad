@@ -17,16 +17,11 @@ export class CommunicationService {
       eventsToInformAbout: eventsToInformAbout
     }
     this.subscribeFunctions.push(subscriberObject);
-    console.log(`comonent wit id ${subscriberUniqueId} subscribed`)
-    console.log(this.subscribeFunctions)
   }
 
   inform(eventType: string, data: any){
-    console.log('Informing about ' + eventType)
-    console.log(this.subscribeFunctions)
     for(let subscriber of this.subscribeFunctions){
       if (this.checkIfSubscriberIsInterested(subscriber.eventsToInformAbout, eventType)){
-        console.log(`subscriber ${subscriber.subscriberId} informed about ${eventType}`)
         subscriber.subscribeFunction(eventType, data);
       }
     }

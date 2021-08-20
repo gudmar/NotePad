@@ -38,7 +38,7 @@ export class WorkBookComponent implements OnInit {
     private storageManager: StorageManagerService,
     private changeDetector: ChangeDetectorRef
   ) { 
-    messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['storageOperation'])
+    messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['storageOperation', 'addNextSheet'])
   }
 
   handleMessages(eventType: string, data: any){
@@ -60,6 +60,12 @@ export class WorkBookComponent implements OnInit {
         this.loadDocumentToView(feedback.payload)
       }
       // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
+    }
+    if (eventType === 'addNextSheet'){
+      if (data.after == 'last'){
+        this.listOfSheets.push(this.storageManager.getFreshSheet(this.colorGenerator.getNextColor()))
+      }
+
     }
   }
 

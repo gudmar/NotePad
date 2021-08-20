@@ -11,6 +11,7 @@ export class ContentManagerService {
   constructor(private idProvider: UniqueIdProviderService,
               private colorProvider: NextColorGeneratorService) { }
 
+
   getListOfPagesForSheet(sheetId: string){
     let sheetArray = this.getDocumentFromMemory().sheets;
     return this.getSheetById(sheetArray, sheetId).pages;
@@ -93,9 +94,10 @@ export class ContentManagerService {
   getFreshDocument(){
     this.colorProvider.restart();
     let startColor = this.colorProvider.getNextColor();
+    let newSheet = this.getFreshSheet(startColor);
     return {
-      activeSheetId: 'Put correct id here',
-      sheets: this.getFreshSheet(startColor),
+      activeSheetId: Object.keys(newSheet)[0],
+      sheets: [newSheet],
       calendarInputs: this.getFreshCalendar(),
     }
     

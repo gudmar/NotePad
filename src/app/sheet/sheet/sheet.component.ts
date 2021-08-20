@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { ContentManagerService } from '../../services/content-manager.service';
@@ -19,7 +19,13 @@ export class SheetComponent implements OnInit {
   @Input() set currentPageId(val: string) {
     this._currentPageId = val;
     this.currentPageNotes = this.getPageNotesById(val)
+    this.sheetStartPageChanged.emit({
+      sheetId: this.uniqueId,
+      newPageId: val
+    })
   } 
+  @Output() sheetStartPageChanged: EventEmitter<any> = new EventEmitter();
+
   get currentPageId() {return this._currentPageId}
   
 
@@ -63,6 +69,8 @@ export class SheetComponent implements OnInit {
   }
 
   addNewPage(){
+    let newPage = this.contentManager.getNextAddedPage()
+    console.log(newPage)
     this.pages.push(this.contentManager.getNextAddedPage());
   }
 

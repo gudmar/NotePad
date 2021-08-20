@@ -8,6 +8,7 @@
             [bgColor]="currentSheetBgColor" 
             [pages]="currentSheetPages"
             [currentPageId] = "currentSheetStartPageId"
+            (sheetStartPageChanged) = "switchStartPage($event)"
         >
         </sheet>
     </div>

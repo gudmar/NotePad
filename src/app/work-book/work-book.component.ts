@@ -62,4 +62,9 @@ export class WorkBookComponent implements OnInit {
     this.initializeNewSheet(data);
   }
 
+  switchStartPage(data:any){
+    this.currentSheetStartPageId = data.newPageId;
+    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
+  }
+
 }

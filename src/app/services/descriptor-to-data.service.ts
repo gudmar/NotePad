@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DescriptorToDataService {
 
   constructor() { }
@@ -16,7 +14,7 @@ export class DescriptorToDataService {
     if (indexOfSearchedElement == -1) return undefined;
     let elementUuid: string = Object.keys(array[indexOfSearchedElement])[0];
     return {
-      uuid: elementUuid,
+      uniqueId: elementUuid,
       content: array[indexOfSearchedElement][elementUuid]
     }
   }

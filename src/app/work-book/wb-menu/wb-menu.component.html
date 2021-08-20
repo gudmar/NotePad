@@ -1,0 +1,13 @@
+<div class="wb-menu-wrapper">
+    <wb-menu-entry *ngFor="let sheet of sheets" 
+                [title]="getSheetsTitle(sheet)"
+                [isActive]="checkIfSheetIsActive(sheet)"
+                [uniqueId] = "getSheetsId(sheet)"
+                (sheetChanged) = "switchSheet($event)"
+    >
+    </wb-menu-entry>
+    <wb-menu-entry [title]="'Add +'" [isActive]="true" [bgColor]="'black'"></wb-menu-entry>
+</div>
+
+
+

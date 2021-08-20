@@ -30,23 +30,9 @@ export class WbMenuComponent implements OnInit {
     this.messenger.inform('storageOperation', data)
   }
 
-  // saveContent(data: any){
-  //   this.messenger.inform('saveWholeDocument', '')
-  //   console.log('Content saved')
-  // }
-  // loadContent(data: any){
-  //   this.messenger.inform('loadWholeDocument', '')
-  //   console.log('Content loaded')
-  // }
-  // clearStorage(data: any){
-  //   console.log(data)
-  //   this.messenger.inform('clearStorage', '')
-  // }
-
-  // getAllItemsFromStorage(data: any){
-  //   console.log(data)
-  //   this.messenger.inform('getAllKeysFromStorage', '')
-  // }
+  addNextSheet(){
+    this.messenger.inform('addNextSheet', {after: 'last'})
+  }
 
   getSheetsId(descriptor: any){return this.descriptorTranslator.getDescriptorsId(descriptor)}
   getSheetsTitle(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).title}

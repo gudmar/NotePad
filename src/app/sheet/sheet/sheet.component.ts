@@ -14,9 +14,9 @@ export class SheetComponent implements OnInit {
   @Input() uniqueId: string = '';
   @Input() bgColor: string = 'white';
   @Input() pages: any[] = [];
-  @Input() startPageId:string = '';
-  private _currentPageId: string = this.startPageId;
-  set currentPageId(val: string) {
+  // @Input() startPageId:string = '';
+  private _currentPageId: string = '';//this.startPageId;
+  @Input() set currentPageId(val: string) {
     this._currentPageId = val;
     this.currentPageNotes = this.getPageNotesById(val)
   } 
@@ -26,7 +26,7 @@ export class SheetComponent implements OnInit {
   constructor(private descriptorParser: DescriptorToDataService, private contentManager: ContentManagerService) { }
 
   ngOnInit(): void {
-    this.currentPageId = this.startPageId;
+    // this.currentPageId = this.startPageId;
   }
 
   // getCurrentPagesNotes(){

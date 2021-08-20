@@ -1,8 +1,14 @@
 <div class="workbook">
-    <sheet *ngFor="let item of listOfSheets" [uniqueId] = "extractSheetId(item)" 
-                [bgColor]=" extractSheedDescriptor(item).bgColor" 
-                [pages]=" extractSheedDescriptor(item).pages"
-                [startPageId] = "extractSheedDescriptor(item).startPageId"
-    >
-    </sheet>
+    <div class="menu">
+            <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>
+    </div>
+    <div class="sheet-container">
+        <sheet  
+            [uniqueId] = "activeSheetId" 
+            [bgColor]="currentSheetBgColor" 
+            [pages]="currentSheetPages"
+            [currentPageId] = "currentSheetStartPageId"
+        >
+        </sheet>
+    </div>
 </div>

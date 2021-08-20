@@ -21,7 +21,7 @@ export class ContentManagerService {
   }
 
   getDocumentFromMemory(){
-    return this.getMockDocumentContent();
+    return this.getMockDocumentContent(10, 6, 4);
   }
 
   getSheetById(arrayOfSheetDescriptors: any[], id: string){
@@ -32,49 +32,56 @@ export class ContentManagerService {
     return foundPage != undefined ? arrayOfSheetDescriptors[foundPage]['uniqueId'] : undefined;
   }
 
-  getMockDocumentContent(){
+  getMockDocumentContent(nrOfSheets: number, nrOfPages: number, numberOfNotes: number){
     this.colorProvider.restart();
     let colors:string[] = [];
     let titles: string[] = [];
     let that = this;
     let noteSizes = [[200, 100], [120, 220], [50, 60], [60, 50], [80, 90]]
     let notePositions = [[100, 100], [220, 120], [100, 200], [200, 250], [80, 400]]
+
     let getArrayOfNotes = function(){
       let notes: any[] = [];
-      for (let i = 0; i < 5; i++){
+      for (let i = 0; i < numberOfNotes; i++){
          let note = that.getNote(noteSizes[i][0], noteSizes[i][1], notePositions[i][0], notePositions[i][1], noteContent);
          notes.push(note)
       }
       return notes;
     }
+
     let getColors = function(nr: number) {
-      for (let i = 0; i < nr; i++){
+      for (let i = 0; i < Math.max(nrOfPages, nrOfSheets); i++){
         colors.push(that.colorProvider.getNextColor())
       }
     }
     let getTitles = function(nr: number) {
-      for (let i = 0; i < nr; i++){
+      for (let i = 0; i < Math.max(nrOfPages, nrOfSheets); i++){
         titles.push(`title ${i}`)
       }
     }
     let noteContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper, augue sit amet tempor imperdiet, .'
     let getPages = function(nr: number){
-      getColors(nr)
-      getTitles(nr)
+      getColors(Math.max(nrOfPages, nrOfSheets))
+      getTitles(Math.max(nrOfPages, nrOfSheets))
       
       let pages = [];
-      for (let i = 0; i < nr; i++){
+      for (let i = 0; i < nrOfPages; i++){
         let arrayOfNotes = getArrayOfNotes();
         pages.push(that.getPage(colors[i], titles[i], arrayOfNotes))
       }
       return pages;
     }
     let createSheets = function(){
-      let pages = getPages(5);
-      return [ that.getSheet(colors[0], titles[0], pages, Object.keys(pages[1])[0]) ]
+      let sheets:any = [];
+      for (let i = 0; i < nrOfSheets; i++){
+        let pages = getPages(5);
+        sheets.push(that.getSheet(colors[i], titles[i], pages, Object.keys(pages[1])[0]))
+      }
+      return sheets
     }
     let sheets = createSheets()
     return {
+      activeSheetId: Object.keys(sheets[2])[0],
       sheets: sheets,
       calendarInputs: {}
     }
@@ -87,6 +94,7 @@ export class ContentManagerService {
     this.colorProvider.restart();
     let startColor = this.colorProvider.getNextColor();
     return {
+      activeSheetId: 'Put correct id here',
       sheets: this.getFreshSheet(startColor),
       calendarInputs: this.getFreshCalendar(),
     }

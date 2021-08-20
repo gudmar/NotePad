@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { ContentManagerService } from '../services/content-manager.service';
 import { UniqueIdProviderService } from '../services/unique-id-provider.service';
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 import { DescriptorToDataService } from '../services/descriptor-to-data.service'
+import { CommunicationService } from '../services/communication.service'
+import { StorageManagerService } from '../services/storage-manager.service'
 
 @Component({
   selector: 'work-book',
@@ -18,6 +20,7 @@ export class WorkBookComponent implements OnInit {
   document: any = this.contentManager.getDocumentFromMemory();
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
+  uniqueId: string = "workBookId"
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }
@@ -28,12 +31,53 @@ export class WorkBookComponent implements OnInit {
   currentSheetStartPageId: string = '';
 
   colorGenerator = new NextColorGeneratorService();
-  constructor(private descriptorTranslator: DescriptorToDataService, private contentManager: ContentManagerService, private idProvider: UniqueIdProviderService) { 
-    // this.listOfSheets = this.document.sheets;
-    // this.activeSheetId = this.document.activeSheetId;
-    // this.initializeNewSheet(this.activeSheetId)
+  constructor(private descriptorTranslator: DescriptorToDataService, 
+    private contentManager: ContentManagerService, 
+    private idProvider: UniqueIdProviderService,
+    private messenger: CommunicationService,
+    private storageManager: StorageManagerService,
+    private changeDetector: ChangeDetectorRef
+  ) { 
+    messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['storageOperation'])
+  }
+
+  handleMessages(eventType: string, data: any){
+    if (eventType === "storageOperation") { 
+      let feedback = this.storageManager.handleStorageOperation(data, this.document);
+      if (feedback.information === 'dataLoaded'){
+        if (feedback.payload!= null){
+          this.reloadDocument(feedback.payload)
+          // this.document = feedback.payload;
+          // this.listOfSheets = this.document.sheets;
+          // this.activeSheetId = this.document.activeSheetId;    
+          // this.initializeNewSheet(this.activeSheetId)    
+        }
+      }
+      if (feedback.information === 'keysExistingInStorage'){
+        console.log(feedback.payload)
+      }
+      if (feedback.information === 'newContent'){
+        this.loadDocumentToView(feedback.payload)
+      }
+      // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
+    }
+  }
+
+  reloadDocument(documentData: any){
+    this.loadDocumentToView(this.contentManager.getFreshDocument())
+    this.loadDocumentToView(documentData)
 
   }
+
+  loadDocumentToView(documentData: any){
+    this.document = documentData
+    this.listOfSheets = this.document.sheets;
+    this.activeSheetId = this.document.activeSheetId;    
+    this.initializeNewSheet(this.activeSheetId) 
+  }
+
+
+
 
   ngOnInit(): void {
     this.listOfSheets = this.document.sheets;
@@ -45,9 +89,7 @@ export class WorkBookComponent implements OnInit {
     let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
     this.currentSheetBgColor = currentSheetDescriptor.bgColor;
     this.currentSheetPages = currentSheetDescriptor.pages;
-    console.log(this.currentSheetStartPageId)
     this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
-    console.log(this.currentSheetStartPageId)
   }
 
   extractSheetDescriptor(sheetId: string): any{

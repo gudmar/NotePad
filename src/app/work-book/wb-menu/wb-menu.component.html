@@ -10,21 +10,51 @@
         <wb-menu-entry [title]="'Add +'" [isActive]="true" [bgColor]="'black'"></wb-menu-entry>
     </div>
     <div class="wb-menu-options">
+        <wb-button [uniqueId] = "'newContentId'"
+            [isPushed] = "false"
+            [pictogram] = "'New'"
+            (wasClicked) = "passDataFromStorageToWBComponent('newDocument')"
+ >
+        </wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
                    [isPushed] = "false"
                    [pictogram] = "'Save'"
-                   (wasClicked) = "saveContent($event)"
+                   (wasClicked) = "passDataFromStorageToWBComponent('saveWholeDocument')"
         >
         </wb-button>
         <wb-button [uniqueId] = "'loadContentId'"
                 [isPushed] = "false"
                 [pictogram] = "'Load'"
-                (wasClicked) = "loadContent($event)"
+                (wasClicked) = "passDataFromStorageToWBComponent('loadWholeDocument')"
         >
         </wb-button>
-
+        <wb-button [uniqueId] = "'clearStorageId'"
+                [isPushed] = "false"
+                [pictogram] = "'Clear'"
+                (wasClicked) = "passDataFromStorageToWBComponent('clearStorage')"
+        >
+        </wb-button>
+        <wb-button [uniqueId] = "'GetAllFromStoratge'"
+            [isPushed] = "false"
+            [pictogram] = "'Get all'"
+            (wasClicked) = "passDataFromStorageToWBComponent('getAllKeysFromStorage')"
+        >
+        </wb-button>
     </div>
 </div>
+
+
+<!-- clearStorage(){
+    localStorage.clear();
+  }
+
+  removeItemFromStorage(key: string){
+    localStorage.removeItem(key)
+  }
+
+  getAllItemsFromStorage(){
+    return Object.keys(localStorage);
+  } -->
 
 <!-- load: &#128193;
 save: &#x1F4BE; -->

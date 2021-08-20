@@ -22,6 +22,7 @@ import { CommunicationService } from './services/communication.service';
 import { WbMenuComponent } from './work-book/wb-menu/wb-menu.component';
 import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component';
 import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
+import { StorageManagerService } from './services/storage-manager.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.compo
               NextColorGeneratorService,
               ContentManagerService,
               CommunicationService,
-              DescriptorToDataService
+              DescriptorToDataService,
+              StorageManagerService
             ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
+import { CommunicationService } from '../../services/communication.service'
 
 
 @Component({
@@ -12,7 +13,9 @@ export class WbMenuComponent implements OnInit {
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
   @Output() sheetAdded: EventEmitter<any> = new EventEmitter();
-  constructor(private descriptorTranslator: DescriptorToDataService) { }
+  constructor(private descriptorTranslator: DescriptorToDataService, 
+    private messenger: CommunicationService,
+  ) { }
 
   ngOnInit(): void {
     console.log(this.sheets)
@@ -23,12 +26,27 @@ export class WbMenuComponent implements OnInit {
     this.sheetSwitched.emit(data);
   }
 
-  saveContent(data: any){
-    console.log('Content saved')
+  passDataFromStorageToWBComponent(data:string){
+    this.messenger.inform('storageOperation', data)
   }
-  loadContent(data: any){
-    console.log('Content loaded')
-  }
+
+  // saveContent(data: any){
+  //   this.messenger.inform('saveWholeDocument', '')
+  //   console.log('Content saved')
+  // }
+  // loadContent(data: any){
+  //   this.messenger.inform('loadWholeDocument', '')
+  //   console.log('Content loaded')
+  // }
+  // clearStorage(data: any){
+  //   console.log(data)
+  //   this.messenger.inform('clearStorage', '')
+  // }
+
+  // getAllItemsFromStorage(data: any){
+  //   console.log(data)
+  //   this.messenger.inform('getAllKeysFromStorage', '')
+  // }
 
   getSheetsId(descriptor: any){return this.descriptorTranslator.getDescriptorsId(descriptor)}
   getSheetsTitle(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).title}

@@ -1,4 +1,4 @@
-<div class="note-wrapper">
+<div class="note-wrapper" (focusout) = "informAboutContentChange($event)">
     <movable-point movableparent [nestedLevel]="2"
                    [initialTop] = "initialTop"
                    [initialLeft] = "initialLeft"
@@ -9,7 +9,7 @@
     >
     </movable-point>
         <div class="note-content-wrapper">
-            <span contenteditable="true" [innerHTML] = "content"></span>
+            <span #contentHolder contenteditable="true" [innerHTML] = "content"></span>
         </div>
     <movable-point  data-role="resize" 
                     resizeparent [nestedLevel]="2"

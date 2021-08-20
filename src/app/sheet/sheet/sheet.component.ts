@@ -19,7 +19,6 @@ export class SheetComponent implements OnInit {
   set currentPageId(val: string) {
     this._currentPageId = val;
     this.currentPageNotes = this.getPageNotesById(val)
-    console.dir(this.pages)
   } 
   get currentPageId() {return this._currentPageId}
   

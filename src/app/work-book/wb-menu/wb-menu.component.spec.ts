@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WbMenuComponent } from './wb-menu.component';
 
-describe('WbMenuComponent', () => {
+xdescribe('WbMenuComponent', () => {
   let component: WbMenuComponent;
   let fixture: ComponentFixture<WbMenuComponent>;
 

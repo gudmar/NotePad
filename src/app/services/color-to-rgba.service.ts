@@ -10,12 +10,13 @@ export class ColorToRGBService {
     this.createCanvas();
   }
 
-  transform(color: string){
+  transform(color: string):number[]{
     let ctx = this.cvs.getContext('2d');
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    let output = Array.from(ctx.getImageData(0, 0, 1, 1).data);
-    output.splice(3, 1);
+    let output: number[] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+    output.splice(3, 1); // number[]
+    console.log(output)
     return output;
   }
 

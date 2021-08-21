@@ -2,7 +2,14 @@
     position: absolute;
     width: 100px;
     height: 100px;
+    /* border: dashed thin blue; */
+}
+
+.active-bgLight{
     border: dashed thin blue;
+}
+.active-bgDark{
+    border: dashed thin rgb(180, 180, 250);
 }
 
 .note-wrapper{

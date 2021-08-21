@@ -103,9 +103,9 @@ export class ContentManagerService {
     
   }
 
-  getNextAddedPage(){
-    let color = this.colorProvider.getNextColor();
-    return this.getPage(color, 'mock-page', []);
+  getNextAddedPage(lastUsedColor: string){
+    let color = this.colorProvider.getColorAfterGiven(lastUsedColor);
+    return this.getPage(color, 'newPage', []);
   }
   getFreshCalendar(){
     return {}
@@ -117,11 +117,13 @@ export class ContentManagerService {
   getFreshPage(startColor: string){
     return this.getPage(startColor, 'newPage', []);
   }
-  getSheet(color: string, title: string, pages:any[], startPageId: string){
+  getSheet(sheetColor: string, title: string, pages:any[], startPageId: string){
+    if (sheetColor == '') sheetColor = this.colorProvider.getFirstColor();
     let id = this.idProvider.getUniqueId();
     let output = {[id]: {}}
     output[id] = {
-      bgColor: color,
+      originalColor: sheetColor,
+      bgColor: sheetColor,
       title: title,
       pages: pages,
       startPageId: startPageId
@@ -129,12 +131,14 @@ export class ContentManagerService {
     return output
   }
 
-  getPage(color: string, title: string, content: any[]){
+  getPage(pageColor: string, title: string, content: any[]){
+    if (pageColor == '') pageColor = this.colorProvider.getFirstColor();
     let id = this.idProvider.getUniqueId();
     let output = {[id]: {}}
     output[id] = {
       notes: content,
-      bgColor: color,
+      originalColor: pageColor,
+      bgColor: pageColor,
       title: title
     }
     return output;

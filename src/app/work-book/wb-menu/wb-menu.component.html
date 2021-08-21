@@ -4,6 +4,7 @@
                     [title]="getSheetsTitle(sheet)"
                     [isActive]="checkIfSheetIsActive(sheet)"
                     [uniqueId] = "getSheetsId(sheet)"
+                    [bgColor] = "getSheetsBgColor(sheet)"
                     (sheetChanged) = "switchSheet($event)"
         >
         </wb-menu-entry>

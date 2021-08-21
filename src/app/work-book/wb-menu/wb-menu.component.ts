@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { CommunicationService } from '../../services/communication.service'
+import { NextColorGeneratorService } from '../../services/next-color-generator.service'
 
 
 @Component({
@@ -13,6 +14,7 @@ export class WbMenuComponent implements OnInit {
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
   @Output() sheetAdded: EventEmitter<any> = new EventEmitter();
+  colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
   ) { }

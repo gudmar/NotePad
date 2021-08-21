@@ -60,10 +60,15 @@ export class NextColorGeneratorService {
     return `hsl(${hue}, ${this.saturation}%, ${this.light}%)`
   }
 
+  getFirstColor(){
+    return `hsl(${this.hueGenerator.peepFirstValue((v:any)=>{return v.hue})}, ${this.saturatoinGenerator.peepFirstValue()}%, ${this.lightGenerator.peepFirstValue()}%)`
+  }
+
   getColorAfterGiven(color: string){
+    let round10 = function(n: number) {return Math.round(n / 10)*10}
     
     let colorAsHSL = this.colorToHSLValues(color);
-    colorAsHSL = {h: colorAsHSL.h, s: colorAsHSL.s * 100, l: colorAsHSL.l * 100}
+    colorAsHSL = {h: round10(colorAsHSL.h), s: round10(colorAsHSL.s * 100), l: round10(colorAsHSL.l * 100)}
     let colorAsHSLString = `hsl(${colorAsHSL.h}, ${colorAsHSL.s}%, ${colorAsHSL.l}%)`;
     let specialColorValue = this.specialColorGetter.peepNextValue(colorAsHSLString);
     let areAllSaturationValuesUsed: boolean = this.saturatoinGenerator.areValuesUsed(colorAsHSL.s);

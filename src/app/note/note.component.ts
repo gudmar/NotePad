@@ -14,6 +14,7 @@ export class NoteComponent implements OnInit {
   @Input() initialLeft: number = 30;
   @Input() content: string = '';
   @Input() uniqueId: string = '';
+  @Input() bgColor: string = '';
   @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
   @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
   @Output() noteContentChanged: EventEmitter<any> = new EventEmitter();

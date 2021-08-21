@@ -23,6 +23,7 @@ import { WbMenuComponent } from './work-book/wb-menu/wb-menu.component';
 import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component';
 import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
 import { StorageManagerService } from './services/storage-manager.service';
+import { SetColorsDirective } from './directives/set-colors.directive';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { StorageManagerService } from './services/storage-manager.service';
     MovableDirective,
     MovableParentDirective,
     ResizeParentDirective,
+    SetColorsDirective,
     SheetComponent,
     TabComponent,
     TabMenuComponent,
@@ -40,7 +42,7 @@ import { StorageManagerService } from './services/storage-manager.service';
     PageMenuComponent,
     WbMenuComponent,
     WbMenuEntryComponent,
-    WbButtonComponent
+    WbButtonComponent,
   ],
   imports: [
     BrowserModule,

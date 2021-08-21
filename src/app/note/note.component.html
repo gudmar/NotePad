@@ -8,7 +8,10 @@
                    [movableElementId] = "'moveId'"
     >
     </movable-point>
-        <div class="note-content-wrapper">
+        <div class="note-content-wrapper"
+            setColors [dBgColor]="bgColor" 
+            [shouldSetBgColor]="false"
+        >
             <span #contentHolder contenteditable="true" [innerHTML] = "content"></span>
         </div>
     <movable-point  data-role="resize" 

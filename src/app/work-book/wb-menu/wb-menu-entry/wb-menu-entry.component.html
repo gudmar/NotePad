@@ -1,3 +1,5 @@
 <div class="wb-menu-entry">
-    <span class="title" [ngClass]="dynamicClasses" [style.backgroundColor] = "bgColor">{{title}}</span>
+    <span class="title" [ngClass]="dynamicClasses" setColors [dBgColor]="bgColor" [shouldSetBgColor]="true" >
+        {{title}}
+    </span>
 </div>

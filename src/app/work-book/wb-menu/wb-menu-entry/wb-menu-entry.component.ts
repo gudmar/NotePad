@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
+import { NextColorGeneratorService } from '../../../services/next-color-generator.service'
 
 
 @Component({
@@ -8,13 +9,22 @@ import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@a
 })
 export class WbMenuEntryComponent implements OnInit {
   _isActive: boolean = true;
+  // private _bgColor:string = 'white';
+  // fgColor: string = "black";
   @Input() uniqueId: string = '';
   @Input() title: string = 'newSheet';
   @Input() set isActive(val: boolean) {
     this._isActive = val;
     this.dynamicClasses.active = val;
   }
-  @Input() bgColor: string = 'white';
+  // @Input() set bgColor (val: string) { 
+  //   this._bgColor  = val;
+  //   this.fgColor = this.colorManager.getFgColor(val);
+  //   console.log(this.fgColor)
+  // }
+  // get bgColor() {return this._bgColor}
+  @Input() bgColor: string = 'white'
+
   dynamicClasses: any = {
     active: true
   }
@@ -24,7 +34,7 @@ export class WbMenuEntryComponent implements OnInit {
       if (!this.isActive) this.sheetChanged.emit(this.uniqueId)
     }
   
-  constructor() { }
+  constructor(private colorManager: NextColorGeneratorService) { }
 
   ngOnInit(): void {
   }

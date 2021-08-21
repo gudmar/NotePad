@@ -24,7 +24,7 @@ align-items: center; */
 
 .note-content-wrapper{
     position: relative;
-    background-color: rgb(230, 230, 230);
+    /* background-color: rgb(230, 230, 230); */
     width: calc(100% - 0px);
     height: calc(100% - 30px);
     top: 30px;

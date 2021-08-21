@@ -94,6 +94,12 @@ export class NextColorGeneratorService {
 
   }
 
+  getFgColor(colorAsString: string): string{
+    let light = this.colorToHSLValues(colorAsString).l;
+    console.log(light)
+    return light > (1 / 2) ? 'black' : 'white'
+  }
+
 
 
   colorToHSLValues(colorAsString: string){

@@ -38,7 +38,11 @@ export class Rgb2HslService {
       return delta == 0 ? 0 : delta / (1 - Math.abs(2 * calculateLight() - 1));
     }
     // debugger
-    return {h: calculateHue(), s: calculateSaturation(), l: calculateLight()}
+    return {h: this.round(calculateHue()), s: this.round(calculateSaturation()), l: this.round(calculateLight())}
+  }
+
+  private round(number: number){
+    return Math.round(number * 100) / 100;
   }
 
 

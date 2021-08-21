@@ -61,17 +61,30 @@ export class NextColorGeneratorService {
   }
 
   getColorAfterGiven(color: string){
+    
     let colorAsHSL = this.colorToHSLValues(color);
+    colorAsHSL = {h: colorAsHSL.h, s: colorAsHSL.s * 100, l: colorAsHSL.l * 100}
     let colorAsHSLString = `hsl(${colorAsHSL.h}, ${colorAsHSL.s}%, ${colorAsHSL.l}%)`;
-    let indexOfSpecialColor = this.specialColorGetter.peepNextValue(colorAsHSLString);
-    if (indexOfSpecialColor > 0) return this.specialColorGetter.peepNextValue(colorAsHSLString);
-    let isFirstSpecialColor = this.hueGenerator.areValuesUsed(colorAsHSL.h) && 
-        this.saturatoinGenerator.areValuesUsed(colorAsHSL.s) &&
-        this.lightGenerator.areValuesUsed(colorAsHSL.l)
+    let specialColorValue = this.specialColorGetter.peepNextValue(colorAsHSLString);
+    let areAllSaturationValuesUsed: boolean = this.saturatoinGenerator.areValuesUsed(colorAsHSL.s);
+    let areAllLightValuesUsed: boolean = this.lightGenerator.areValuesUsed(colorAsHSL.l)
+    let areAllHueValuesUsed: boolean = this.hueGenerator.areValuesUsed(colorAsHSL.h, (val: any)=>{return val.hue})
+    let isFirstSpecialColor = areAllHueValuesUsed && areAllLightValuesUsed && areAllSaturationValuesUsed;
+    let isLastSpecialColor = this.specialColorGetter.areValuesUsed(colorAsHSLString)
+    if (isLastSpecialColor) {
+      return `hsl(${this.hueGenerator.peepFirstValue((v:any)=>{return v.hue})}, ${this.saturatoinGenerator.peepFirstValue()}%, ${this.lightGenerator.peepFirstValue()}%)`
+    }
+    if (specialColorValue != null) return this.specialColorGetter.peepNextValue(colorAsHSLString);   
     if (isFirstSpecialColor) return this.specialColorGetter.peepFirstValue();
-    let hue = this.hueGenerator.peepNextValue(colorAsHSL.h)
-    let saturation = this.saturatoinGenerator.peepNextValue(colorAsHSL.s)
+    let hue = this.hueGenerator.peepNextValue(colorAsHSL.h, (val: any)=>{return val.hue})
     let light = this.lightGenerator.peepNextValue(colorAsHSL.l)
+    let saturation = this.saturatoinGenerator.peepNextValue(colorAsHSL.s)
+
+    if (!areAllHueValuesUsed) return `hsl(${hue}, ${colorAsHSL.s}%, ${colorAsHSL.l}%)`
+    if (!areAllLightValuesUsed && areAllHueValuesUsed) return `hsl(${hue}, ${colorAsHSL.s}%, ${light}%)`
+    if (areAllLightValuesUsed && areAllHueValuesUsed) return `hsl(${hue}, ${saturation}%, ${light}%)`
+    if (!areAllSaturationValuesUsed) return `hsl(${hue}, ${saturation}%, ${colorAsHSL.l}%)`
+    
     return `hsl(${hue}, ${saturation}%, ${light}%)`
 
   }
@@ -116,23 +129,30 @@ class NextValueGetter{
     this.wereAllValuesUsed = false;
   }
 
-  peepNextValue(currentValue: any){
-    let indexOfCurrnet = this.getIndexOfValue(currentValue);
-    if (indexOfCurrnet == -1)  return -1;
-    if (indexOfCurrnet == this.arrayOfValues.length - 1) return this.arrayOfValues[0]
-    return this.arrayOfValues[indexOfCurrnet + 1]
+  peepNextValue(currentValue: any, valueGetter?: Function){
+    if (valueGetter == undefined) valueGetter = (val: any) => {return val};
+    let indexOfCurrnet = this.getIndexOfValue(currentValue, valueGetter);
+    // debugger
+
+    if (indexOfCurrnet == -1)  return null;
+    if (indexOfCurrnet == this.arrayOfValues.length - 1) return valueGetter(this.arrayOfValues[0])
+    return valueGetter(this.arrayOfValues[indexOfCurrnet + 1])
   }
 
-  peepFirstValue(){
-    return this.arrayOfValues[0];
+  peepFirstValue(valueGetter?: Function){
+    if (valueGetter == undefined) valueGetter = (val: any) => {return val};
+    return valueGetter(this.arrayOfValues[0]);
   }
 
-  areValuesUsed(currentValue: any){
-    return this.getIndexOfValue(currentValue) == 0 ? true : false;
+  areValuesUsed(currentValue: any, valueGetter?: Function){
+    if (valueGetter == undefined) valueGetter = (val: any) => {return val};
+    let i = this.getIndexOfValue(currentValue, valueGetter)
+
+    return this.getIndexOfValue(currentValue, valueGetter) == this.arrayOfValues.length - 1 ? true : false;
   }
 
-  private getIndexOfValue(value: any){
-    function singleMatch(element: any) { return value === element}
+  private getIndexOfValue(value: any, valueGetter: Function){
+    function singleMatch(element: any) { return value === valueGetter(element)}
     return this.arrayOfValues.findIndex(singleMatch);
   }
 }
@@ -169,7 +189,7 @@ class HSLorRGBValuesGetter {
   }
 }
 
-@configureNextValueGetter(['hsl(60, 0%, 100%)', 'hsl(60, 0%, 80%)'])
+@configureNextValueGetter(['hsl(0, 0%, 100%)', 'hsl(0, 0%, 80%)'])
 class SpecialColorsGetter extends NextValueGetter{}
 
 @configureNextValueGetter([80, 30])

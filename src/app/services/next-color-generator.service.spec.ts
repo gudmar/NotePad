@@ -141,6 +141,9 @@ describe('NextColorGeneratorService', () => {
       {input: 'hsl(330, 50%, 30%)', output: 'hsl(0, 0%, 100%)'},
       {input: 'hsl(0, 0%, 100%)', output: 'hsl(0, 0%, 80%)'},
       {input: 'hsl(0, 0%, 80%)', output: 'hsl(60, 100%, 80%)'},
+      {input: 'hsl(0, 100%, 80%)', output: 'hsl(150, 100%, 80%)'},
+      {input: 'hsl(0, 100%, 30%)', output: 'hsl(150, 100%, 30%)'},
+      {input: 'hsl(150, 50%, 80%)', output: 'hsl(30, 50%, 80%)'},
     ]
     let colorAfter = function(color: string) { return serviceInstance.getColorAfterGiven(color) }
     for (let test of testCases){
@@ -148,3 +151,4 @@ describe('NextColorGeneratorService', () => {
     }
   })
 });
+

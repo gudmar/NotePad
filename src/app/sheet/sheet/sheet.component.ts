@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { ContentManagerService } from '../../services/content-manager.service';
+import { StorageManagerService } from '../../services/storage-manager.service';
 
 @Component({
   selector: 'sheet',
@@ -29,7 +30,10 @@ export class SheetComponent implements OnInit {
   get currentPageId() {return this._currentPageId}
   
 
-  constructor(private descriptorParser: DescriptorToDataService, private contentManager: ContentManagerService) { }
+  constructor(private descriptorParser: DescriptorToDataService, 
+    private contentManager: ContentManagerService,
+    private storageManater: StorageManagerService,
+  ) { }
 
   ngOnInit(): void {
     // this.currentPageId = this.startPageId;
@@ -69,9 +73,9 @@ export class SheetComponent implements OnInit {
   }
 
   addNewPage(){
-    let newPage = this.contentManager.getNextAddedPage()
-    console.log(newPage)
-    this.pages.push(this.contentManager.getNextAddedPage());
+    let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
+    let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
+    this.pages.push(newPage);
   }
 
 }

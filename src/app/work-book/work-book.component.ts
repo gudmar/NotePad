@@ -63,7 +63,8 @@ export class WorkBookComponent implements OnInit {
     }
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
-        this.listOfSheets.push(this.storageManager.getFreshSheet(this.colorGenerator.getNextColor()))
+        let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
+        this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
       }
 
     }

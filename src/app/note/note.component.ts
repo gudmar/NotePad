@@ -74,6 +74,10 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  killMe(){
+    this.messenger.inform('killMe', this.uniqueId)
+  }
+
   informAboutResize(data: any){
     this.noteWasResized.emit(data);
     this.messenger.inform('noteWasResized', {

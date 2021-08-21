@@ -23,13 +23,17 @@ export class PageComponent implements OnInit {
   constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
-    this.messenger.subscribe(this.uniqueId, this.reactToDataFromMessengar.bind(this), ['noteWasMoved', 'noteWasResized', 'noteContentChanged']);
+    this.messenger.subscribe(this.uniqueId, 
+      this.reactToDataFromMessengar.bind(this), 
+      ['noteWasMoved', 'noteWasResized', 'noteContentChanged', 'killMe']
+    );
   }
 
   reactToDataFromMessengar(eventType: string, data: any){
     if (eventType === 'noteWasMoved') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteWasResized') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data); console.log(data)}
+    if (eventType === 'killMe') {this.obliterateNote(data); console.log('HEREHERHERH')}
     console.log(`event ${eventType} received in page component `)
   }
 
@@ -53,6 +57,17 @@ export class PageComponent implements OnInit {
     } else {
       console.error(`${this.constructor.name}: element with id ${noteId} informed about state change, but it was not found`)
     } 
+  }
+
+  obliterateNote(id: string){
+    this.notes.splice(this.findNoteById(id), 1);
+  }
+
+  findNoteById(id: string){
+    let singleMatch = function(element: any) {
+      return element.uniqueId === id
+    }
+    return this.notes.findIndex(singleMatch)
   }
 
   deleteThisPage(){this.deleteThisPageEvent.emit();}

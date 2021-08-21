@@ -10,6 +10,7 @@
                    [style.visibility]="isActive?'visible':'hidden'"
     >
     </movable-point>
+    <kill-me [style.visibility]="isActive?'visible':'hidden'" (click)="killMe()"></kill-me>
         <div class="note-content-wrapper"
             setColors [dBgColor]="bgColor" 
             [shouldSetBgColor]="false"

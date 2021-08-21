@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, Input, Host, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, Host, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommunicationService } from '../services/communication.service'
+import { NextColorGeneratorService } from '../services/next-color-generator.service'
 
 @Component({
   selector: 'note',
@@ -8,6 +9,7 @@ import { CommunicationService } from '../services/communication.service'
   // providers: [CommunicationService]
 })
 export class NoteComponent implements OnInit {
+  private _isActive: boolean = false;
   @Input() initialWidth: number = 100;
   @Input() initialHeight: number = 100;
   @Input() initialTop: number = 30;
@@ -15,11 +17,53 @@ export class NoteComponent implements OnInit {
   @Input() content: string = '';
   @Input() uniqueId: string = '';
   @Input() bgColor: string = '';
+  @Input() set isActive (val: boolean) {
+    this._isActive = val;
+    if (val == true){
+      if (this.colorManager.getFgColor(this.bgColor) === 'white') {
+        this.dynamicClass['active-bgDark'] = true;
+        this.dynamicClass['active-bgLight'] = false;
+      }
+      if (this.colorManager.getFgColor(this.bgColor) === 'black') {
+        this.dynamicClass['active-bgDark'] = false;
+        this.dynamicClass['active-bgLight'] = true;
+      }
+    } else {
+      this.dynamicClass['active-bgDark'] = false;
+      this.dynamicClass['active-bgLight'] = false;    
+    }
+  }
+  get isActive() {return this._isActive}
   @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
   @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
   @Output() noteContentChanged: EventEmitter<any> = new EventEmitter();
+  private _wasActivated: boolean = false;
   @ViewChild('contentHolder') contentHolder: any;
-  constructor(private messenger: CommunicationService) { }
+
+  @HostListener('document:click')
+  disactivateThisNote() {
+    if (!this._wasActivated) {
+      this.isActive = false; 
+      
+    }
+    this._wasActivated = false;
+  }
+
+  @HostListener('click', ['$event'])
+  activateThisNote($event: any) {
+    this._wasActivated = true;
+    this.isActive = true
+    // $event.stopPropagation()
+  }
+
+
+
+  dynamicClass: any = {
+    'active-bgDark': false,
+    'active-bgLight': false
+  }
+
+  constructor(private messenger: CommunicationService, private colorManager: NextColorGeneratorService) { }
 
   informAboutMovement(data: any){
     this.noteWasMoved.emit(data)
@@ -47,21 +91,6 @@ export class NoteComponent implements OnInit {
       content: this.contentHolder.nativeElement.innerHTML
     })
   }
-
-  moveThisNote(data: any){
-    // console.log(this.thisElement)
-    // // let positionOffset = {x: this.thisElement.nativeElement.offsetLeft, y: this.thisElement.nativeElement.offsetTop};
-    // console.log(data.x)
-    // this.thisElement.nativeElement.style.left =  data.x + "px";
-    // this.thisElement.nativeElement.style.top  = data.y + "px";
-  }
-
-  // calculateNewPosition(cordsFromEvent: {x: number, y: number}){
-  //   let elementsCords = {x: this.thisElement.nativeElement.offsetLeft, y: this.thisElement.nativeElement.offsetTop};
-  //   // let offset = {x: cordsFromEvent.x - elementsCords.x, y: cordsFromEvent.y - elementsCords.y}
-  //   let offset = this.clickOffset;
-  //   return {x: cordsFromEvent.x - offset.x, y: cordsFromEvent.y - offset.y}
-  // }
 
   ngOnInit(): void {
   }

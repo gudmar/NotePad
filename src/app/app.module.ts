@@ -24,6 +24,7 @@ import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-
 import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
 import { StorageManagerService } from './services/storage-manager.service';
 import { SetColorsDirective } from './directives/set-colors.directive';
+import { KillMeComponent } from './common/kill-me/kill-me.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SetColorsDirective } from './directives/set-colors.directive';
     WbMenuComponent,
     WbMenuEntryComponent,
     WbButtonComponent,
+    KillMeComponent,
   ],
   imports: [
     BrowserModule,

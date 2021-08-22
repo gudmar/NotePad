@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'page-menu',
@@ -21,7 +22,7 @@ export class PageMenuComponent implements OnInit {
   @Output() addAfterMe: EventEmitter<string> = new EventEmitter();
   @Output() exitEditMode: EventEmitter<string> = new EventEmitter();
   isMenuActive: boolean = true;
-  constructor() { }
+  constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
   }
@@ -29,12 +30,15 @@ export class PageMenuComponent implements OnInit {
   enterEditMode(data:any){
     // this.editMode.emit()
     this.inEditMode = !this._inEditMode
+    data.stopPropagation()
   }
-  deleteThisPage(data: any){
-    this.deleteMe.emit();
+  showAllNotes(data: any){
+    this.messenger.inform('showAllNotes', '')
+    data.stopPropagation()
   }
   addNewPageAfterThis(data: any){
     this.addAfterMe.emit();
+    data.stopPropagation()
   }
 
 }

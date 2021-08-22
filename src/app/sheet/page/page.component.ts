@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@a
 import { NoteComponent } from '../../note/note.component'
 import { CommunicationService } from '../../services/communication.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
+import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 
 @Component({
   selector: 'page',
@@ -32,7 +33,15 @@ export class PageComponent implements OnInit {
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, 
       this.reactToDataFromMessengar.bind(this), 
-      ['noteWasMoved', 'noteWasResized', 'noteContentChanged', 'killMe', 'noteWasClicked', 'pageWasClicked']
+      [
+        'noteWasMoved', 
+        'noteWasResized', 
+        'noteContentChanged', 
+        'killMe', 
+        'noteWasClicked', 
+        'pageWasClicked',
+        'showAllNotes'
+      ]
     );
   }
 
@@ -41,8 +50,9 @@ export class PageComponent implements OnInit {
     if (eventType === 'noteWasResized') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data); console.log(data)}
     if (eventType === 'killMe') {this.obliterateNote(data);}
-    if (eventType === 'noteWasClicked') {
-
+    if (eventType === 'noteWasClicked') {}
+    if (eventType === 'showAllNotes') {
+      this.messenger.inform('eachNoteShouldShow', '');
     }
     if (eventType === 'pageWasClicked') {
       this.addNewNoteIfInEditState(data)

@@ -1,10 +1,10 @@
 <div class="wrapper center">
     <div class="page-menu-toggle-button center">
-            &#9776;
+            Options
     </div>
     <div class="page-menu-wrapper" *ngIf="isMenuActive">
-        <div class="page-menu-button center" [ngClass]="editButtonClassList" #edit (click)="enterEditMode($event)">&#9998;</div>
-        <div class="page-menu-button center" #delete (click)='deleteThisPage($event)'>&times;</div>
+        <div class="page-menu-button center" [ngClass]="editButtonClassList" #edit (click)="enterEditMode($event)">Edit mode</div>
+        <div class="page-menu-button center" #showAll (click)='showAllNotes($event)' >Show all</div>
         <div class="page-menu-button center" #addAfter (click)='addNewPageAfterThis($event)'>+</div>
     </div>
 </div>

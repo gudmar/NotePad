@@ -130,12 +130,15 @@ export class NoteComponent implements OnInit {
     if (messageType == 'pageWasClicked'){
       this.isActive = false;
     }
+    if (messageType == 'eachNoteShouldShow'){
+      this.isActive = true;
+    }
   }
 
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['noteWasClicked', 'pageWasClicked']
+      ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow']
     )
   }
   ngOnDestroy(): void {

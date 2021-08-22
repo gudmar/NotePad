@@ -1,19 +1,23 @@
 <div class="page" [style.backgroundColor] = "bgColor">
+
+    <div class="note-wrapper" (click) = "addNewNoteIfInEditState($event)">
+        <note *ngFor="let note of notes; trackBy: getUUIDTracker;"
+            [initialWidth] = "note.initialWidth"
+            [initialHeight] = "note.initialHeight"
+            [initialTop] = "note.initialTop"
+            [initialLeft] = "note.initialLeft"
+            [content] = "note.content"
+            [uniqueId] = "note.uniqueId"
+            [bgColor] = "bgColor"
+            [isActive] = "note.isActive"
+        >
+        </note>
+    </div>
     <page-menu 
         (deleteMe) = "deleteThisPage()"
         (addAfterMe) = "addAfterThisPage()"
-        (editMode) = "enterEditMode()"
+        (editMode) = "toggleEditMode()"
         (exitEditMode) = "exitEditMode()"
     >
     </page-menu>
-    <note *ngFor="let note of notes; trackBy: getUUIDTracker;"
-        [initialWidth] = "note.initialWidth"
-        [initialHeight] = "note.initialHeight"
-        [initialTop] = "note.initialTop"
-        [initialLeft] = "note.initialLeft"
-        [content] = "note.content"
-        [uniqueId] = "note.uniqueId"
-        [bgColor] = "bgColor"
-    >
-    </note>
 </div>

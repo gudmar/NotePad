@@ -131,14 +131,21 @@ export class StorageManagerService {
     return output;
   }
 
-  getNote(initialWidth: number, initialHeight: number, initialTop: number, initialLeft: number, content: string){
+  getNote(initialWidth: number, 
+      initialHeight: number, 
+      initialTop: number, 
+      initialLeft: number, 
+      content: string,
+      isActive?: boolean
+    ){
     let output = {
       uniqueId: this.idProvider.getUniqueId(),
       initialWidth: initialWidth,
       initialHeight: initialHeight,
       initialTop: initialTop,
       initialLeft: initialLeft,
-      content: content
+      content: content,
+      isActive: isActive == undefined || isActive == false? false : true
     }
     return output
   }

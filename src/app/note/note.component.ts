@@ -1,4 +1,15 @@
-import { Component, OnInit, EventEmitter, Output, Input, Host, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { 
+  Component, 
+  OnInit, 
+  EventEmitter, 
+  Output, 
+  Input, 
+  Host, 
+  ViewChild, 
+  ElementRef, 
+  HostListener 
+} from '@angular/core';
+
 import { CommunicationService } from '../services/communication.service'
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 
@@ -19,6 +30,7 @@ export class NoteComponent implements OnInit {
   @Input() bgColor: string = '';
   @Input() set isActive (val: boolean) {
     this._isActive = val;
+    console.log(`Setting is active of note to ${val}`)
     if (val == true){
       if (this.colorManager.getFgColor(this.bgColor) === 'white') {
         this.dynamicClass['active-bgDark'] = true;
@@ -28,6 +40,7 @@ export class NoteComponent implements OnInit {
         this.dynamicClass['active-bgDark'] = false;
         this.dynamicClass['active-bgLight'] = true;
       }
+      this.elRef.nativeElement.querySelector('.content-holder').focus();
     } else {
       this.dynamicClass['active-bgDark'] = false;
       this.dynamicClass['active-bgLight'] = false;    
@@ -40,20 +53,26 @@ export class NoteComponent implements OnInit {
   private _wasActivated: boolean = false;
   @ViewChild('contentHolder') contentHolder: any;
 
-  @HostListener('document:click')
-  disactivateThisNote() {
-    if (!this._wasActivated) {
-      this.isActive = false; 
+  // @HostListener('document:click')
+  // disactivateThisNote() {
+  //   if (!this._wasActivated) {
+  //     this.isActive = false; 
       
-    }
-    this._wasActivated = false;
-  }
+  //   }
+  //   this._wasActivated = false;
+  // }
+
+  // @HostListener('click', ['$event'])
+  // activateThisNote($event: any) {
+  //   this._wasActivated = true;
+  //   this.isActive = true
+  //   // $event.stopPropagation()
+  // }
 
   @HostListener('click', ['$event'])
-  activateThisNote($event: any) {
-    this._wasActivated = true;
-    this.isActive = true
-    // $event.stopPropagation()
+  thisNoteWasClicked($event: any){
+    this.messenger.inform('noteWasClicked', this.uniqueId)
+    $event.stopPropagation();
   }
 
 
@@ -63,7 +82,11 @@ export class NoteComponent implements OnInit {
     'active-bgLight': false
   }
 
-  constructor(private messenger: CommunicationService, private colorManager: NextColorGeneratorService) { }
+  constructor(
+    private messenger: CommunicationService, 
+    private colorManager: NextColorGeneratorService,
+    private elRef: ElementRef
+  ) { }
 
   informAboutMovement(data: any){
     this.noteWasMoved.emit(data)
@@ -96,7 +119,27 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  handleMessages(messageType: string, data:any){
+    if (messageType == 'noteWasClicked'){
+      if (data == this.uniqueId){
+        this.isActive = true;
+      } else {
+        this.isActive = false;
+      }
+    }
+    if (messageType == 'pageWasClicked'){
+      this.isActive = false;
+    }
+  }
+
   ngOnInit(): void {
+    this.messenger.subscribe(this.uniqueId, 
+      this.handleMessages.bind(this), 
+      ['noteWasClicked', 'pageWasClicked']
+    )
+  }
+  ngOnDestroy(): void {
+    this.messenger.unsubscribe(this.uniqueId)
   }
 
 }

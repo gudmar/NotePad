@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { NoteComponent } from '../../note/note.component'
 import { CommunicationService } from '../../services/communication.service';
+import { StorageManagerService } from '../../services/storage-manager.service';
 
 @Component({
   selector: 'page',
@@ -20,12 +21,18 @@ export class PageComponent implements OnInit {
   @Output() deleteThisPageEvent: EventEmitter<string> = new EventEmitter();
   @Output() addPageAfterThisPageEvent: EventEmitter<string> = new EventEmitter();
 
-  constructor(private messenger: CommunicationService) { }
+  constructor(private messenger: CommunicationService, private storeManager: StorageManagerService) { }
+
+  @HostListener('click', ['$event'])
+  informThatThisPageWasClicked($event: any){
+    this.messenger.inform('pageWasClicked', $event)
+    $event.stopPropagation();
+  }
 
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, 
       this.reactToDataFromMessengar.bind(this), 
-      ['noteWasMoved', 'noteWasResized', 'noteContentChanged', 'killMe']
+      ['noteWasMoved', 'noteWasResized', 'noteContentChanged', 'killMe', 'noteWasClicked', 'pageWasClicked']
     );
   }
 
@@ -33,7 +40,13 @@ export class PageComponent implements OnInit {
     if (eventType === 'noteWasMoved') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteWasResized') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data); console.log(data)}
-    if (eventType === 'killMe') {this.obliterateNote(data); console.log('HEREHERHERH')}
+    if (eventType === 'killMe') {this.obliterateNote(data);}
+    if (eventType === 'noteWasClicked') {
+
+    }
+    if (eventType === 'pageWasClicked') {
+      this.addNewNoteIfInEditState(data)
+    }
     console.log(`event ${eventType} received in page component `)
   }
 
@@ -59,6 +72,18 @@ export class PageComponent implements OnInit {
     } 
   }
 
+  
+  addNewNoteIfInEditState($event: any){
+    if (this.isInEditMode && !this.areAllChidNotesInActiveState()) {
+      let newNote = this.storeManager.getNote(200, 200, $event.clientY, $event.clientX, '', true);
+      this.notes.push(newNote);
+      
+      console.log(this.notes[this.notes.length - 1])
+      console.dir($event)
+      // Object.values(this.notes[this.notes.length])[0].isActive = true;
+    }
+  }
+
   obliterateNote(id: string){
     this.notes.splice(this.findNoteById(id), 1);
   }
@@ -70,9 +95,14 @@ export class PageComponent implements OnInit {
     return this.notes.findIndex(singleMatch)
   }
 
+  areAllChidNotesInActiveState(){
+    let singleMatch = function(element:any){return element.Values[0].isActive == true};
+    return this.notes.includes(singleMatch)
+  }
+
   deleteThisPage(){this.deleteThisPageEvent.emit();}
   addAfterThisPage() {this.addPageAfterThisPageEvent.emit();}
-  enterEditMode() {this.isInEditMode = true}
+  toggleEditMode() {this.isInEditMode = !this.isInEditMode}
   exitEditMode() {this.isInEditMode = false;}
 
   getUUIDTracker(index: number, item: any):any{

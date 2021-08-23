@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
-import { NextColorGeneratorService } from '../../../services/next-color-generator.service'
+import { NextColorGeneratorService } from '../../../services/next-color-generator.service';
+import { CommunicationService } from '../../../services/communication.service'
 
 
 @Component({
@@ -9,6 +10,7 @@ import { NextColorGeneratorService } from '../../../services/next-color-generato
 })
 export class WbMenuEntryComponent implements OnInit {
   _isActive: boolean = true;
+  @Input() isKillable: boolean = true;
   // private _bgColor:string = 'white';
   // fgColor: string = "black";
   @Input() uniqueId: string = '';
@@ -34,9 +36,17 @@ export class WbMenuEntryComponent implements OnInit {
       if (!this.isActive) this.sheetChanged.emit(this.uniqueId)
     }
   
-  constructor(private colorManager: NextColorGeneratorService) { }
+  constructor(
+    private colorManager: NextColorGeneratorService,
+    private messenger: CommunicationService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  killRelatedSheet(data: any){
+    data.stopPropagation();
+    this.messenger.inform('killSheet', this.uniqueId)
   }
 
 }

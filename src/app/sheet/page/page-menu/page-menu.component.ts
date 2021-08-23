@@ -45,11 +45,3 @@ export class PageMenuComponent implements OnInit {
   }
 
 }
-// <div class="page-menu-toggle-button center">
-//         &#9776;
-// </div>
-// <div class="page-menu-wrapper" *ngIf="isMenuActive">
-//     <div class="page-menu-button center" #edit (click)="enterEditMode($event)">&#9998;</div>
-//     <div class="page-menu-button center" #delete (click)='deleteThisPage($event)'>&times;</div>
-//     <div class="page-menu-button center" #addAfter (click)='addNewPageAfterThis($event)'>+</div>
-// </div>

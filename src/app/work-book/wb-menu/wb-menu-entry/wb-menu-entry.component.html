@@ -1,5 +1,10 @@
 <div class="wb-menu-entry">
-    <span class="title" [ngClass]="dynamicClasses" setColors [dBgColor]="bgColor" [shouldSetBgColor]="true" >
-        {{title}}
+    <span class = "color-wrapper" setColors [dBgColor]="bgColor" [shouldSetBgColor]="true">
+        <span class="title"  [ngClass]="dynamicClasses"   >
+            <span>
+                {{title}}
+            </span>
+        </span>
+        <span class = "kill-me" *ngIf="isKillable"  (click)="killRelatedSheet($event)">&times;</span>
     </span>
 </div>

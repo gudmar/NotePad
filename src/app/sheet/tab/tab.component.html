@@ -6,7 +6,9 @@
         [style.border-bottom-color]="bgColor">
         <span>
             <span class = "title-holder">{{tabTitle}}</span>
-            <span *ngIf="!setBehind">&#8285;</span>
+            <!-- <span *ngIf="!setBehind">&#8285;</span>
+             -->
+             <span class = "kill-me" *ngIf="!setBehind" (click)="killRelatedPage($event)">&times;</span>
         </span>
     </div>
 </div>

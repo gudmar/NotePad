@@ -40,7 +40,7 @@ export class PageComponent implements OnInit {
         'killMe', 
         'noteWasClicked', 
         'pageWasClicked',
-        'showAllNotes'
+        'showAllNotes',
       ]
     );
   }

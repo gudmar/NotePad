@@ -36,30 +36,40 @@ export class SheetComponent implements OnInit {
     private storageManater: StorageManagerService,
     private messenger: CommunicationService,
   ) { }
-  // 'killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.notes.length})
 
   ngOnInit(): void {
-    // this.currentPageId = this.startPageId;
-    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['killMe_page', 'obliteratePage'])
+    this.messenger.subscribe(
+      this.uniqueId, 
+      this.handleMessages.bind(this), 
+      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page']
+    )
   }
 
   handleMessages(eventType: string, data: any){
     if (eventType == "killMe_page") {
       if (data.nrOfChidren > 0) this.ensureUserIsPositive(data)
       else {
-        this.showOtherPageAfterDeletion(data.uniqueId)
+        if (data.uniqueId == this.currentPageId) this.showOtherPageAfterDeletion(data.uniqueId)
         this.deletePage(data.uniqueId)
       }
     }
     if (eventType == "obliteratePage") {
-      this.showOtherPageAfterDeletion(data.uniqueId)
+      if (data.uniqueId == this.currentPageId) this.showOtherPageAfterDeletion(data.uniqueId)
       this.deletePage(data.uniqueId)
+    }
+    if (eventType === 'howManyChildrenDoIHave_page') {
+        let queriedPage = this.pages[this.getPageIndexById(data)]
+        let queriedPageDescriptor: any = Object.values(queriedPage)[0]
+        this.messenger.inform(
+          'nrOfChidrenYouHave', 
+          {uniqueId: data, nrOfOwnChildren: queriedPageDescriptor.notes.length}
+        )
     }
   }
 
   ensureUserIsPositive(pagesId: string){
     this.messenger.inform('confirmationMessage', 
-        {message:'This page sill contains notes, are You sure You want to remove it?', uniqueId: pagesId})
+        {message:'This page sill contains notes, are you sure you want to remove it?', uniqueId: pagesId})
   }
 
   deletePage(pageId: string){

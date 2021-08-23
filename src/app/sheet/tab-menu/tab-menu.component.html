@@ -1,13 +1,43 @@
 <div class="tab-menu">
     <!-- <tab [tabTitle] = "'+'" [uniqueId] = "addButtonId" [bgColor] = "'green'" [isActive] = "true"></tab> -->
-    <tab *ngFor = "let page of pages" 
+    <tab *ngFor = "let page of pagesForFirstMenu" 
           [uniqueId] = "getPageId(page)" 
           [bgColor] = "getPageConfigurationData(page).bgColor" 
           [isActive]= 'isThisPageActive(page)'
           [tabTitle]= "getPageConfigurationData(page).title"
-          (tabChosen) = "tabWantsToBeActive($event)"
+          (tabChosen) = "tabWantsToBeActive($event)"   
     >
     </tab>
+    <div class="hidden-menu-button">
+        <tab aria-role = "hidden menu"
+            *ngIf = "pagesForSecondMenu.length > 0"
+            
+            [setBehind] = "true"
+            [uniqueId] = "'hiddenId'"
+            [bgColor] = "'rgb(255, 100, 100)'"
+            [isActive] = "true"
+            [tabTitle] = "'...'"
+            [style.color] = "'white'"
+            (tabChosen) = "addNewTabToView($event)"
+        ></tab>
+        <div class="hidden-tabs">
+            <tab *ngFor = "let page of pagesForSecondMenu" 
+                [uniqueId] = "getPageId(page)" 
+                [bgColor] = "getPageConfigurationData(page).bgColor" 
+                [isActive]= 'isThisPageActive(page)'
+                [tabTitle]= "getPageConfigurationData(page).title"
+                [isRectangleTab] = "true"
+                (tabChosen) = "tabWantsToBeActive($event)"   
+            >
+            </tab>
+        </div>
+    </div>
+    <!-- <hidden-tab-menu
+    *ngIf = "pagesForSecondMenu.length > 0"
+        [pagesForHiddenMenu] = "pagesForSecondMenu"
+    >
+    </hidden-tab-menu> -->
+
     <tab aria-role = "Add new page"
         [setBehind] = "true"
         [uniqueId] = "'addToPage'"

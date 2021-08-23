@@ -25,6 +25,7 @@ export class PageMenuComponent implements OnInit {
   constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
+    
   }
 
   enterEditMode(data:any){

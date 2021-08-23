@@ -57,7 +57,6 @@ export class PageComponent implements OnInit {
     if (eventType === 'pageWasClicked') {
       this.addNewNoteIfInEditState(data)
     }
-    console.log(`event ${eventType} received in page component `)
   }
 
   updateTargetNoteState(noteId: string, newState: {
@@ -69,14 +68,12 @@ export class PageComponent implements OnInit {
     if (indexOfElementToUpdate != -1) {
       let keysToUpdate = Object.keys(newState);
       for (let key of keysToUpdate) {
-        console.log(key)
         if (key == 'newWidth') this.notes[indexOfElementToUpdate].initialWidth = newState[key];
         if (key == 'newHeight') this.notes[indexOfElementToUpdate].initialHeight = newState[key];
         if (key == 'pageX') this.notes[indexOfElementToUpdate].initialLeft = newState[key];
         if (key == 'pageY') this.notes[indexOfElementToUpdate].initialTop = newState[key];
         if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
       }
-      console.log(this.notes)
     } else {
       console.error(`${this.constructor.name}: element with id ${noteId} informed about state change, but it was not found`)
     } 
@@ -87,10 +84,6 @@ export class PageComponent implements OnInit {
     if (this.isInEditMode && !this.areAllChidNotesInActiveState()) {
       let newNote = this.storeManager.getNote(200, 200, $event.clientY, $event.clientX, '', true);
       this.notes.push(newNote);
-      
-      console.log(this.notes[this.notes.length - 1])
-      console.dir($event)
-      // Object.values(this.notes[this.notes.length])[0].isActive = true;
     }
   }
 
@@ -118,13 +111,8 @@ export class PageComponent implements OnInit {
   exitEditMode() {this.isInEditMode = false;}
 
   getUUIDTracker(index: number, item: any):any{
-    // debugger
     return item.uniqueId
   }
 
 }
 
-// (deleteMe) = "deleteThisPage()"
-// (addAfterMe) = "addAfterThisPage()"
-// (editMode) = "enterEditMode()"
-// (exitEditMode) = "exitEditMode()"

@@ -65,3 +65,19 @@
     position: relative;
     background-color: transparent;
 }
+.kill-me:hover{
+    transition: 0.3s;
+    transform: scale(1.5);
+}
+.kill-me{
+    position: relative;
+    display: inline-block;
+    transition: 0.3s;
+    cursor: pointer;
+    margin-left: 0.3rem;
+    font-weight: bold;
+}
+.kill-me:active{
+    transition: 0.3;
+    transform: scale(0.8);
+}

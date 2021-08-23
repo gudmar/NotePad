@@ -1,8 +1,8 @@
 <ng-container *ngIf = "confirmationWindowIsVisible">
-    <div class="shutter">
+    <div class="shutter center">
         <div class="message-wrapper">
-            <div class="message">
-                {{message}}
+            <div class="message center">
+                <span>{{message}}</span>
             </div>
             <div class="button-wrapper">
                 <div class="button" (click) = "confirmation()">Yes</div>

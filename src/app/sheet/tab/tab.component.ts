@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener} from '@angular/core';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
+import { CommunicationService } from '../../services/communication.service'
 import { ConcatSource } from 'webpack-sources';
 import { SetColorsDirective } from '../../directives/set-colors.directive'
 import { Z_PARTIAL_FLUSH } from 'zlib';
@@ -12,6 +13,7 @@ import { Z_PARTIAL_FLUSH } from 'zlib';
 })
 export class TabComponent implements OnInit {
   idProviderInstance = new UniqueIdProviderService();
+  private nrOfOwnChildren: number = 0;
   private _isActive: boolean = false;
   private _isActiveBehind: boolean = false;
   tabShapeClasses: any = {
@@ -41,7 +43,7 @@ export class TabComponent implements OnInit {
   get setBehind() {return this._isActiveBehind}
   @Output() tabChosen: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor(private messenger: CommunicationService) { }
   // constructor(private colorDirective: SetColorsDirective) { }
 
   @HostListener('click')
@@ -49,6 +51,17 @@ export class TabComponent implements OnInit {
     this.tabChosen.emit(this.uniqueId)
   }
 
+  killRelatedPage(data: any){
+    // nrOfChidren uniqueId)
+    this.messenger.inform('howManyChildrenDoIHave_page', this.uniqueId)
+    this.messenger.inform('killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.nrOfOwnChildren})
+    data.stopPropagation();
+  }
+  handleMessages(eventType: string, data:any){
+    if (data.uniqueId == this.uniqueId) this.nrOfOwnChildren = data.nrOfOwnChildren
+  }
+
   ngOnInit(): void {
+    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['nrOfChidrenYouHave'])
   }
 }

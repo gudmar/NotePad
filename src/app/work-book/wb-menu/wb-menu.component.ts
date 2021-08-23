@@ -93,7 +93,13 @@ export class WbMenuComponent implements OnInit {
 
   passDataFromStorageToWBComponent(data:string){
     this.messenger.inform('storageOperation', data)
+    // !!!!!!!!!!! NOT NEEDED - CLEAR EVERYTHING RELATED
   }
+
+  openMemoryManager(){
+    this.messenger.inform('displaySaveWindow', '')
+  }
+
 
   addNextSheet(){
     this.messenger.inform('addNextSheet', {after: 'last'})

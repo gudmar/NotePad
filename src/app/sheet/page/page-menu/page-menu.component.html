@@ -6,5 +6,6 @@
         <div class="page-menu-button center" [ngClass]="editButtonClassList" #edit (click)="enterEditMode($event)">Edit mode</div>
         <div class="page-menu-button center" #showAll (click)='showAllNotes($event)' >Show all</div>
         <div class="page-menu-button center" #addAfter (click)='addNewPageAfterThis($event)'>+</div>
+        <div class="page-menu-button center" #addAfter (click)='deleteThisPage($event)'>&times;</div>
     </div>
 </div>

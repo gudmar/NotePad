@@ -25,6 +25,7 @@ import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.compo
 import { StorageManagerService } from './services/storage-manager.service';
 import { SetColorsDirective } from './directives/set-colors.directive';
 import { KillMeComponent } from './common/kill-me/kill-me.component';
+import { ConfirmationWindowComponent } from './common/confirmation-window/confirmation-window.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { KillMeComponent } from './common/kill-me/kill-me.component';
     WbMenuEntryComponent,
     WbButtonComponent,
     KillMeComponent,
+    ConfirmationWindowComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
+import { CommunicationService } from '../../services/communication.service'
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'tab-menu',
@@ -10,18 +12,94 @@ import { DescriptorToDataService } from '../../services/descriptor-to-data.servi
   providers: [UniqueIdProviderService]
 })
 export class TabMenuComponent implements OnInit {
-  @Input() pages: any[] = [];
+  private _pages: any[] = [];
+  @Input() set pages(val: any[]) {
+    this._pages = val;
+    this.devideMenu();
+  }
+  get pages() {return this._pages}
   @Input() currentId: string = '';
   @Output() tabChosen: EventEmitter<string> = new EventEmitter();
   @Output() addNewPage: EventEmitter<any> = new EventEmitter();
+  @HostListener('window:resize')
+  onResize(){
+    this.devideMenu();
+  }
+  devideMenu(){
+    let that = this;
+    let nrOfElementsForFirstMenu = this.getNrOfPagesForFirstMenu();
+    let nrOfElementsForSecondMenu = this.pages.length - nrOfElementsForFirstMenu;
+    let putSingleElementToOneOfLists = function(element: any, index: number){
+      if (index < nrOfElementsForFirstMenu) that.pagesForFirstMenu.push(element)
+      else that.pagesForSecondMenu.push(element)
+    }
+    if (
+      nrOfElementsForFirstMenu != this.pagesForFirstMenu.length || 
+      nrOfElementsForSecondMenu != this.pagesForSecondMenu.length
+    ){
+      this.pagesForFirstMenu = [];
+      this.pagesForSecondMenu = []
+      this.pages.forEach(putSingleElementToOneOfLists);
+    }    
+  }
 
-  constructor(private uuidProvider: UniqueIdProviderService, private descriptorParser: DescriptorToDataService) { 
+  pagesForFirstMenu: any[] = this.pages;
+  pagesForSecondMenu: any[] = [];
+
+  constructor(
+    private messenger: CommunicationService,
+    private uuidProvider: UniqueIdProviderService, 
+    private descriptorParser: DescriptorToDataService,
+    private elRef: ElementRef
+  ) { 
+  }
+
+  getNrOfPagesForFirstMenu(){
+    let getLastMatchingIndex = function(){
+      let sumOfWidths = 0;
+      
+      let singleMatch = function(element: any, index: number, array: any[]){ 
+        sumOfWidths += element;
+        // console.log('SUM of width:  ' + sumOfWidths)
+        return sumOfWidths > widthLimit
+      }
+      let firstNotMatchingIndex = tabWidths.findIndex(singleMatch);
+      if (firstNotMatchingIndex == -1) return tabWidths.length
+      return firstNotMatchingIndex - 1; // if even one width causes tab menu to be too big, -1
+    }
+    
+    let tabWidths = this.getWidthsOfTabElements();
+    let aggregationButtonWidth = 50;
+    let freeSpaceForTabs = this.elRef.nativeElement.querySelector('.tab-menu').getBoundingClientRect().width;
+    let widthLimit = freeSpaceForTabs - aggregationButtonWidth;
+    let a = getLastMatchingIndex();
+
+    return getLastMatchingIndex();
+  }
+
+
+  
+
+  getWidthsOfTabElements(){
+    let allChildren = this.elRef.nativeElement.querySelectorAll('tab');
+    let widths:number[] = []
+    for(let child of allChildren){
+      widths.push(child.getBoundingClientRect().width);
+    }
+    return widths;
   }
 
   get newId(){return this.uuidProvider.getUniqueId()}
 
   ngOnInit(): void {
+    this.messenger.subscribe('pageMenuId', this.handleMessages.bind(this), ['pageWasDeleted', 'newPageWasAdded'])
+    
   }
+
+  handleMessages(eventType: string, data:any){
+    this.devideMenu()
+  }
+
 
   getPageId(descriptorItem: {uniqueId: any}){
     return this.descriptorParser.getDescriptorsId(descriptorItem)

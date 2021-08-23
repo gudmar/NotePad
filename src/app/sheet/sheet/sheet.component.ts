@@ -74,8 +74,8 @@ export class SheetComponent implements OnInit {
 
   deletePage(pageId: string){
     let pageIndex = this.getPageIndexById(pageId);
-    
     this.pages.splice(pageIndex, 1);
+    this.messenger.inform('pageWasDeleted', pageId)
   }
 
   showOtherPageAfterDeletion(deletedPageId: string){
@@ -120,7 +120,6 @@ export class SheetComponent implements OnInit {
   }
 
   displayPageById(data: any){
-    console.log('Changing page')
     this.currentPageId = data;
   }
 
@@ -128,6 +127,7 @@ export class SheetComponent implements OnInit {
     let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
     let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
     this.pages.push(newPage);
+    this.messenger.inform('newPageWasAdded', Object.keys(newPage)[0])
   }
 
 }

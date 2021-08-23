@@ -16,7 +16,6 @@ export class ColorToRGBService {
     ctx.fillRect(0, 0, 1, 1);
     let output: number[] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
     output.splice(3, 1); // number[]
-    console.log(output)
     return output;
   }
 

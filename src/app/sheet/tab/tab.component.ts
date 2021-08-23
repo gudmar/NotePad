@@ -21,8 +21,7 @@ export class TabComponent implements OnInit {
     'active-behind': false
   }
   @Input() bgColor: string = 'white'
-  // private _bgColor:string = 'white';
-  // fgColor: string = "black";
+  @Input() isRectangleTab: boolean = false;
   @Input() tabTitle: string = "newTab";
   @Input() uniqueId: string = this.idProviderInstance.getUniqueId();
   // @Input() set bgColor (val: string) { 

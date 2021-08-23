@@ -3,6 +3,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { ContentManagerService } from '../../services/content-manager.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
+import { CommunicationService } from '../../services/communication.service';
 
 @Component({
   selector: 'sheet',
@@ -33,16 +34,57 @@ export class SheetComponent implements OnInit {
   constructor(private descriptorParser: DescriptorToDataService, 
     private contentManager: ContentManagerService,
     private storageManater: StorageManagerService,
+    private messenger: CommunicationService,
   ) { }
+  // 'killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.notes.length})
 
   ngOnInit(): void {
     // this.currentPageId = this.startPageId;
+    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['killMe_page', 'obliteratePage'])
   }
 
-  // getCurrentPagesNotes(){
-  //   let pageDescriptor = this.getCurrentPageDescriptor();
-  //   return pageDescriptor == undefined ? undefined : pageDescriptor.notes;
-  // }
+  handleMessages(eventType: string, data: any){
+    if (eventType == "killMe_page") {
+      if (data.nrOfChidren > 0) this.ensureUserIsPositive(data)
+      else {
+        this.showOtherPageAfterDeletion(data.uniqueId)
+        this.deletePage(data.uniqueId)
+      }
+    }
+    if (eventType == "obliteratePage") {
+      this.showOtherPageAfterDeletion(data.uniqueId)
+      this.deletePage(data.uniqueId)
+    }
+  }
+
+  ensureUserIsPositive(pagesId: string){
+    this.messenger.inform('confirmationMessage', 
+        {message:'This page sill contains notes, are You sure You want to remove it?', uniqueId: pagesId})
+  }
+
+  deletePage(pageId: string){
+    let pageIndex = this.getPageIndexById(pageId);
+    
+    this.pages.splice(pageIndex, 1);
+  }
+
+  showOtherPageAfterDeletion(deletedPageId: string){
+    let deletedPageIndex = this.getPageIndexById(deletedPageId);
+    let nrOfPages = this.pages.length;
+    let isDeletedOnFirstIndex = (deletedPageIndex == 0);
+    let newPageIndex: number = 0;
+    if (nrOfPages > 1){
+      newPageIndex = deletedPageIndex - 1
+      if (isDeletedOnFirstIndex) newPageIndex = 1;
+      let newPagesUniqueId = Object.keys(this.pages[newPageIndex])[0];
+      this.currentPageId = newPagesUniqueId
+    }
+  }
+
+  getPageIndexById(id: string){
+    let singleMatch = function(element: any){return Object.keys(element)[0] === id}
+    return this.pages.findIndex(singleMatch)
+  }
 
   getPageNotesById(id: string){
     let pageDescriptor = this.getPageDescriptorById(id);

@@ -40,6 +40,9 @@ export class PageMenuComponent implements OnInit {
     this.addAfterMe.emit();
     data.stopPropagation()
   }
+  deleteThisPage(data: any) {
+    this.deleteMe.emit();
+  }
 
 }
 // <div class="page-menu-toggle-button center">

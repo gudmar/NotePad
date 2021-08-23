@@ -38,7 +38,11 @@ export class WorkBookComponent implements OnInit {
     private storageManager: StorageManagerService,
     private changeDetector: ChangeDetectorRef
   ) { 
-    messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['storageOperation', 'addNextSheet'])
+    messenger.subscribe(
+      this.uniqueId, 
+      this.handleMessages.bind(this), 
+      ['storageOperation', 'addNextSheet', 'saveDocument']
+    )
   }
 
   handleMessages(eventType: string, data: any){
@@ -66,7 +70,10 @@ export class WorkBookComponent implements OnInit {
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
         this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
       }
-
+    }
+    if (eventType === 'saveDocument'){
+      this.storageManager.saveContentAs(data, this.document)
+      debugger
     }
   }
 

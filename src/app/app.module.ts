@@ -26,6 +26,7 @@ import { StorageManagerService } from './services/storage-manager.service';
 import { SetColorsDirective } from './directives/set-colors.directive';
 import { KillMeComponent } from './common/kill-me/kill-me.component';
 import { ConfirmationWindowComponent } from './common/confirmation-window/confirmation-window.component';
+import { SaveLoadWindowComponent } from './common/save-load-window/save-load-window.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ConfirmationWindowComponent } from './common/confirmation-window/confir
     WbButtonComponent,
     KillMeComponent,
     ConfirmationWindowComponent,
+    SaveLoadWindowComponent,
   ],
   imports: [
     BrowserModule,

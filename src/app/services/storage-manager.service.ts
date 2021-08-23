@@ -10,8 +10,16 @@ export class StorageManagerService {
     private colorProvider: NextColorGeneratorService) { }
 
   saveContent(data: any){
-    console.dir(data)
     localStorage.setItem('notePad', JSON.stringify(data))
+  }
+
+  saveContentAs(key: string, data: any){
+    localStorage.setItem(key, JSON.stringify(data))
+    debugger;
+  }
+
+  deleteSingleKey(key: string){
+    localStorage.removeItem(key)
   }
 
   loadContent(){

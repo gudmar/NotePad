@@ -19,22 +19,11 @@
         </wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
                    [isPushed] = "false"
-                   [pictogram] = "'Save'"
-                   (wasClicked) = "passDataFromStorageToWBComponent('saveWholeDocument')"
+                   [pictogram] = "'Memory'"
+                   (wasClicked) = "openMemoryManager()"
         >
         </wb-button>
-        <wb-button [uniqueId] = "'loadContentId'"
-                [isPushed] = "false"
-                [pictogram] = "'Load'"
-                (wasClicked) = "passDataFromStorageToWBComponent('loadWholeDocument')"
-        >
-        </wb-button>
-        <wb-button [uniqueId] = "'clearStorageId'"
-                [isPushed] = "false"
-                [pictogram] = "'Clear'"
-                (wasClicked) = "passDataFromStorageToWBComponent('clearStorage')"
-        >
-        </wb-button>
+
         <wb-button [uniqueId] = "'GetAllFromStoratge'"
             [isPushed] = "false"
             [pictogram] = "'Get all'"

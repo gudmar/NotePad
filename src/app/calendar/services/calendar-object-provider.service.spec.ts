@@ -86,5 +86,24 @@ describe('CalendarObjectProviderService', () => {
       expect(dateToString(calculatedResult)).toBe(testCase.expected)
     }
   })
+
+  it('should return correct CW contained in given month', ()=>{
+    let calendar = new CalendarObjectProviderService();
+    let toString = function(array: any[]) {return array.join(',')}
+    let testCases = [
+      {input: {year: 2028, month: 1}, expected: '5,6,7,8,9'},
+      {input: {year: 2028, month: 6}, expected: '26,27,28,29,30,31'},
+      {input: {year: 2028, month: 11}, expected: '48,49,50,51,52'},
+      {input: {year: 2030, month: 0}, expected: '1,2,3,4,5'},
+      {input: {year: 2031, month: 11}, expected: '49,50,51,52,1'},
+      {input: {year: 2032, month: 11}, expected: '49,50,51,52,53'},
+      {input: {year: 2033, month: 0}, expected: '53,1,2,3,4,5'},
+      
+    ]
+    for (let testCase of testCases){
+      let claculatedOutput = calendar.getCWNumbersForMonth(testCase.input.year, testCase.input.month)
+      expect(toString(claculatedOutput)).toBe(testCase.expected)
+    }
+  })
 });
 

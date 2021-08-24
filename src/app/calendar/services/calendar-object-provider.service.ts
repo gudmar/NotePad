@@ -47,12 +47,15 @@ export class CalendarObjectProviderService {
 
   getCWNumbersForMonth(year: number, month: number){
     let monthData: any = this.getMonthDescriptor(year, month);
-    let lastDayOfMonthIndex = monthData[month].duration;
+    let lastDayOfMonthIndex = monthData.duration;
     let cwIndexes = [];
     let lastCW = 0;
     for (let dayIndex=1; dayIndex <= lastDayOfMonthIndex; dayIndex++){
       let currentCW = this.getCW(year, month, dayIndex);
-      if (currentCW != lastCW) cwIndexes.push(currentCW);
+      if (currentCW != lastCW) {
+        cwIndexes.push(currentCW);
+        lastCW = currentCW;
+      }
     }
     return cwIndexes;
   }
@@ -74,8 +77,6 @@ export class CalendarObjectProviderService {
 
   getDateOfFirstCWDay(year:number, cwIndex: number){
     let that = this
-    
-    
     if (cwIndex > 51) return this.getDateOfFirstCWDay_startDate_endDate(year, cwIndex, 10);
     if (cwIndex == 1) {
       let startOfCW1FromPreviousYear = this.getDateOfFirstCWDay_startDate_endDate(year - 1, cwIndex, 10);

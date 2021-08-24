@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SaveLoadWindowComponent } from './save-load-window.component';
+import { CalendarComponent } from './calendar.component';
 
-xdescribe('SaveLoadWindowComponent', () => {
-  let component: SaveLoadWindowComponent;
-  let fixture: ComponentFixture<SaveLoadWindowComponent>;
+describe('CalendarComponent', () => {
+  let component: CalendarComponent;
+  let fixture: ComponentFixture<CalendarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaveLoadWindowComponent ]
+      declarations: [ CalendarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaveLoadWindowComponent);
+    fixture = TestBed.createComponent(CalendarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

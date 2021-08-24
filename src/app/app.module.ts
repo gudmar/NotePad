@@ -27,6 +27,7 @@ import { SetColorsDirective } from './directives/set-colors.directive';
 import { KillMeComponent } from './common/kill-me/kill-me.component';
 import { ConfirmationWindowComponent } from './common/confirmation-window/confirmation-window.component';
 import { SaveLoadWindowComponent } from './common/save-load-window/save-load-window.component';
+import { CalendarComponent } from './calendar/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { SaveLoadWindowComponent } from './common/save-load-window/save-load-win
     KillMeComponent,
     ConfirmationWindowComponent,
     SaveLoadWindowComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,

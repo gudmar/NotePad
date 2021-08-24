@@ -1,15 +1,22 @@
 <div class="workbook">
-    <div class="menu">
-            <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>
-    </div>
-    <div class="sheet-container">
-        <sheet  
-            [uniqueId] = "activeSheetId" 
-            [bgColor]="currentSheetBgColor" 
-            [pages]="currentSheetPages"
-            [currentPageId] = "currentSheetStartPageId"
-            (sheetStartPageChanged) = "switchStartPage($event)"
-        >
-        </sheet>
-    </div>
+    <ng-container *ngIf="application == 'notes'">
+        <div class="menu">
+                <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>
+        </div>
+        <div class="sheet-container">
+            <sheet  
+                [uniqueId] = "activeSheetId" 
+                [bgColor]="currentSheetBgColor" 
+                [pages]="currentSheetPages"
+                [currentPageId] = "currentSheetStartPageId"
+                (sheetStartPageChanged) = "switchStartPage($event)"
+            >
+            </sheet>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="application == 'calendar'">
+        <calendar>
+            
+        </calendar>
+    </ng-container>
 </div>

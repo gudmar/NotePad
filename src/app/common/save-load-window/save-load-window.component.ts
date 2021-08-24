@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { StorageManagerService } from '../../services/storage-manager.service';
 import { CommunicationService } from '../../services/communication.service'
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'save-load-window',
@@ -63,9 +64,10 @@ export class SaveLoadWindowComponent implements OnInit {
   }
 
   confirmation(){
+    if (this.currentlySelectedItem == '') this.currentlySelectedItem = "Default"
     this.communicator.inform('saveDocument', this.currentlySelectedItem);
+    this.refresh();
     this.shouldBeDisplayed = false;
-    console.error('Save load component: should bind input event of editable element to currentValue')
   }
 
   removeCurrent(){
@@ -91,8 +93,19 @@ export class SaveLoadWindowComponent implements OnInit {
     this.refresh();
   }
 
+  loadKey(){
+    if (this.storageManager.hasKey(this.currentlySelectedItem)){
+      this.communicator.inform('loadDocument', this.currentlySelectedItem)
+    }
+    this.refresh();
+  }
+
   refresh(){
     this.keys = this.getAllKesyFromStorage().sort((a, b) => a.localeCompare(b));
+  }
+
+  onChange(data: any){
+    this.currentlySelectedItem = data.target.innerText;
   }
 
   ngOnInit(): void {

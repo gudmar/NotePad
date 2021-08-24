@@ -15,17 +15,20 @@ export class StorageManagerService {
 
   saveContentAs(key: string, data: any){
     localStorage.setItem(key, JSON.stringify(data))
-    debugger;
   }
 
   deleteSingleKey(key: string){
     localStorage.removeItem(key)
   }
 
-  loadContent(){
-    let content = localStorage.getItem('notePad')
+  loadContent(key: string){
+    let content = localStorage.getItem(key)
     if (content == null) return content
     return JSON.parse(content);
+  }
+
+  hasKey(key: string){
+    return localStorage.getItem(key) != null;
   }
 
   clearStorage(){
@@ -45,9 +48,9 @@ export class StorageManagerService {
       this.saveContent(applicationData);
       return {information: 'dataSaved'}
     }
-    if (operationType === 'loadWholeDocument'){
-      return {information: 'dataLoaded', payload: this.loadContent()}
-    }
+    // if (operationType === 'loadWholeDocument'){
+    //   return {information: 'dataLoaded', payload: this.loadContent()}
+    // }
     if (operationType === 'clearStorage'){
       this.clearStorage();
       return {information: 'sotrageCleared'}

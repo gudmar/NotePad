@@ -56,6 +56,22 @@ export class CalendarObjectProviderService {
     }
     return cwIndexes;
   }
+
+  getDateOfLastCWDay(year: number, cwIndex: number){
+    let firstDayOfCWDate = this.getDateOfFirstCWDay(year, cwIndex);
+    if (firstDayOfCWDate.day == -1) return {year: -1, day: -1, month: -1}
+    let lastDayOfCW = firstDayOfCWDate.day + 6;
+    let month = firstDayOfCWDate.month
+    let nrOfDaysInMonth = this.getMonthDescriptor(year, month).duration;
+    
+    if (nrOfDaysInMonth < lastDayOfCW) {
+      let correctedLastDayOfCW = lastDayOfCW - nrOfDaysInMonth;
+      if (month == 11) return {year: firstDayOfCWDate.year + 1, month: 0, day: correctedLastDayOfCW}
+      return {year: firstDayOfCWDate.year, month: month + 1, day: correctedLastDayOfCW}
+    }
+    return {year: firstDayOfCWDate.year, month: firstDayOfCWDate.month, day: lastDayOfCW};
+  }
+
   getDateOfFirstCWDay(year:number, cwIndex: number){
     let that = this
     
@@ -69,7 +85,7 @@ export class CalendarObjectProviderService {
 
   }
 
-  getDateOfFirstCWDay_startDate_endDate(year:number, cwIndex: number, startMonth?: number, endMonth?: number){
+  private getDateOfFirstCWDay_startDate_endDate(year:number, cwIndex: number, startMonth?: number, endMonth?: number){
     let that = this;
     let firstMatchFunction = function(year: number, month: number, day: number){
       return that.getCW(year, month, day) === cwIndex;
@@ -82,7 +98,7 @@ export class CalendarObjectProviderService {
     return firstMatchingDate
   }
 
-  findFirstDayInYearMatchingCriteria(year: number, cb: Function, startFromMonth?: number, endMonth?: number){
+  private findFirstDayInYearMatchingCriteria(year: number, cb: Function, startFromMonth?: number, endMonth?: number){
     if (startFromMonth == undefined) startFromMonth = 0;
     if (endMonth == undefined) endMonth = 11;
     let months: number[] = this.getMonthsAsArray(startFromMonth, endMonth);
@@ -102,14 +118,14 @@ export class CalendarObjectProviderService {
   }
   
 
-  findFirstDayInMonthMatchingCriteria(year: number, month: number, cb: Function){
+  private findFirstDayInMonthMatchingCriteria(year: number, month: number, cb: Function){
     let daysOfMonth = this.getDaysOfMonthAsArray(year, month);
     let singleMatch = function(element: any, index: number) {return cb(year, month, index + 1);}
     let foundIndex = daysOfMonth.findIndex(singleMatch)
     return foundIndex == -1 ? -1 : foundIndex + 1;
   }
 
-  getMonthsAsArray(startMonth: number, endMonth: number) {
+  private getMonthsAsArray(startMonth: number, endMonth: number) {
     let monthArray = [];
     if (startMonth > endMonth) return [];
     if (startMonth > 11) return [];
@@ -121,7 +137,7 @@ export class CalendarObjectProviderService {
     return monthArray;
   }
 
-  getDaysOfMonthAsArray(year: number, month: number){
+  private getDaysOfMonthAsArray(year: number, month: number){
     let nrOfDays = this.getMonthDescriptor(year, month).duration;
     let foundDayIndex = -1;
     let daysOfMonth: number[] = [];
@@ -146,7 +162,7 @@ export class CalendarObjectProviderService {
     return `${month} ${day}, ${year}`
   }
 
-  getMonthDescriptor(year: number, month: number): {name: string, duration: number}{
+  private getMonthDescriptor(year: number, month: number): {name: string, duration: number}{
     let months = [
       {name: 'January',   duration: 31},
       {name: 'February',  duration: this.isLeapYear(year) ? 29 : 28},
@@ -164,7 +180,7 @@ export class CalendarObjectProviderService {
     return months[month]
   }
 
-  getDayName(day: 1 | 2 | 3 | 4 | 5 | 6 | 0): string{
+  private getDayName(day: 1 | 2 | 3 | 4 | 5 | 6 | 0): string{
     if( day == 1) return 'Monday';
     if (day == 2) return 'Tuesday';
     if (day == 3) return 'Wednesday';

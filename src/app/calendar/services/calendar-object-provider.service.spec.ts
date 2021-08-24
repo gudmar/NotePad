@@ -37,6 +37,8 @@ describe('CalendarObjectProviderService', () => {
       {input: {year: 2024, month: transformToValid(11), day: 29}, expected: 52},
       {input: {year: 2024, month: transformToValid(11), day: 30}, expected: 1},
       {input: {year: 2025, month: transformToValid(0), day: 1}, expected: 1},
+      {input: {year: 2028, month: transformToValid(3), day: 2}, expected: 13},
+      {input: {year: 2028, month: transformToValid(3), day: 9}, expected: 14},
     ]
       for (let testCase of testCases){
         expect(calendar.getCW(testCase.input.year, testCase.input.month, testCase.input.day)).toBe(testCase.expected)
@@ -105,5 +107,44 @@ describe('CalendarObjectProviderService', () => {
       expect(toString(claculatedOutput)).toBe(testCase.expected)
     }
   })
+  it('should return correct day descriptors of given CW', ()=>{
+    let calendar = new CalendarObjectProviderService()
+    let testCases = [
+      {input: {year: 2028, cw: 22}, output: {key: 'dayMonthIndex', values: [29, 30, 31, 1, 2, 3, 4]}},
+      {input: {year: 2028, cw: 22}, output: {key: 'dayWeekIndex', values: [1, 2, 3, 4, 5, 6, 7]}},
+      {input: {year: 2028, cw: 22}, output: {key: 'dayName', values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}},
+      {input: {year: 2027, cw: 52}, output: {key: 'dayMonthIndex', values: [27, 28, 29, 30, 31, 1, 2]}},
+      {input: {year: 2027, cw: 52}, output: {key: 'dayWeekIndex', values: [1, 2, 3, 4, 5, 6, 7]}},
+      {input: {year: 2027, cw: 52}, output: {key: 'year', values: [2027, 2027, 2027, 2027, 2027, 2028, 2028]}},
+    ]
+    function getValuesFromDescriptor(key: string, descriptors: any[]){
+      let outputArray: any[] = [];
+      for(let i of descriptors){
+        outputArray.push(i[key])
+      }
+      return outputArray
+    }
+    for (let tc of testCases){
+      let descriptors = calendar.getDaysOfCW(tc.input.year, tc.input.cw);
+      let calculatedValues = getValuesFromDescriptor(tc.output.key, descriptors)
+      console.dir(calculatedValues)
+      expect(calculatedValues).toEqual(tc.output.values)
+    }
+  })
 });
+
+// getSingleDayDescriptor(date: {year: number, month: number, day: number}): any {
+//   let dateAsString = this.getDateAsString(date.year, date.month, date.day);
+//   let dateAsObject = this.getDateObject(date.year, date.month, date.day);
+//   function convertDayIndex(dayIndexSaturday0: number) {
+//     return dayIndexSaturday0 == 0 ? 7 : dayIndexSaturday0;
+//   }
+//   return { 
+//     dayMonthIndex: date.day, 
+//     dayWeekIndex: convertDayIndex(dateAsObject.getDay()),
+//     dayName: this.getDayName(dateAsObject.getDay()),
+//     month: date.month,
+//     year: date.year
+//   }
+// }
 

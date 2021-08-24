@@ -19,21 +19,38 @@ export class CalendarObjectProviderService {
     let saturday = new Date("August 22, 2021");
     
     
-    console.log(saturday.getDay())
-    console.log(day)
-    console.log(month)
-    console.log(year)
+    console.dir(this.getYearAsObject(2028))
+  }
+
+  getYearAsObject(year: number){
+    let descriptor: any = {
+      year: year,
+      months: []
+    }
+    let monthIndexes = this.getMonthsAsArray(0, 11);
+    for(let month of monthIndexes){
+      let monthDescriptor = this.getMonthDescriptor(year, month);
+      let singleMonth: any = {
+        monthIndex: month,
+        monthName: monthDescriptor.name,
+        weeks: this.getMonthObject(year, month)
+      };
+      descriptor.months.push(singleMonth)
+    }
+    return descriptor
   }
 
   getMonthObject(year: number, month: number): any[]{
-    let descriptor: any = {};
-    let monthData: any = this.getMonthDescriptor(year, month);
-    let lastDayOfMonthIndex = monthData[month].duration;
-    // let weekIndexOfFirstMonthDay = this.getDateObject(year, month, 1);
-    // let weekIndexOfLastMonthDay = this.getDateObject(year, month, lastDayOfMonthIndex);
-
-
-    return []
+    let descriptor: any[] = [];
+    let calendarWeeks = this.getCWNumbersForMonth(year, month);
+    for(let cw of calendarWeeks){
+      let cwDescriptor: any = {
+        cwIndex: cw,
+        days: month==0 && cw>51 ? this.getDaysOfCW(year-1, cw): this.getDaysOfCW(year, cw)
+      }
+      descriptor.push(cwDescriptor)
+    }
+    return descriptor
 
     // weeks: {
     //   [cwIndex: 33,
@@ -43,6 +60,43 @@ export class CalendarObjectProviderService {
     //     }
     //   ]
     // }
+  }
+
+  getDaysOfCW(year: number, cw: number){
+    let firstCWDayDate = this.getDateOfFirstCWDay(year, cw);
+    let weekDuration = 7;
+    let arrayOfCWDays: any[] = [];
+    let currentDate = firstCWDayDate;
+    for (let day=0; day < weekDuration; day++){
+      arrayOfCWDays.push(this.getSingleDayDescriptor(currentDate));
+      currentDate = this.getNextDay(currentDate);
+    }
+    return arrayOfCWDays;
+  }
+
+  getSingleDayDescriptor(date: {year: number, month: number, day: number}): any {
+    let dateAsString = this.getDateAsString(date.year, date.month, date.day);
+    let dateAsObject = this.getDateObject(date.year, date.month, date.day);
+    function convertDayIndex(dayIndexSaturday0: number) {
+      return dayIndexSaturday0 == 0 ? 7 : dayIndexSaturday0;
+    }
+    return { 
+      dayMonthIndex: date.day, 
+      dayWeekIndex: convertDayIndex(dateAsObject.getDay()),
+      dayName: this.getDayName(dateAsObject.getDay()),
+      month: date.month,
+      year: date.year
+    }
+  }
+
+  getNextDay(date: {year: number, month: number, day: number}): {year: number, month:number, day:number}{
+    let monthDescriptor = this.getMonthDescriptor(date.year, date.month)
+    let nextDay = date.day + 1;
+    let nextMonth = date.month;
+    let nextYear = date.year;
+    if (nextDay > monthDescriptor.duration) {nextDay = 1; nextMonth++;}
+    if (nextMonth > 11) {nextMonth = 0; nextYear++;}
+    return {year: nextYear, month: nextMonth, day: nextDay}
   }
 
   getCWNumbersForMonth(year: number, month: number){
@@ -114,7 +168,6 @@ export class CalendarObjectProviderService {
       return false;
     }
     let monthMatchingCriteria = months[months.findIndex(singleMatch)];
-    // debugger
     return {day: matchedDay, month: monthMatchingCriteria, year: year}
   }
   
@@ -145,8 +198,6 @@ export class CalendarObjectProviderService {
     for (let dayIndex=1; dayIndex <= nrOfDays; dayIndex++){daysOfMonth.push(dayIndex)}
     return daysOfMonth
   }
-
-  // cb(year, month, day){ true | false}
 
   getDateObject(year: number, month: number, day: number){
     return new Date(this.getDateAsString(year, month, day));
@@ -181,7 +232,7 @@ export class CalendarObjectProviderService {
     return months[month]
   }
 
-  private getDayName(day: 1 | 2 | 3 | 4 | 5 | 6 | 0): string{
+  private getDayName(day: number): string{
     if( day == 1) return 'Monday';
     if (day == 2) return 'Tuesday';
     if (day == 3) return 'Wednesday';

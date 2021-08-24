@@ -41,6 +41,28 @@ describe('CalendarObjectProviderService', () => {
       for (let testCase of testCases){
         expect(calendar.getCW(testCase.input.year, testCase.input.month, testCase.input.day)).toBe(testCase.expected)
       }
-  })
+  });
+  it('should return correct first day of CW', ()=>{
+    let calendar = new CalendarObjectProviderService();
+    let dateToString = function(date: any){
+      return `${date.year}, ${date.month}, ${date.day}`
+    }
+    let testCases = [
+      {input: {year: 2021, cw: 5}, expected: '2021, 1, 1'},
+      {input: {year: 2021, cw: 30}, expected: '2021, 6, 26'},
+      {input: {year: 2021, cw: 52}, expected: '2021, 11, 27'},
+      {input: {year: 2022, cw: 52}, expected: '2022, 11, 26'},
+      {input: {year: 2022, cw: 1}, expected: '2022, 0, 3'},
+      {input: {year: 2025, cw: 1}, expected: '2024, 11, 30'},
+      {input: {year: 2026, cw: 53}, expected: '2026, 11, 28'},
+      {input: {year: 2027, cw: 53}, expected: '2027, undefined, -1'},
+      {input: {year: 2027, cw: 52}, expected: '2027, 11, 27'},
+      {input: {year: 2028, cw: 52}, expected: '2028, 11, 25'},
+    ]
+    for (let testCase of testCases){
+      let calculatedResult = calendar.getDateOfFirstCWDay(testCase.input.year, testCase.input.cw)
+      expect(dateToString(calculatedResult)).toBe(testCase.expected)
+    }
+  });
 });
 

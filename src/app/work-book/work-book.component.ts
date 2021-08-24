@@ -21,9 +21,11 @@ export class WorkBookComponent implements OnInit {
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
+  application: string = 'calendar'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }
+
   get activeSheetId() {return this._activeSheetId; }
   @Input() documentContent: any;
   currentSheetBgColor: string = '';

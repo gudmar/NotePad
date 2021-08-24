@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationWindowComponent } from './confirmation-window.component';
 
-describe('ConfirmationWindowComponent', () => {
+xdescribe('ConfirmationWindowComponent', () => {
   let component: ConfirmationWindowComponent;
   let fixture: ComponentFixture<ConfirmationWindowComponent>;
 

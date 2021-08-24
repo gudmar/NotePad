@@ -64,5 +64,27 @@ describe('CalendarObjectProviderService', () => {
       expect(dateToString(calculatedResult)).toBe(testCase.expected)
     }
   });
+  it('should return correct last day of CW', ()=>{
+    let calendar = new CalendarObjectProviderService();
+    let dateToString = function(date: any){
+      return `${date.year}, ${date.month}, ${date.day}`
+    }
+    let testCases = [
+      {input: {year: 2021, cw: 5}, expected: '2021, 1, 7'},
+      {input: {year: 2024, cw: 9}, expected: '2024, 2, 3'},
+      {input: {year: 2024, cw: 52}, expected: '2024, 11, 29'},
+      {input: {year: 2024, cw: 1}, expected: '2024, 0, 7'},
+      {input: {year: 2024, cw: 40}, expected: '2024, 9, 6'},
+      {input: {year: 2024, cw: 22}, expected: '2024, 5, 2'},
+      {input: {year: 2026, cw: 53}, expected: '2027, 0, 3'},
+      {input: {year: 2027, cw: 53}, expected: '-1, -1, -1'},
+      {input: {year: 2028, cw: 52}, expected: '2028, 11, 31'},
+      {input: {year: 2029, cw: 1}, expected: '2029, 0, 7'},
+    ]
+    for (let testCase of testCases){
+      let calculatedResult = calendar.getDateOfLastCWDay(testCase.input.year, testCase.input.cw)
+      expect(dateToString(calculatedResult)).toBe(testCase.expected)
+    }
+  })
 });
 

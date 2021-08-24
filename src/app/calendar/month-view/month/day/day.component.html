@@ -1,0 +1,14 @@
+<div class="calendar-day-wrapper" 
+    setColors [dBgColor]="getBgColorDependOnEventsNumber()" 
+    [shouldSetBgColor]="true"
+>
+    <div class="day-nr-of-events-wrapper">
+        <div *ngIf="events.length > 0" 
+            setColors [dBgColor]="'red'" 
+            [shouldSetBgColor]="true"                            
+            class="day-nr-of-events">
+            {{events.length>9?'9+':events.length}}
+        </div>
+    </div>
+    <div class="day-number">{{monthDayIndex}}</div>
+</div>

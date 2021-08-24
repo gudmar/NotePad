@@ -1,1 +1,3 @@
-<p>calendar works!</p>
+<month-view *ngIf="viewMode == 'month'"></month-view>
+<week-view *ngIf="viewMode == 'week'"></week-view>
+<mobile-view *ngIf="viewMode == 'mobile'"></mobile-view>

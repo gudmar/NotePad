@@ -28,6 +28,11 @@ import { KillMeComponent } from './common/kill-me/kill-me.component';
 import { ConfirmationWindowComponent } from './common/confirmation-window/confirmation-window.component';
 import { SaveLoadWindowComponent } from './common/save-load-window/save-load-window.component';
 import { CalendarComponent } from './calendar/calendar/calendar.component';
+import { WeekViewComponent } from './calendar/week-view/week-view.component';
+import { MonthViewComponent } from './calendar/month-view/month-view.component';
+import { MonthComponent } from './calendar/month-view/month/month.component';
+import { DayComponent } from './calendar/month-view/month/day/day.component';
+import { MobileViewComponent } from './calendar/mobile-view/mobile-view.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +56,11 @@ import { CalendarComponent } from './calendar/calendar/calendar.component';
     ConfirmationWindowComponent,
     SaveLoadWindowComponent,
     CalendarComponent,
+    WeekViewComponent,
+    MonthViewComponent,
+    MonthComponent,
+    DayComponent,
+    MobileViewComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,46 @@
+<div class="month-wrapper">
+        <div class="month-name">{{monthName}}</div>
+        <div class="month-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th *ngFor="let col of columnNames">col</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let cw of cwIndexes">
+                        <td>{{cw}}</td>
+                        <td *ngFor = "let day of getDays(cw)">
+                            <day [dayDescriptor]="day"></day>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+      <!-- @Input() monthDescriptor: {
+        monthIndex: number,
+        monthName: string,
+        weeks: {cwIndex: number, days: any[]}[]
+      } = {monthIndex: 0, monthName: '', weeks: [{cwIndex: 0, days: []}]}
+      @Input() year: number = 0;
+      columnNames: string[] = ['CW', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      get monthName() {return this.monthDescriptor.monthName}
+      get weeks()     {return this.monthDescriptor.weeks}
+      get cwIndexes() {
+        let cwIndexes: any[] = [];
+        for(let week of this.weeks){
+          cwIndexes.push(week.cwIndex)
+        }
+        return cwIndexes;
+      }
+      getDays(indexNotCW: number) { return this.weeks[indexNotCW].days} -->
+    

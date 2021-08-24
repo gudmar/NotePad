@@ -1,0 +1,14 @@
+<div class="month-view-wrapper center">
+    <div class="year-switch">
+        <div class="arrow center">&lt;&lt;</div>
+        <div class="year center">{{year}}</div>
+        <div class="arrow ceter">&gt;&gt;</div>
+    </div>
+    <div class="calendar-content">
+        <month *ngFor="let month of months"
+            [year] = "year"
+            [monthDescriptor] = "month"
+        >
+        </month>
+    </div>
+</div>

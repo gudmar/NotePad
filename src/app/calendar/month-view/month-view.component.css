@@ -1,0 +1,29 @@
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;    
+}
+.month-view-wrapper{
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+.year-switch{
+    position: relative;
+    width: 80%;
+    max-width: 700px;
+}
+.arrow{
+    position: relative;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+.year{
+
+}
+.calendar-content{
+    display: flex;
+    flex-wrap: wrap;
+}

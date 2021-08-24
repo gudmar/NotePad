@@ -1,0 +1,28 @@
+.center{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.calendar-day-wrapper{
+    font-family:  Arial, Helvetica, sans-serif;
+    position: relative;
+    width: 50px;
+    height: 75px;
+}
+.day-nr-of-events-wrapper{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    font-size: 7px;
+}
+.day-nr-of-events{
+    position: relative;
+}
+.day-number{
+    position: relative;
+}
+

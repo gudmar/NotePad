@@ -14,6 +14,7 @@
                         class="key" 
                         [ngClass] = "isThisActive(key)" 
                         (click)="keyChosen(key)"
+                        [attr.data-content] = "key"
                     >
                         {{key}}
                     </div>
@@ -21,16 +22,20 @@
                 <span class="label">
                     {{isItSaveApplicationVariant ? 'Name to save under: ' : 'Name to load from: '}}
                 </span>
-                <div class="edit-field" [attr.contenteditable]="isItSaveApplicationVariant">
+                <div class="edit-field" 
+                    [attr.contenteditable]="isItSaveApplicationVariant" 
+                    (focusout) = "onChange($event)"
+                >
                     {{currentlySelectedItem}}
                 </div>
                 <div class="button-wrapper">
-                    <div class="button" (click) = "confirmation()">Save</div>
-                    <div class="button" (click) = "shutSaveLoadWindow()">Close</div>
-                    <div class="button" (click) = "removeCurrent()">Remove</div>
-                    <div class="button" (click) = "clearAllContent()">Clear all</div>
-                    <div class="button" (click) = "refresh()">Refresh</div>
-                    <div class="button" (click) = "generateMocks()">Test</div>
+                        <div class="button" (click) = "confirmation()">Save</div>
+                        <div class="button" (click) = "shutSaveLoadWindow()">Close</div>
+                        <div class="button" (click) = "removeCurrent()">Remove</div>
+                        <div class="button" (click) = "clearAllContent()">Clear all</div>
+                        <div class="button" (click) = "refresh()">Refresh</div>
+                        <div class="button" (click) = "generateMocks()">Test</div>
+                        <div class="button" (click) = "loadKey()">Load</div>
                 </div>
             </div>
         </div>

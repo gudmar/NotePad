@@ -41,22 +41,22 @@ export class WorkBookComponent implements OnInit {
     messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['storageOperation', 'addNextSheet', 'saveDocument']
+      ['storageOperation', 'addNextSheet', 'saveDocument', 'loadDocument']
     )
   }
 
   handleMessages(eventType: string, data: any){
     if (eventType === "storageOperation") { 
       let feedback = this.storageManager.handleStorageOperation(data, this.document);
-      if (feedback.information === 'dataLoaded'){
-        if (feedback.payload!= null){
-          this.reloadDocument(feedback.payload)
-          // this.document = feedback.payload;
-          // this.listOfSheets = this.document.sheets;
-          // this.activeSheetId = this.document.activeSheetId;    
-          // this.initializeNewSheet(this.activeSheetId)    
-        }
-      }
+      // if (feedback.information === 'dataLoaded'){
+      //   if (feedback.payload!= null){
+      //     this.reloadDocument(feedback.payload)
+      //     // this.document = feedback.payload;
+      //     // this.listOfSheets = this.document.sheets;
+      //     // this.activeSheetId = this.document.activeSheetId;    
+      //     // this.initializeNewSheet(this.activeSheetId)    
+      //   }
+      // }
       if (feedback.information === 'keysExistingInStorage'){
         console.log(feedback.payload)
       }
@@ -73,7 +73,11 @@ export class WorkBookComponent implements OnInit {
     }
     if (eventType === 'saveDocument'){
       this.storageManager.saveContentAs(data, this.document)
-      debugger
+
+    }
+    if (eventType == 'loadDocument'){
+      let newDocument = this.storageManager.loadContent(data)
+      this.reloadDocument(newDocument)
     }
   }
 

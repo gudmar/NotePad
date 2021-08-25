@@ -7,7 +7,14 @@ import { CalendarObjectProviderService } from '../services/calendar-object-provi
   styleUrls: ['./month-view.component.css']
 })
 export class MonthViewComponent implements OnInit {
-  @Input() year: number = 0;
+  private _year: number = 0;
+  @Input() set year(val: number) {
+    if (val != this._year && this.isYearValid(val)){
+      this._year = val; 
+      this.refreshYear();  
+    }
+  }
+  get year() {return this._year}
   // @Input() monthDescriptor: {
   //   monthIndex: number,
   //   monthName: string,
@@ -22,16 +29,34 @@ export class MonthViewComponent implements OnInit {
     if (this.months.length == 0) this.initializeWithPresentYear()
   }
 
+  refreshYear(){
+    this.months = this.calendarProvider.getYearAsObject(this.year).months;
+  }
+
   initializeWithPresentYear(){
     let currentDate = Date.now();
     let dateObj = new Date(currentDate);
     this.year = dateObj.getFullYear();
     this.months = this.calendarProvider.getYearAsObject(this.year).months;
-
   }
 
-  
+  incrementYear(step: number){
+    this.year = this.year + step;
+  }
 
+  changeYear(data: any){
+    this.year = parseInt(data.target.innerText);
+    if (this.year != parseInt(data.target.innerText)) data.target.innerText = this.year;
+  }
+
+  isYearValid(valueToTest: number ){
+    let testPattern = new RegExp("\\d{4}")
+    let s = testPattern.test(valueToTest.toString())
+    // debugger
+    if (!testPattern.test(valueToTest.toString())) return false
+    if (valueToTest > 3000) return false
+    return true;
+  }
 
 }
 

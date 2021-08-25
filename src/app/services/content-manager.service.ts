@@ -84,7 +84,7 @@ export class ContentManagerService {
     return {
       activeSheetId: Object.keys(sheets[2])[0],
       sheets: sheets,
-      calendarInputs: {}
+      calendarInputs: []
     }
 
   }

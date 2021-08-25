@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CalendarObjectProviderService } from '../services/calendar-object-provider.service'
-
+import { CommunicationService } from '../../services/communication.service'
 @Component({
   selector: 'month-view',
   templateUrl: './month-view.component.html',
@@ -23,7 +23,10 @@ export class MonthViewComponent implements OnInit {
 
   @Input() months: any[] = []
 
-  constructor(private calendarProvider: CalendarObjectProviderService) { }
+  constructor(
+    private calendarProvider: CalendarObjectProviderService,
+    private communicator: CommunicationService
+  ) { }
 
   ngOnInit(): void {
     if (this.months.length == 0) this.initializeWithPresentYear()
@@ -57,7 +60,12 @@ export class MonthViewComponent implements OnInit {
     if (valueToTest > 3000) return false
     return true;
   }
-
+  switchToNotes(){
+    this.communicator.inform('switchToNotes', '')
+  }
+  displaySaveWindow(){
+    this.communicator.inform('displaySaveWindow', '')
+  }
 }
 
 

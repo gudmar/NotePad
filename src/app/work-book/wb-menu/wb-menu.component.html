@@ -30,6 +30,12 @@
             (wasClicked) = "passDataFromStorageToWBComponent('getAllKeysFromStorage')"
         >
         </wb-button>
+        <wb-button [uniqueId] = "'CalendarButtonId'"
+        [isPushed] = "false"
+        [pictogram] = "'Calendar'"
+        (wasClicked) = "switchToCalendar()"
+    >
+    </wb-button>
     </div>
 </div>
 

@@ -105,6 +105,10 @@ export class WbMenuComponent implements OnInit {
     this.messenger.inform('addNextSheet', {after: 'last'})
   }
 
+  switchToCalendar(){
+    this.messenger.inform('switchToCalendar', '');
+  }
+
   getSheetsId(descriptor: any){return this.descriptorTranslator.getDescriptorsId(descriptor)}
   getSheetsTitle(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).title}
   getSheetsBgColor(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).bgColor}

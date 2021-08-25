@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UniqueIdProviderService } from './unique-id-provider.service';
 import { NextColorGeneratorService } from './next-color-generator.service'
+import { EventManagerService } from '../calendar/services/event-manager.service'
 import { start } from 'repl';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ContentManagerService {
+export class FalseDataMockService {
 
   constructor(private idProvider: UniqueIdProviderService,
               private colorProvider: NextColorGeneratorService) { }
@@ -84,10 +85,86 @@ export class ContentManagerService {
     return {
       activeSheetId: Object.keys(sheets[2])[0],
       sheets: sheets,
-      calendarInputs: []
+      calendarInputs: this.getMockEvents()
     }
 
   }
+
+  getMockEvents(){
+    let eventManager = new EventManagerService();
+    let years = [2021, 2022, 2023];
+    let months = [0, 3, 4, 5, 11];
+    let days = [1, 5, 15, 28];
+    let events = [
+      [
+        {hours: 10, minutes: 15, duration: 120, summary: "This is a test event 1", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 10, minutes: 20, duration: 120, summary: "This is a test event 2", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 12, minutes:  0, duration:  12, summary: "This is a test event 3", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 14, minutes: 50, duration:  60, summary: "This is a test event 4", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 15, minutes: 50, duration: 70, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+      ],
+      [
+        {hours: 10, minutes: 15, duration: 120, summary: "This is a test event 1", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 14, minutes: 20, duration: 120, summary: "This is a test event 2", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+      ],
+      [
+        {hours: 10, minutes: 15, duration: 120, summary: "This is a test event 1", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 10, minutes: 20, duration: 120, summary: "This is a test event 2", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 12, minutes:  0, duration:  12, summary: "This is a test event 3", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 14, minutes: 50, duration:  60, summary: "This is a test event 4", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 15, minutes: 50, duration: 50, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+        {hours: 16, minutes: 50, duration:  30, summary: "This is a test event 4", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 17, minutes: 50, duration: 20, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+      ],
+      [
+        {hours: 7, minutes: 15, duration: 10, summary: "This is a test event 1", description: this.getDescription()  , uniqueId: this.idProvider.getUniqueId()},
+        {hours: 9, minutes: 20, duration: 120, summary: "This is a test event 2", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+        {hours: 12, minutes:  0, duration:  12, summary: "This is a test event 3", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 15, minutes: 50, duration: 70, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+      ],     
+    ] 
+    
+    let getMonthEvents = function(){
+      let output: any[] = [];
+      for(let month of months) {
+        let dayEventsForMonth = getDayEvents();
+        let singleMonth = eventManager.getCalendarMonthEntryAsObject(month, dayEventsForMonth)
+        output.push(singleMonth);
+      }
+      return output;
+    }
+    let getDayEvents = function() {
+      let output : any[] = []
+      for (let i = 0; i<days.length ; i++){
+        let eventsForDay = eventManager.getCalendarDayEntryAsObject(days[i], events[i])
+        output.push(eventsForDay)
+      }
+      return output;
+    }
+    let getYearEvents = function(){
+      let output: any[] = [];
+      for(let year of years) {
+        let monthEventsForYear = getMonthEvents();
+        let singleYear = eventManager.getCalendarYearEntryAsObject(year, monthEventsForYear)
+        output.push(singleYear)
+      } 
+      return output;
+    }
+    return getYearEvents(); 
+   }
+
+  getDescription(){
+    return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper, augue sit amet tempor imperdiet, .'
+  }
+
+  // return{
+  //   hours: hours, 
+  //   minutes: minutes, 
+  //   duration: duration, 
+  //   summary: summary, 
+  //   description: description, 
+  //   uniqueId: uniqueId
+  // }
 
   
 

@@ -18,6 +18,7 @@
     justify-content: space-around;
 }
 .arrow{
+    font-family: Arial, Helvetica, sans-serif;
     position: relative;
     border-radius: 50%;
     width: 60px;
@@ -28,6 +29,13 @@
     font-weight: bold;
     background-color: rgba(200, 200, 200, 0.5);
     transition: 0.3s;
+}
+.button {
+    border-radius: 35% 65% 34% 66% / 64% 34% 66% 36%;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 40px;
 }
 .arrow:hover{
     transition: 0.3s;

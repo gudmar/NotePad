@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
-import { ContentManagerService } from '../services/content-manager.service';
+import { FalseDataMockService } from '../services/false-data-mock.service';
 import { UniqueIdProviderService } from '../services/unique-id-provider.service';
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 import { DescriptorToDataService } from '../services/descriptor-to-data.service'
@@ -11,17 +11,17 @@ import { StorageManagerService } from '../services/storage-manager.service'
   templateUrl: './work-book.component.html',
   styleUrls: ['./work-book.component.css'],
   providers: [
-              ContentManagerService,
+    FalseDataMockService,
               UniqueIdProviderService,
               NextColorGeneratorService
              ]
 })
 export class WorkBookComponent implements OnInit {
-  document: any = this.contentManager.getDocumentFromMemory();
+  document: any = this.mockDataProvider.getDocumentFromMemory();
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
-  application: string = 'calendar'
+  application: string = 'notes' //'calendar'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }
@@ -34,7 +34,7 @@ export class WorkBookComponent implements OnInit {
 
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
-    private contentManager: ContentManagerService, 
+    private mockDataProvider: FalseDataMockService, 
     private idProvider: UniqueIdProviderService,
     private messenger: CommunicationService,
     private storageManager: StorageManagerService,
@@ -43,7 +43,7 @@ export class WorkBookComponent implements OnInit {
     messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['storageOperation', 'addNextSheet', 'saveDocument', 'loadDocument']
+      ['storageOperation', 'addNextSheet', 'saveDocument', 'loadDocument', 'switchToCalendar', 'switchToNotes']
     )
   }
 
@@ -81,10 +81,14 @@ export class WorkBookComponent implements OnInit {
       let newDocument = this.storageManager.loadContent(data)
       this.reloadDocument(newDocument)
     }
+    if (eventType == 'switchToCalendar'){
+      this.application = 'calendar'
+    }
+    if (eventType == 'switchToNotes'){this.application = 'notes'}
   }
 
   reloadDocument(documentData: any){
-    this.loadDocumentToView(this.contentManager.getFreshDocument())
+    this.loadDocumentToView(this.mockDataProvider.getFreshDocument())
     this.loadDocumentToView(documentData)
 
   }
@@ -102,7 +106,8 @@ export class WorkBookComponent implements OnInit {
   ngOnInit(): void {
     this.listOfSheets = this.document.sheets;
     this.activeSheetId = this.document.activeSheetId;
-    this.initializeNewSheet(this.activeSheetId)
+    this.initializeNewSheet(this.activeSheetId);
+    console.dir(this.document)
   }
 
   initializeNewSheet(newSheetId: string){

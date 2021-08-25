@@ -1,0 +1,42 @@
+
+:host{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.shutter{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.spinner-wrapper{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(0% 0%, 0% 100%, 3% 100%, 3% 3%, 98% 2%, 98% 97%, 2% 97%, 3% 100%, 100% 100%, 100% 0);
+    clip-path: polygon(0% 0%, 0% 100%, 10% 100%, 10% 10%, 91% 10%, 91% 89%, 10% 88%, 10% 100%, 100% 100%, 100% 0%);
+}
+.spinner{
+    position: absolute;
+    width: 0;
+    height: 0;
+    z-index: 25;
+    animation: infinite-rotation 1s linear infinite;
+    border: solid thick rgb(200, 200, 255);
+    border-top: solid thick blue;
+    border-width: 100px;
+}
+
+
+@keyframes infinite-rotation{
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg)}
+}

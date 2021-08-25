@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { SetColorsDirective } from '../../../../directives/set-colors.directive';
 import { CommunicationService } from '../../../../services/communication.service'
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'day',
@@ -18,16 +19,18 @@ export class DayComponent implements OnInit {
     year: number,
     events?: any[]
   } = {dayMonthIndex: 0, dayWeekIndex: 0, dayName: '', month: 0, year: 0}
-
+  
   get events() { 
     if (this.dayDescriptor.events == undefined) return []
-    return this.dayDescriptor.events.length > 0? this.dayDescriptor.events : []
+    // console.log(this.dayDescriptor.events)
+    return this.dayDescriptor.events.entries.length > 0? this.dayDescriptor.events.entries : []
   }
   get monthDayIndex() {return this.dayDescriptor.dayMonthIndex;}
 
   @HostListener('click')
   onClick(){
-    this.communicator.inform('openDayEditWindow', {})
+    this.communicator.inform('openDayEditWindow', {});
+    console.dir(this.dayDescriptor)
   }
 
   ngOnInit(): void {

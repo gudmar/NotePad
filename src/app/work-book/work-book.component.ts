@@ -6,6 +6,7 @@ import { DescriptorToDataService } from '../services/descriptor-to-data.service'
 import { CommunicationService } from '../services/communication.service'
 import { StorageManagerService } from '../services/storage-manager.service'
 
+
 @Component({
   selector: 'work-book',
   templateUrl: './work-book.component.html',
@@ -108,6 +109,7 @@ export class WorkBookComponent implements OnInit {
     this.activeSheetId = this.document.activeSheetId;
     this.initializeNewSheet(this.activeSheetId);
     console.dir(this.document)
+
   }
 
   initializeNewSheet(newSheetId: string){

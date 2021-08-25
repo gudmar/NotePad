@@ -10,4 +10,5 @@ import { CommunicationService } from './services/communication.service'
 })
 export class AppComponent {
   title = 'NotePad';
+  shouldDisplayWaitingSpinner = true;
 }

@@ -29,9 +29,23 @@ export class DayComponent implements OnInit {
 
   @HostListener('click')
   onClick(){
-    this.communicator.inform('openDayEditWindow', {});
+    let dataToSend = {
+      day: this.dayDescriptor.dayMonthIndex,
+      month: this.dayDescriptor.month,
+      year: this.dayDescriptor.year,
+      cw: 0,
+      events: this.events
+    }
+    this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);
     console.dir(this.dayDescriptor)
   }
+
+  // this.day = data.day;
+  // this.month = data.month;
+  // this.year = data.year;
+  // this.cw = data.cw;
+  // this.events = data.events;
+  // this.shouldBeDisplayed = true;
 
   ngOnInit(): void {
     

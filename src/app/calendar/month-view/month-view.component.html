@@ -1,8 +1,10 @@
 <div class="month-view-wrapper center">
     <div class="year-switch">
+        <div class="arrow button center" (click)="displaySaveWindow()"><div>Save</div></div>
         <div class="arrow center" (click)="incrementYear(-1)"><div>&lt;&lt;</div></div>
         <div class="year center" contenteditable="true" (focusout)="changeYear($event)">{{year}}</div>
         <div class="arrow center" (click)="incrementYear(1)"><div>&gt;&gt;</div></div>
+        <div class="arrow button center" (click)="switchToNotes()"><div>Notes</div></div>
     </div>
     <div class="calendar-content">
         <month *ngFor="let month of months"

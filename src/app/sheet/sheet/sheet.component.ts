@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
-import { ContentManagerService } from '../../services/content-manager.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
 import { CommunicationService } from '../../services/communication.service';
 
@@ -32,7 +31,6 @@ export class SheetComponent implements OnInit {
   
 
   constructor(private descriptorParser: DescriptorToDataService, 
-    private contentManager: ContentManagerService,
     private storageManater: StorageManagerService,
     private messenger: CommunicationService,
   ) { }

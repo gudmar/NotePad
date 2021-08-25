@@ -30,7 +30,6 @@ export class NoteComponent implements OnInit {
   @Input() bgColor: string = '';
   @Input() set isActive (val: boolean) {
     this._isActive = val;
-    console.log(`Setting is active of note to ${val}`)
     if (val == true){
       if (this.colorManager.getFgColor(this.bgColor) === 'white') {
         this.dynamicClass['active-bgDark'] = true;
@@ -52,22 +51,6 @@ export class NoteComponent implements OnInit {
   @Output() noteContentChanged: EventEmitter<any> = new EventEmitter();
   private _wasActivated: boolean = false;
   @ViewChild('contentHolder') contentHolder: any;
-
-  // @HostListener('document:click')
-  // disactivateThisNote() {
-  //   if (!this._wasActivated) {
-  //     this.isActive = false; 
-      
-  //   }
-  //   this._wasActivated = false;
-  // }
-
-  // @HostListener('click', ['$event'])
-  // activateThisNote($event: any) {
-  //   this._wasActivated = true;
-  //   this.isActive = true
-  //   // $event.stopPropagation()
-  // }
 
   @HostListener('click', ['$event'])
   thisNoteWasClicked($event: any){

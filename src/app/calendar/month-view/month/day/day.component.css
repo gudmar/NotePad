@@ -23,6 +23,11 @@
 }
 .day-nr-of-events{
     position: relative;
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    z-index: 5;
 }
 .day-number{
     position: relative;

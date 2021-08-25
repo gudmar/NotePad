@@ -7,6 +7,7 @@ import { Z_PARTIAL_FLUSH } from 'zlib';
   styleUrls: ['./month.component.css']
 })
 export class MonthComponent implements OnInit {
+  @Input() events: any[] = []
   @Input() monthDescriptor: {
     monthIndex: number,
     monthName: string,

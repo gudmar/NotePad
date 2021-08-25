@@ -7,5 +7,6 @@
         [uniqueId] = "'confirmationWindowId'"
     >
     </confirmation-window>
-    <save-load-window [shouldBeDisplayed] = "true"> </save-load-window>
+    <save-load-window [shouldBeDisplayed] = "false"> </save-load-window>
+    <waiting-spinner *ngIf="shouldDisplayWaitingSpinner"></waiting-spinner>
 </div>

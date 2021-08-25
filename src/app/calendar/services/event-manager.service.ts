@@ -50,7 +50,10 @@ export class EventManagerService {
     day: number, 
     calendarEvents:  any[] // [{year: number, entries: [{month: number, entries: any[]}]}]
   ){
+    if (calendarEvents.length == 0) return [];
+    // debugger
     let desiredMonthDescriptor = this.fetchMonthEvents(year, month, calendarEvents);
+    if (desiredMonthDescriptor == undefined) return []
     return this.fetchFromCallendarArray('day', desiredMonthDescriptor.entries, day)
   }
 
@@ -58,23 +61,25 @@ export class EventManagerService {
     month: number, 
     calendarEvents: any[] // [{year: number, entries: [{month: number, entries: any[]}]}]
   ){
+    if (calendarEvents.length == 0) return [];
     let desiredYearEvents = this.fetchYearEvents(year, calendarEvents);
+    if (desiredYearEvents == undefined) return []
     return this.fetchFromCallendarArray('month', desiredYearEvents.entries, month)
   }
 
   fetchYearEvents(year: number, 
     calendarEvents: any[] // [{year: number, entries: [{month: number, entries: any[]}]}]
   ){
-    // debugger;
     return this.fetchFromCallendarArray('year', calendarEvents, year)
   }
 
   fetchFromCallendarArray(keyName: string, parentObject: any, searchedValue: number){
+    if (parentObject.length == 0) return [];
     let singleMatch = function(element: any) {return element[keyName] === searchedValue}
-    let entries = parentObject//.entries
-    // debugger
+    let entries = parentObject
     let searchedIndex = entries.findIndex(singleMatch);
-    return entries[searchedIndex]
+    let searchedEntries = entries[searchedIndex]
+    return searchedEntries == undefined ? [] : searchedEntries;
   }
   
 

@@ -5,11 +5,13 @@
         <div class="year center" contenteditable="true" (focusout)="changeYear($event)">{{year}}</div>
         <div class="arrow center" (click)="incrementYear(1)"><div>&gt;&gt;</div></div>
         <div class="arrow button center" (click)="switchToNotes()"><div>Notes</div></div>
+        <div class="arrow button center" (click)="test()"><div>Test</div></div>
     </div>
     <div class="calendar-content">
         <month *ngFor="let month of months"
             [year] = "year"
             [monthDescriptor] = "month"
+            [events] = "getMonthEvents(year, month)"
         >
         </month>
     </div>

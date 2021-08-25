@@ -136,6 +136,14 @@ export class CalendarObjectProviderService {
       let startOfCW1FromPreviousYear = this.getDateOfFirstCWDay_startDate_endDate(year - 1, cwIndex, 10);
       if (startOfCW1FromPreviousYear.day != -1) return startOfCW1FromPreviousYear
     }
+    let a = Math.floor(cwIndex / 4)
+    
+    let lowBoundry = Math.floor(cwIndex / 4) - 1;
+    let highBoundry = Math.floor(cwIndex / 4) + 2;
+    if (lowBoundry < 0) lowBoundry = 0;
+    if (highBoundry > 11) highBoundry = 11;
+    if (lowBoundry > 10) lowBoundry = 10;
+    // console.log(`search ${cwIndex} in ${lowBoundry}    ${highBoundry}`)
     return this.getDateOfFirstCWDay_startDate_endDate(year, cwIndex)
 
   }

@@ -66,20 +66,6 @@ export class StorageManagerService {
     return {information: 'operation not supported'}
   }
 
-  // ('loadWholeDocument')"
-  // >
-  // </wb-button>
-  // <wb-button [uniqueId] = "'clearStorageId'"
-  //         [isPushed] = "false"
-  //         [pictogram] = "'Clear'"
-  //         (wasClicked) = "passDataFromStorageToWBComponent('clearStorage')"
-  // >
-  // </wb-button>
-  // <wb-button [uniqueId] = "'GetAllFromStoratge'"
-  //     [isPushed] = "false"
-  //     [pictogram] = "'Get all'"
-  //     (wasClicked) = "passDataFromStorageToWBComponent('getAllKeysFromStorage')"
-
   getFreshDocument(){
     this.colorProvider.restart();
     let startColor = this.colorProvider.getNextColor();
@@ -99,8 +85,6 @@ export class StorageManagerService {
 
   getNextSheet(lastUsedColor: string){
     let color = this.colorProvider.getColorAfterGiven(lastUsedColor);
-    console.log(color)
-    console.log(lastUsedColor)
     let newPage = this.getPage(this.colorProvider.getFirstColor(), 'newPage', [])
     return this.getSheet(color, 'newSheet', [newPage], Object.keys(newPage)[0]);
   }

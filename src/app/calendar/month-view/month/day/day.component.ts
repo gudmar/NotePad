@@ -31,14 +31,15 @@ export class DayComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
 
   getBgColorDependOnEventsNumber(){
-    if (this.events.length == 0) return `hsl(${this.colorThemeHue}, 80%, 80%}`
-    if (this.events.length <=  2) return `hsl(${this.colorThemeHue}, 80%, 70%}`
-    if (this.events.length <=  4) return `hsl(${this.colorThemeHue}, 80%, 60%}`
-    if (this.events.length <=  6) return `hsl(${this.colorThemeHue}, 80%, 50%}`
-    if (this.events.length <=  8) return `hsl(${this.colorThemeHue}, 80%, 40%}`
+    if (this.events.length == 0) return  `hsl(${this.colorThemeHue}, 80%, 80%)`
+    if (this.events.length <=  2) return `hsl(${this.colorThemeHue}, 80%, 70%)`
+    if (this.events.length <=  4) return `hsl(${this.colorThemeHue}, 80%, 60%)`
+    if (this.events.length <=  6) return `hsl(${this.colorThemeHue}, 80%, 50%)`
+    if (this.events.length <=  8) return `hsl(${this.colorThemeHue}, 80%, 40%)`
     return `hsl(${this.colorThemeHue}, 80%, 30%}`
   }
 

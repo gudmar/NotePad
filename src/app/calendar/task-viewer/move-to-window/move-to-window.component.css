@@ -1,0 +1,135 @@
+.arrow{
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 50px;
+    margin: 0;
+    color: white;
+    font-weight: bold;
+    background-color: rgba(200, 200, 200, 0.5);
+    transition: 0.3s;
+}
+.button {
+    border-radius: 5px;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 20px;
+}
+.arrow:hover{
+    transition: 0.3s;
+    background-color: rgba(200, 200, 200, 1);
+    cursor: pointer;
+}
+.arrow:hover>div{
+    transition: 0.3s;
+    transform: scale(1.2);
+}
+.arrow:active>div{
+    transition: 0.3s;
+    transform: scale(0.8);
+}
+.arrow:active{
+    background-color: rgb(230, 230, 120);
+}
+.editable{
+    outline: none;
+    /* background-color: rgb(230, 230, 120); */
+}
+.icon-button{
+    height: 15px;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    margin: 2px;
+}
+.icon-button-fixed{
+    width: 15px;
+
+}
+.icon-button-red{
+    background-color: red;
+    color: white;
+}
+.icon-button-green{
+    background-color: green;
+    color: white;
+}
+
+.valid{
+    background-color: green;
+}
+.notValid{
+    background-color: red;
+}
+
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.move-event-window{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgba(200, 230, 200, 0.9);
+    flex-direction: column;
+    padding-bottom: 1rem;
+    border-radius: 46% 54% 51% 49% / 22% 20% 80% 78% ;
+}
+.move-to-title-bar{
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    height: 2rem;
+    margin-top: 0.6rem;
+}
+.move-to-title{
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+    cursor: default;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+.new-date-wrapper{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.new-date{
+    position: relative;
+    width: 2rem;
+    background-color: white;
+    color: black;
+    height: 1.5rem;
+    text-align: center;
+    line-height: 1.5rem;
+}
+.new-date-year{
+    width: 4rem;
+}
+.hover-info{
+    visibility: hidden;
+    position: absolute;
+    background-color: rgba(200, 200, 230, 0.8);
+    font-size: 1rem;
+    text-align: center;
+    padding: 5px;
+    z-index: 30;
+    top: -2rem;
+}
+.move-to-title:hover>.hover-info{
+    visibility: visible;
+    transition-delay: 1s;
+}

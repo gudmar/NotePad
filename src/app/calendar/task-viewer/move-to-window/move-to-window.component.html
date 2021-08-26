@@ -1,32 +1,37 @@
 <ng-container *ngIf="shouldDisplay">
-<div class="move-event-window">
+<div class="move-event-window center">
     <div class="move-to-title-bar">
-        <div class="move-to-title">Move event to:</div>
-        <div class="button" (click)="closeMoveWindow()">&times;</div>
+        <div class="move-to-title">Move event to:
+            <div class="hover-info">move event id: {{targetEventId}}</div>
+        </div>
+        <div class="button arrow" (click)="closeMoveWindow()">&times;</div>
     </div>
-    <div class="new-date-wrapper">
+    <div class="new-date-wrapper center">
         <div 
-            class="new-date-day" 
+            class="new-date new-date-day" 
             placeholder="dd"
+            contenteditable="true"
             (focusout)="setEndDay($event)"
             (keydown)="validateDay($event)"
             (mousedown)="validateDay($event)"
-        >{{day}}</div>
+        >{{toDay}}</div>
         <div 
-            class="new-date-month" 
+            class="new-date new-date-month" 
             placeholder="mm"
+            contenteditable="true"
             (focusout)="setEndMonth($event)"
             (keydown)="validateMonth($event)"
             (mousedown)="validateMonth($event)"
-        >{{month}}</div>
+        >{{toMonth}}</div>
         <div 
-            class="new-date-year" 
+            class="new-date new-date-year" 
             placeholder="year"
+            contenteditable="true"
             (focusout)="setEndYear($event)"
             (keydown)="validateYear($event)"
             (mousedown)="validateYear($event)"
-        >{{year}}</div>
+        >{{toYear}}</div>
     </div>
-    <div class="button" (click)="moveEvent()">Ok</div>
+    <div class="arrow button" (click)="moveEvent()">Ok</div>
 </div>
 </ng-container>

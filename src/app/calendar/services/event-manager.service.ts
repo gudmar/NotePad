@@ -81,6 +81,40 @@ export class EventManagerService {
     let searchedEntries = entries[searchedIndex]
     return searchedEntries == undefined ? [] : searchedEntries;
   }
+
+  moveEvent(fromDate: any, toDate: any, eventObj: any, eventId: string){
+    let eventsFromStartDay = this.fetchDayEvents(fromDate.year, fromDate.month, fromDate.day, eventObj);
+    let eventsFromEndDay = this.fetchDayEvents(toDate.year, toDate.month, toDate.day, eventObj);
+    let targetEventId = this.getIndexOfElemetnInArray(eventsFromStartDay, 'uniqueId', eventId);
+    let copyOfEvent = [...eventsFromStartDay[targetEventId]];
+    eventsFromStartDay.splice(targetEventId, 1);
+    if (eventsFromEndDay == []) eventsFromEndDay = this.addEmptyEventsObjectToDay(toDate, eventObj)
+    eventsFromEndDay.push(copyOfEvent)
+  }
+
+  addEmptyEventsObjectToDay(date: any, eventObj: any){
+    let currentObj = eventObj;
+    if (this.fetchYearEvents(date.year, currentObj) == []) {
+      eventObj.push(this.getCalendarYearEntryAsObject(date.year, []))
+    }
+    currentObj = this.fetchYearEvents(date.year, currentObj)
+    if (this.fetchMonthEvents(date.year, date.month, eventObj) == []){
+      currentObj.push(this.getCalendarMonthEntryAsObject(date.month, []))
+    }
+    currentObj = this.fetchMonthEvents(date.year, date.month, eventObj) == []
+    if (this.fetchDayEvents(date.year, date.matchKey, date.day, eventObj) == []){
+      currentObj.push(this.getCalendarDayEntryAsObject(date.day, []));
+    }
+    currentObj = this.fetchDayEvents(date.year, date.month, date.day, [])
+    return currentObj;
+  }
+
+  getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
+    let singleMatch = function(element: any) { return element[matchKey] == value; }
+    return array.findIndex(singleMatch);
+  }
+
+
   
 
   addCalendarSingleEntry(){}

@@ -75,15 +75,33 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="options">
-                                    <div class="arrow center icon-button icon-button-fixed icon-button-green">+</div>
-                                    <div class="arrow center icon-button icon-button-fixed icon-button-red">&times;</div>
-                                    <div class="arrow center icon-button">reshedule</div>
+                                <div class="options center">
+                                    <div 
+                                        class="arrow center icon-button icon-button-fixed icon-button-green" 
+                                        (click) = "addEventAfter($event, entry.uniqueId)"
+                                        >+</div>
+                                    <div 
+                                        class="arrow center icon-button icon-button-fixed icon-button-red"
+                                        (click) = "removeEvent($event, entry.uniqueId)"
+                                        >&times;</div>
+                                    <div class="arrow center icon-button" (click)="openMoveWindow(entry.uniqueId)">move</div>
                                 </div>
                             </td>
                         </tr>
                 </table>
             </div>
+
+            <move-to-window 
+                [shouldDisplay] = "shouldMoveWindowBeVisible"
+                [year] = "year"
+                [month] = "month + 1"
+                [day] = "day"
+                [events] = "events"
+                [targetEventId] = "eventToMoveId"
+                (closeMoveWindowEvent) = "shouldMoveWindowBeVisible = false"
+            >
+            </move-to-window>
+
         </div>
     </div>
 </ng-container>

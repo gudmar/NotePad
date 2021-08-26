@@ -35,6 +35,7 @@ import { DayComponent } from './calendar/month-view/month/day/day.component';
 import { MobileViewComponent } from './calendar/mobile-view/mobile-view.component';
 import { WaitingSpinnerComponent } from './common/waiting-spinner/waiting-spinner.component';
 import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.component';
+import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/move-to-window.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.componen
     MobileViewComponent,
     WaitingSpinnerComponent,
     TaskViewerComponent,
+    MoveToWindowComponent,
   ],
   imports: [
     BrowserModule,

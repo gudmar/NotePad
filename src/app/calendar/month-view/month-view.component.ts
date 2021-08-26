@@ -98,9 +98,6 @@ export class MonthViewComponent implements OnInit {
     let otherTestPattern = new RegExp('\\D')
     let s = digitTestPattern.test(valueToTest.toString())
     let w = otherTestPattern.test(valueToTest.toString())
-    console.log(s)
-    console.log(w)
-    console.log(valueToTest)
     if (!digitTestPattern.test(valueToTest.toString())) return false
     if (otherTestPattern.test(valueToTest.toString())) return false
     if (valueToTest > 3000) return false

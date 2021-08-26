@@ -1,0 +1,32 @@
+<ng-container *ngIf="shouldDisplay">
+<div class="move-event-window">
+    <div class="move-to-title-bar">
+        <div class="move-to-title">Move event to:</div>
+        <div class="button" (click)="closeMoveWindow()">&times;</div>
+    </div>
+    <div class="new-date-wrapper">
+        <div 
+            class="new-date-day" 
+            placeholder="dd"
+            (focusout)="setEndDay($event)"
+            (keydown)="validateDay($event)"
+            (mousedown)="validateDay($event)"
+        >{{day}}</div>
+        <div 
+            class="new-date-month" 
+            placeholder="mm"
+            (focusout)="setEndMonth($event)"
+            (keydown)="validateMonth($event)"
+            (mousedown)="validateMonth($event)"
+        >{{month}}</div>
+        <div 
+            class="new-date-year" 
+            placeholder="year"
+            (focusout)="setEndYear($event)"
+            (keydown)="validateYear($event)"
+            (mousedown)="validateYear($event)"
+        >{{year}}</div>
+    </div>
+    <div class="button" (click)="moveEvent()">Ok</div>
+</div>
+</ng-container>

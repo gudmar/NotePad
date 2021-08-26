@@ -3,6 +3,8 @@ import { CommunicationService } from '../../services/communication.service'
 import { CalendarObjectProviderService } from '../services/calendar-object-provider.service'
 import { EEXIST } from 'constants';
 import { ConcatSource } from 'webpack-sources';
+import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
+import { EventManagerService } from '../services/event-manager.service';
 
 @Component({
   selector: 'task-viewer',
@@ -17,6 +19,16 @@ export class TaskViewerComponent implements OnInit {
   @Input() cw: number = 0;
   @Input() events: any[] = [];
   @Input() shouldBeDisplayed: boolean = true;
+  shouldMoveWindowBeVisible: boolean = true;
+  eventToMoveId: string = '';
+
+
+  openMoveWindow(uniqueId: string) {
+    this.eventToMoveId = uniqueId;
+    this.shouldMoveWindowBeVisible = true;
+    // debugger;
+  }
+
   get entries() {return this.events}
   get dayAsString() {return this.calendarProvider.getDayName(this.day)}
   get currentDate() {
@@ -24,7 +36,9 @@ export class TaskViewerComponent implements OnInit {
   }
   constructor(
     private communicator: CommunicationService,
-    private calendarProvider: CalendarObjectProviderService
+    private eventManager: EventManagerService,
+    private calendarProvider: CalendarObjectProviderService,
+    private uuidProvider: UniqueIdProviderService
   ) { 
     communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['eventViewerShouldBeDisplayed'])
   }
@@ -71,19 +85,25 @@ export class TaskViewerComponent implements OnInit {
   test(){console.log('changed')}
 
   ngOnInit(): void {
-    console.log(this.add0prefix(0))
-    console.log(this.add0prefix(1))
-    console.log(this.add0prefix(9))
-    console.log(this.add0prefix(10))
   }
 
   close(){
     this.shouldBeDisplayed = false;
   }
 
+  addEventAfter(event: any, uniqueId: string){
+    let eventToAddAfterIndex = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId);
+    this.events.splice(eventToAddAfterIndex, 0, {
+      hours: 0, minutes: 0, diration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId
+    })
+  }
+
+  removeEvent(event:any, uniqueId: string){
+    let eventToBeRemovedIndex = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId);
+    this.events.splice(eventToBeRemovedIndex, 1);
+  }
+
   onFocusOut(event: any, modificationTarget: string, uniqueId: string){
-    // this.hourValidationClass.valid = false;
-    // this.hourValidationClass.notValid = false;
     event.target.style.backgroundColor = ''
     this.modifyNote(event, modificationTarget, uniqueId)
   }
@@ -107,7 +127,6 @@ export class TaskViewerComponent implements OnInit {
       isValid = true;
       this.modifyEvent(uniqueId, modificationTarget, valueFromField);
     }
-    // debugger
     if (modificationTarget == "hours" || modificationTarget == "minutes"){
       let a = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget));
     
@@ -130,7 +149,6 @@ export class TaskViewerComponent implements OnInit {
       let nonDigitRe = new RegExp('\\D')
       let a = nonDigitRe.test(toValidate.toString())
       let b  = digitRe.test(toValidate.toString())
-      // debugger
       if (nonDigitRe.test(toValidate.toString())) return false;
       if (!digitRe.test(toValidate.toString())) return false;
       if (parseInt(toValidate.toString()) < 0 || parseInt(toValidate.toString()) >= maxVal) return false;
@@ -139,12 +157,9 @@ export class TaskViewerComponent implements OnInit {
     }
   }
   durationValidationFunction(toValidate: string | number){
-    //if (typeof(toValidate) == 'number') toValidate = toValidate.toString();
-    // let digitRe = new RegExp('\\d{1,3}');
     let nonDigitRe = new RegExp('\\D')
     if (nonDigitRe.test(toValidate.toString())) return false;
     if (parseInt(toValidate.toString()) > 999) return false
-    // if (!digitRe.test(toValidate.toString())) {return false;}
     return true;
   }
   
@@ -154,15 +169,11 @@ export class TaskViewerComponent implements OnInit {
     return isValid
   }
   modifyEvent(uniqueId: string, key: string, newValue: any){
-    // let a = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)
     let objectToModify: any = this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)]
     objectToModify[key] = newValue;
   }
 
   getOriginalValue(uniqueId: string, key: string){
-    // let a = this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)]
-    // let b = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)
-    // let c = this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)]
     return this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)][key]
   }
 

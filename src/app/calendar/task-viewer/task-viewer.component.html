@@ -1,12 +1,17 @@
 <ng-container *ngIf = "shouldBeDisplayed">
     <div class="shutter center">
-        <div class="viewer-window">
+        <div class="viewer-window center">
             <div class="nav-bar">
                 <div class="arrow">&lt;&lt;</div>
-                <div class="date">{{currentDate}}</div>
+                <div class="date">
+                    <span class="conditional-display">{{dayAsString}}</span>
+                    <span>{{add0prefix(day)}}</span> / 
+                    <span>{{add0prefix(month + 1)}}</span> / 
+                    <span class="conditional-display">{{year}}</span>
+                </div>
                 <div class="arrow">&gt;&gt;</div>
 
-                <div class="button">Save</div>
+                <div class="arrow button">Save</div>
                 <div class="button" (click)="close()">&times;</div>
             </div>
             <div class="tasks">
@@ -16,13 +21,66 @@
                             <th>Duration</th>
                             <th>Summary</th>
                             <th>Description</th>
+                            <th>Opt.</th>
                         </tr>
                         <tr *ngFor="let entry of entries">
-                            <td><div class="center hours">{{entry.hours}}</div></td>
-                            <td><div class="center minutes">{{entry.minutes}}</div></td>
-                            <td><div class="center duration">{{entry.duration}}</div></td>
-                            <td><div class="center summary">{{entry.summary}}</div></td>
-                            <td><div class="center description">{{entry.description}}</div></td>
+                            <td>
+                                <div class="center hours editable" 
+                                    contenteditable="true" 
+                                    [ngClass] = "hourValidationClass"
+                                    (focusout)="onFocusOut($event, 'hours', entry.uniqueId)"
+                                    (keydown)="validateHours($event)"
+                                    (mousedown) = "validateHours($event)"
+                                >
+                                {{add0prefix(entry.hours)}}
+                                    
+                                </div>
+                            </td>
+                            <td>
+                                <div class="center minutes editable" 
+                                    contenteditable="true" 
+                                    (focusout)="onFocusOut($event, 'minutes', entry.uniqueId)"
+                                    (keydown)="validateMinutes($event)"
+                                    (mousedown) = "validateMinutes($event)"
+                                >
+                                    {{add0prefix(entry.minutes)}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="center duration editable" 
+                                    contenteditable="true" 
+                                    (focusout)="onFocusOut($event, 'duration', entry.uniqueId)"
+                                    (keydown)="validateDuration($event)"
+                                    (mousedown) = "validateDuration($event)"
+                                >
+                                    {{entry.duration}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="center summary editable" 
+                                    contenteditable="true" 
+                                    (focusout)="onFocusOut($event, 'summary', entry.uniqueId)"
+                                    (keydown)="validateSummary($event)"
+                                    (mousedown) = "validateSummary($event)"
+                                >
+                                    {{entry.summary}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="center description editable" 
+                                    contenteditable="true" 
+                                    (focusout)="modifyNote($event, 'description', entry.uniqueId)"
+                                >
+                                    {{entry.description}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="options">
+                                    <div class="arrow center icon-button icon-button-fixed icon-button-green">+</div>
+                                    <div class="arrow center icon-button icon-button-fixed icon-button-red">&times;</div>
+                                    <div class="arrow center icon-button">reshedule</div>
+                                </div>
+                            </td>
                         </tr>
                 </table>
             </div>

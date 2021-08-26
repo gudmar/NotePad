@@ -90,14 +90,19 @@ export class MonthViewComponent implements OnInit {
 
   changeYear(data: any){
     this.year = parseInt(data.target.innerText);
-    if (this.year != parseInt(data.target.innerText)) data.target.innerText = this.year;
+    if (this.year.toString() != data.target.innerText) data.target.innerText = this.year;
   }
 
   isYearValid(valueToTest: number ){
-    let testPattern = new RegExp("\\d{4}")
-    let s = testPattern.test(valueToTest.toString())
-    // debugger
-    if (!testPattern.test(valueToTest.toString())) return false
+    let digitTestPattern = new RegExp("\\d{4}")
+    let otherTestPattern = new RegExp('\\D')
+    let s = digitTestPattern.test(valueToTest.toString())
+    let w = otherTestPattern.test(valueToTest.toString())
+    console.log(s)
+    console.log(w)
+    console.log(valueToTest)
+    if (!digitTestPattern.test(valueToTest.toString())) return false
+    if (otherTestPattern.test(valueToTest.toString())) return false
     if (valueToTest > 3000) return false
     return true;
   }

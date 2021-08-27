@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { EventManagerService } from '../../services/event-manager.service';
 import { ValidatorService } from '../../services/validator.service';
+import { CommunicationService } from '../../../services/communication.service';
 
   function asyncFunction (target: Function, propertyKey: string, descriptor: PropertyDescriptor):any{
     let originalMethod = descriptor.value;
@@ -25,6 +26,7 @@ export class MoveToWindowComponent implements OnInit {
 @Input() day: number = 0;
 @Input() events: any[] = [];
 @Input() targetEventId: any;
+@Input() calendarEventsObject: any = [];
 private _shouldDisplay: boolean = false;
 @Input() set shouldDisplay(val: boolean) {
   console.log(val)
@@ -34,27 +36,39 @@ private _shouldDisplay: boolean = false;
 toDay: number = this.day;
 toMonth: number = this.month;
 toYear: number = this.year;
-
+allCalendarEvents: any = [];
 get shouldDisplay() {return this._shouldDisplay}
 uniqueId: string = 'moveEventId'
   constructor(
     private eventManager: EventManagerService,
     private validator: ValidatorService,
+    private communicator: CommunicationService
   ) { }
 
   ngOnInit(): void {
     this.toDay = this.day;
     this.toYear = this.year;
     this.toMonth = this.month;
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['calendarEvents']);
+    this.getAllCalendarEvents();
   }
 
   closeMoveWindow(){this.closeMoveWindowEvent.emit()}
+
+  getAllCalendarEvents(){
+    this.communicator.inform('provideCalendarEvents', this.handleMessages.bind(this), )
+  }
+  handleMessages(eventType: string, data: any){
+    if (eventType == 'calendarEvents') {
+      this.allCalendarEvents = data;
+    }
+  }
 
   setEndDay(event: any){
     let isValid = this.validator.isDayValid(event.target.innerText, this.toMonth - 1, this.toDay);
     // -1 is difference between real month and js conunting from 0
     if (isValid){
-      this.toDay = event.target.innerText;
+      this.toDay = parseInt(event.target.innerText);
     } else {
       event.target.innerText = this.toDay;
     }
@@ -77,7 +91,7 @@ uniqueId: string = 'moveEventId'
   setEndMonth(event: any){
     let isValid = this.validator.isMonthValid(event.target.innerText);
     if (isValid){
-      this.toMonth = event.target.innerText
+      this.toMonth = parseInt(event.target.innerText);
     } else {
       event.target.innerText = this.toMonth;
     }
@@ -89,7 +103,7 @@ uniqueId: string = 'moveEventId'
   setEndYear(event: any){
     let isValid = this.validator.isYearValid(event.target.innerText);
     if (isValid){
-      this.toYear = event.target.innerText;
+      this.toYear = parseInt(event.target.innerText);
       
     } else {
       event.target.innerText = this.toYear;
@@ -104,16 +118,32 @@ uniqueId: string = 'moveEventId'
       let isValid = validationFunction(event.target.innerText);
       event.target.style.backgroundColor = isValid ? 'rgb(200, 255, 200)' : 'rgb(255, 200, 200)'
     })
-    console.log(event.target)
   }
   
 
   moveEvent(){
-    this.eventManager.moveEvent(
-      {year: this.year, month: this.month, day: this.day}, 
-      {year: this.toYear, month: this.toMonth, day: this.toDay}, 
-      this.events, 
+    let whatObjecsWereAdded = this.eventManager.moveEvent(
+      {year: this.year, month: this.month - 1, day: this.day}, 
+      {year: this.toYear, month: this.toMonth - 1, day: this.toDay}, 
+      this.allCalendarEvents, 
       this.targetEventId
     )
+    this.infromComponentsAboutChange(whatObjecsWereAdded);
+  }
+
+  infromComponentsAboutChange(whatObjecsWereAdded: any){
+    if (!whatObjecsWereAdded.newYearWasCreated){ //as year components are not created at all
+      // if (whatObjecsWereAdded.newMonthWasCreated) this.informMonthComponentsAboutChange();
+      if (whatObjecsWereAdded.newDayWasCreated) this.informDayComponentsAboutChange();
+    }
+  }
+
+  informDayComponentsAboutChange(){
+    this.communicator.inform('eventWasMovedAndDayWasCreated', {day: this.toDay, month: this.toMonth - 1})
+  }
+  informMonthComponentsAboutChange(){
+    this.communicator.inform('eventWasMovedAndMonthWasCreated', {month: this.toMonth})
   }
 }
+
+

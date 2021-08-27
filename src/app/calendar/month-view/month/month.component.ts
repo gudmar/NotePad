@@ -22,6 +22,7 @@ export class MonthComponent implements OnInit {
     for(let week of this.weeks){
       cwIndexes.push(week.cwIndex)
     }
+    // debugger
     return cwIndexes;
   }
   getDays(indexOfCw: number) { 

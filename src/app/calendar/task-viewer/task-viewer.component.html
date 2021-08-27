@@ -2,17 +2,18 @@
     <div class="shutter center">
         <div class="viewer-window center">
             <div class="nav-bar center">
-                <div class="arrow">&lt;&lt;</div>
+                <div class="arrow" (click)="switchToAnotherDay(-1)">&lt;&lt;</div>
                 <div class="date">
                     <span class="conditional-display">{{dayAsString}}</span>
+                    &nbsp;
                     <span>{{add0prefix(day)}}</span> / 
                     <span>{{add0prefix(month + 1)}}</span> / 
                     <span class="conditional-display">{{year}}</span>
                 </div>
-                <div class="arrow">&gt;&gt;</div>
+                <div class="arrow" (click)="switchToAnotherDay(1)">&gt;&gt;</div>
 
                 <div class="arrow button">Save</div>
-                <div class="button" (click)="close()">&times;</div>
+                <div class="button close" (click)="close()">&times;</div>
             </div>
             <div class="tasks">
                 <table>
@@ -84,7 +85,12 @@
                                         class="arrow center icon-button icon-button-fixed icon-button-red"
                                         (click) = "removeEvent($event, entry.uniqueId)"
                                         >&times;</div>
-                                    <div class="arrow center icon-button" (click)="openMoveWindow(entry.uniqueId)">move</div>
+                                    <div class="arrow center icon-button" 
+                                        (click)="openMoveWindow(entry.uniqueId)"
+                                        [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
+                                    >
+                                        move
+                                    </div>
                                 </div>
                             </td>
                         </tr>

@@ -43,20 +43,7 @@
     width: 100%;
     
 }
-.date{
-    font-size: 2rem;
-    height: 2rem;
-    cursor: default;
-}
-.hours{
-    position: relative;
-    width: 40px;
-    overflow: visible;
-}
-.minutes{
-    position: relative;
-    width: 40px;    
-}
+
 .mark{
     position: absolute;
     right: 0;
@@ -96,8 +83,8 @@ td>div{
 td>div:active{
     outline: none;
 }
-tr:nth-child(even){
-    background-color: rgb(230, 230, 230);
+tr:nth-child(odd){
+    background-color: rgb(238, 238, 238);
 }
 th{
     background-color: black;
@@ -126,6 +113,20 @@ th{
     padding-right: 5px;
     font-size: 40px;
     cursor: pointer;
+    transition: 0.3s;
+}
+.button:hover{
+    transition: 0.3s;
+    transform: scale(1.2);
+}
+
+.button:active{
+    transition: 0.3s;
+    transform: scale(0.8);
+}
+.move-lighted{
+    color: rgb(150, 150, 0);
+    background-color: yellow;
 }
 .arrow:hover{
     transition: 0.3s;
@@ -207,6 +208,38 @@ th{
 }
 .notValid{
     background-color: red;
+}
+
+.date{
+    font-size: 2rem;
+    height: 2rem;
+    cursor: default;
+}
+.hours{
+    position: relative;
+    width: 45px;
+    overflow: visible;
+    justify-content: flex-end;
+    white-space: nowrap;
+}
+.hours:after{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    content:':'
+}
+.minutes{
+    position: relative;
+    width: 45px;    
+    justify-content: flex-start;
+    white-space: nowrap;
+}
+.minutes::before{
+    position: relative;
+    content:' ';
+    width: 2px;
+    height: 2px;
 }
 
 @media only screen and (max-width: 750px) {

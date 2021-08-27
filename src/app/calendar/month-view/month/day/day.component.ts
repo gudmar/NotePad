@@ -2,6 +2,7 @@ import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { SetColorsDirective } from '../../../../directives/set-colors.directive';
 import { CommunicationService } from '../../../../services/communication.service'
 import { ConcatSource } from 'webpack-sources';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'day',
@@ -22,10 +23,18 @@ export class DayComponent implements OnInit {
   
   get events() { 
     if (this.dayDescriptor.events == undefined) return []
-    // console.log(this.dayDescriptor.events)
-    return this.dayDescriptor.events.entries.length > 0? this.dayDescriptor.events.entries : []
+    if (typeof(this.dayDescriptor.events.entries) == 'function') return []
+    return this.dayDescriptor.events.entries
+  }
+  set events(val: any) {
+    this.dayDescriptor.events!.entries = val;
   }
   get monthDayIndex() {return this.dayDescriptor.dayMonthIndex;}
+  get day() {return this.dayDescriptor.dayMonthIndex}
+  get month() {return this.dayDescriptor.month}
+  get year() {return this.dayDescriptor.year}
+  get uniqueId() {return `${this.month}/${this.day}`}
+
 
   @HostListener('click')
   onClick(){
@@ -37,18 +46,29 @@ export class DayComponent implements OnInit {
       events: this.events
     }
     this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);
-    console.dir(this.dayDescriptor)
   }
 
-  // this.day = data.day;
-  // this.month = data.month;
-  // this.year = data.year;
-  // this.cw = data.cw;
-  // this.events = data.events;
-  // this.shouldBeDisplayed = true;
-
   ngOnInit(): void {
-    
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this),
+     ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay'])
+  }
+  handleMessages(eventType: string, data: any){
+    if (eventType == 'eventWasMovedAndDayWasCreated'){
+      if (data.day == this.day && data.month == this.month) this.getNewEvents();
+    }
+    if (eventType == 'calendarEventsForDay'){
+      if (data != null){
+        if (data.year == this.year && this.month == data.month && data.day == this.day){
+          
+          this.events = data.events;
+          let a = this.events
+        }
+      }
+    }      
+  }
+  getNewEvents(){
+    this.communicator.inform('provideCalendarEventsForSingleDay', 
+    {day: this.day, month: this.month, year: this.year})
   }
 
   getBgColorDependOnEventsNumber(){

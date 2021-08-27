@@ -37,6 +37,7 @@ import { WaitingSpinnerComponent } from './common/waiting-spinner/waiting-spinne
 import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.component';
 import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/move-to-window.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +68,7 @@ import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/mov
     WaitingSpinnerComponent,
     TaskViewerComponent,
     MoveToWindowComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,7 @@ import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/mov
               FalseDataMockService,
               CommunicationService,
               DescriptorToDataService,
-              StorageManagerService
+              StorageManagerService,
             ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ import { CalendarObjectProviderService } from '../services/calendar-object-provi
 import { CommunicationService } from '../../services/communication.service'
 import { EventManagerService } from '../services/event-manager.service';
 import { ConcatSource } from 'webpack-sources';
+import { StorageManagerService } from '../../services/storage-manager.service';
 @Component({
   selector: 'month-view',
   templateUrl: './month-view.component.html',
@@ -10,6 +11,7 @@ import { ConcatSource } from 'webpack-sources';
 })
 export class MonthViewComponent implements OnInit {
   private _year: number = 0;
+  uniqueId: string = 'month-view-id'
   @Input() events: any[] = [];
   @Input() set year(val: number) {
     if (val != this._year && this.isYearValid(val)){
@@ -33,15 +35,33 @@ export class MonthViewComponent implements OnInit {
     private calendarProvider: CalendarObjectProviderService,
     private communicator: CommunicationService,
     private eventManater: EventManagerService,
+    private storageManager: StorageManagerService
   ) { }
 
   ngOnInit(): void {
-    if (this.months.length == 0) this.initializeWithPresentYear()
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['refreshAllComponents', 'loadDocument'])
+    // if (this.months.length == 0) this.initializeWithPresentYear()
+    this.initializeWithPresentYear()
+    // debugger
     
+  }
+  handleMessages(eventType: string, data: any){
+    if(eventType == 'refreshAllComponents') {
+      // this.refreshYear();
+    }
+    if (eventType == 'loadDocument') { 
+      let newDocument = this.storageManager.loadContent(data);
+
+      // this.events = this.eventManater.fetchYearEvents(this.year, newDocument.calendarInputs).entries
+      this.events = newDocument.calendarInputs
+      // debugger
+      this.refreshYear(); console.log('message receivced')
+    }
   }
 
   refreshYear(){
     this.months = this.calendarProvider.getYearAsObject(this.year, this.events).months
+    // debugger
   }  
 
   getMonthEvents(year: number, month: number){
@@ -81,6 +101,7 @@ export class MonthViewComponent implements OnInit {
     let currentDate = Date.now();
     let dateObj = new Date(currentDate);
     this.year = dateObj.getFullYear();
+    
     // this.months = this.calendarProvider.getYearAsObject(this.year).months;
   }
 

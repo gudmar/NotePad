@@ -18,7 +18,13 @@ import { StorageManagerService } from '../services/storage-manager.service'
              ]
 })
 export class WorkBookComponent implements OnInit {
-  document: any = this.mockDataProvider.getDocumentFromMemory();
+  _document: any = this.mockDataProvider.getDocumentFromMemory();
+  set document(val: any) {
+    this._document = val
+    this.calendarInputs = val.calendarInputs
+    // debugger
+  };
+  get document() {return this._document}
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
@@ -32,6 +38,7 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
+  calendarInputs: any = [];
 
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
@@ -40,6 +47,7 @@ export class WorkBookComponent implements OnInit {
     private messenger: CommunicationService,
     private storageManager: StorageManagerService,
     private changeDetector: ChangeDetectorRef
+    
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -107,6 +115,7 @@ export class WorkBookComponent implements OnInit {
   ngOnInit(): void {
     this.listOfSheets = this.document.sheets;
     this.activeSheetId = this.document.activeSheetId;
+    this.calendarInputs = this.document.calendarInputs;
     this.initializeNewSheet(this.activeSheetId);
     console.dir(this.document)
 

@@ -83,34 +83,44 @@ export class EventManagerService {
   }
 
   moveEvent(fromDate: any, toDate: any, eventObj: any, eventId: string){
-    let eventsFromStartDay = this.fetchDayEvents(fromDate.year, fromDate.month, fromDate.day, eventObj);
-    let eventsFromEndDay = this.fetchDayEvents(toDate.year, toDate.month, toDate.day, eventObj);
+    let executionStatus = {newDayWasCreated: false, newMonthWasCreated: false, newYearWasCreated: false}
+    let eventsFromStartDay = this.fetchDayEvents(fromDate.year, fromDate.month, fromDate.day, eventObj).entries;
+    let eventsFromEndDay = this.fetchDayEvents(toDate.year, toDate.month, toDate.day, eventObj).entries;
+    let e = this.fetchDayEvents(toDate.year, toDate.month, toDate.day, eventObj)
     let targetEventId = this.getIndexOfElemetnInArray(eventsFromStartDay, 'uniqueId', eventId);
-    let copyOfEvent = [...eventsFromStartDay[targetEventId]];
+    let copyOfEvent = Object.assign({}, eventsFromStartDay[targetEventId]);
     eventsFromStartDay.splice(targetEventId, 1);
-    if (eventsFromEndDay == []) eventsFromEndDay = this.addEmptyEventsObjectToDay(toDate, eventObj)
+    if (typeof(eventsFromEndDay) == "function") {
+      executionStatus = this.addEmptyEventsObjectToDay(toDate, eventObj)
+      eventsFromEndDay = this.fetchDayEvents(toDate.year, toDate.month, toDate.day, eventObj).entries
+    }
     eventsFromEndDay.push(copyOfEvent)
+    return executionStatus
   }
 
   addEmptyEventsObjectToDay(date: any, eventObj: any){
     let currentObj = eventObj;
-    if (this.fetchYearEvents(date.year, currentObj) == []) {
-      eventObj.push(this.getCalendarYearEntryAsObject(date.year, []))
+    let executionStatus = {newDayWasCreated: false, newYearWasCreated: false, newMonthWasCreated: false}
+    if (this.fetchYearEvents(date.year, currentObj).length == 0) {
+      eventObj.entries.push(this.getCalendarYearEntryAsObject(date.year, []))
+      executionStatus.newYearWasCreated = true;
     }
     currentObj = this.fetchYearEvents(date.year, currentObj)
-    if (this.fetchMonthEvents(date.year, date.month, eventObj) == []){
-      currentObj.push(this.getCalendarMonthEntryAsObject(date.month, []))
+    if (this.fetchMonthEvents(date.year, date.month, eventObj).length == 0){
+      currentObj.entries.push(this.getCalendarMonthEntryAsObject(date.month, []))
+      executionStatus.newMonthWasCreated = true;
     }
-    currentObj = this.fetchMonthEvents(date.year, date.month, eventObj) == []
-    if (this.fetchDayEvents(date.year, date.matchKey, date.day, eventObj) == []){
-      currentObj.push(this.getCalendarDayEntryAsObject(date.day, []));
+    currentObj = this.fetchMonthEvents(date.year, date.month, eventObj)
+    if (this.fetchDayEvents(date.year, date.matchKey, date.day, eventObj).length == 0){
+      currentObj.entries.push(this.getCalendarDayEntryAsObject(date.day, []));
+      executionStatus.newDayWasCreated = true;
     }
-    currentObj = this.fetchDayEvents(date.year, date.month, date.day, [])
-    return currentObj;
+    return executionStatus;
   }
 
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }
+    // debugger
     return array.findIndex(singleMatch);
   }
 

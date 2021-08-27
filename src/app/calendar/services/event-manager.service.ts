@@ -102,7 +102,8 @@ export class EventManagerService {
     let currentObj = eventObj;
     let executionStatus = {newDayWasCreated: false, newYearWasCreated: false, newMonthWasCreated: false}
     if (this.fetchYearEvents(date.year, currentObj).length == 0) {
-      eventObj.entries.push(this.getCalendarYearEntryAsObject(date.year, []))
+      
+      eventObj.push(this.getCalendarYearEntryAsObject(date.year, []))
       executionStatus.newYearWasCreated = true;
     }
     currentObj = this.fetchYearEvents(date.year, currentObj)

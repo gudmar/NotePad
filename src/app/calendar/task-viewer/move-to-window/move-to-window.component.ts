@@ -29,7 +29,6 @@ export class MoveToWindowComponent implements OnInit {
 @Input() calendarEventsObject: any = [];
 private _shouldDisplay: boolean = false;
 @Input() set shouldDisplay(val: boolean) {
-  console.log(val)
   this._shouldDisplay = val;
 }
 @Output() closeMoveWindowEvent: EventEmitter<any> = new EventEmitter();
@@ -129,11 +128,11 @@ uniqueId: string = 'moveEventId'
       this.targetEventId
     )
     this.infromComponentsAboutChange(whatObjecsWereAdded);
+    this.closeMoveWindow();
   }
 
   infromComponentsAboutChange(whatObjecsWereAdded: any){
     if (!whatObjecsWereAdded.newYearWasCreated){ //as year components are not created at all
-      // if (whatObjecsWereAdded.newMonthWasCreated) this.informMonthComponentsAboutChange();
       if (whatObjecsWereAdded.newDayWasCreated) this.informDayComponentsAboutChange();
     }
   }

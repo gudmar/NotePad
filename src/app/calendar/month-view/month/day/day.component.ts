@@ -11,6 +11,7 @@ import { ConstantPool } from '@angular/compiler';
 })
 export class DayComponent implements OnInit {
   @Input() colorThemeHue: number = 240;
+  @Input() isItCueentMonthDay: boolean = true;
   constructor(private communicator: CommunicationService) { }
   @Input() dayDescriptor: {
     dayMonthIndex: number, 
@@ -20,6 +21,7 @@ export class DayComponent implements OnInit {
     year: number,
     events?: any[]
   } = {dayMonthIndex: 0, dayWeekIndex: 0, dayName: '', month: 0, year: 0}
+
   
   get events() { 
     if (this.dayDescriptor.events == undefined) return []
@@ -35,17 +37,23 @@ export class DayComponent implements OnInit {
   get year() {return this.dayDescriptor.year}
   get uniqueId() {return `${this.month}/${this.day}`}
 
+  grayDayClas = {
+    'gray-day': !this.isItCueentMonthDay
+  }
+
 
   @HostListener('click')
   onClick(){
-    let dataToSend = {
-      day: this.dayDescriptor.dayMonthIndex,
-      month: this.dayDescriptor.month,
-      year: this.dayDescriptor.year,
-      cw: 0,
-      events: this.events
+    if(this.isItCueentMonthDay){
+      let dataToSend = {
+        day: this.dayDescriptor.dayMonthIndex,
+        month: this.dayDescriptor.month,
+        year: this.dayDescriptor.year,
+        cw: 0,
+        events: this.events
+      }
+      this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);
     }
-    this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);
   }
 
   ngOnInit(): void {
@@ -72,12 +80,13 @@ export class DayComponent implements OnInit {
   }
 
   getBgColorDependOnEventsNumber(){
-    if (this.events.length == 0) return  `hsl(${this.colorThemeHue}, 80%, 80%)`
-    if (this.events.length <=  2) return `hsl(${this.colorThemeHue}, 80%, 70%)`
-    if (this.events.length <=  4) return `hsl(${this.colorThemeHue}, 80%, 60%)`
-    if (this.events.length <=  6) return `hsl(${this.colorThemeHue}, 80%, 50%)`
-    if (this.events.length <=  8) return `hsl(${this.colorThemeHue}, 80%, 40%)`
-    return `hsl(${this.colorThemeHue}, 80%, 30%}`
+    if (!this.isItCueentMonthDay) return 'rgb(200, 200, 200)';
+    if (this.events.length == 0) return  `hsl(${this.colorThemeHue}, 80%, 80%)`;
+    if (this.events.length <=  2) return `hsl(${this.colorThemeHue}, 80%, 70%)`;
+    if (this.events.length <=  4) return `hsl(${this.colorThemeHue}, 80%, 60%)`;
+    if (this.events.length <=  6) return `hsl(${this.colorThemeHue}, 80%, 50%)`;
+    if (this.events.length <=  8) return `hsl(${this.colorThemeHue}, 80%, 40%)`;
+    return `hsl(${this.colorThemeHue}, 80%, 30%}`;
   }
 
 }

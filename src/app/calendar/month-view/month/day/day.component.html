@@ -1,9 +1,11 @@
 <div class="calendar-day-wrapper center" 
     setColors [dBgColor]="getBgColorDependOnEventsNumber()" 
     [shouldSetBgColor]="true"
+    [ngClass] = "{'gray-day': !isItCueentMonthDay}"
+
 >
     <div class="day-nr-of-events-wrapper">
-        <div *ngIf="events.length > 0" 
+        <div *ngIf="(events.length > 0) && (isItCueentMonthDay)" 
             setColors [dBgColor]="'red'" 
             [shouldSetBgColor]="true"                            
             class="day-nr-of-events center">

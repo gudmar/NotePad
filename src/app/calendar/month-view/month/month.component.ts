@@ -31,7 +31,12 @@ export class MonthComponent implements OnInit {
       function singleMatch(element: any) { return element.cwIndex == cwIndex }
       return that.weeks.findIndex(singleMatch)
     }
+    console.log(this.weeks[getDays(indexOfCw)].days)
     return this.weeks[getDays(indexOfCw)].days
+  }
+
+  doesDayBelongToCurrentMonth(dayMonthIndex: number, currentMonthIndex: number){
+    return dayMonthIndex == currentMonthIndex;
   }
   
 

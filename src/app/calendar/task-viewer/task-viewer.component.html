@@ -89,6 +89,14 @@
                             </td>
                         </tr>
                 </table>
+
+                <div *ngIf="entries.length==0" 
+                    class="huge-button center arrow" 
+                    aria-role="add first task"
+                    (click) = "addFirstTask()"
+                >
+                    <div>+</div>
+                </div>
             </div>
 
             <move-to-window 

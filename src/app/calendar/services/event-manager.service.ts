@@ -119,6 +119,19 @@ export class EventManagerService {
     return executionStatus;
   }
 
+  addFirstTask(date: any, eventObj:any, newEventUUID: string){
+    let executionStatus = {newDayWasCreated: false, newMonthWasCreated: false, newYearWasCreated: false}
+    let eventsFromEndDay = this.fetchDayEvents(date.year, date.month, date.day, eventObj).entries;
+    if (typeof(eventsFromEndDay) == "function") {
+      executionStatus = this.addEmptyEventsObjectToDay(date, eventObj)
+      eventsFromEndDay = this.fetchDayEvents(date.year, date.month, date.day, eventObj).entries
+    }
+    eventsFromEndDay.push({
+      hours: 0, minutes: 0, duration: 0, summary: '', uniqueId: newEventUUID, description: ''
+    })
+    return executionStatus
+  }
+
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }
     // debugger

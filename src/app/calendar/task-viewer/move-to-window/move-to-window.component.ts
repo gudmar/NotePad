@@ -55,7 +55,7 @@ uniqueId: string = 'moveEventId'
   closeMoveWindow(){this.closeMoveWindowEvent.emit()}
 
   getAllCalendarEvents(){
-    this.communicator.inform('provideCalendarEvents', this.handleMessages.bind(this), )
+    this.communicator.inform('provideCalendarEvents', '')//, this.handleMessages.bind(this), )
   }
   handleMessages(eventType: string, data: any){
     if (eventType == 'calendarEvents') {

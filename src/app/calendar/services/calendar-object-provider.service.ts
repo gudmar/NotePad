@@ -120,6 +120,21 @@ export class CalendarObjectProviderService {
     if (nextMonth > 11) {nextMonth = 0; nextYear++;}
     return {year: nextYear, month: nextMonth, day: nextDay}
   }
+  getPreviousDay(date: {year: number, month: number, day: number}):
+                       {year: number, month: number, day: number}{
+    let prevDate = {year: date.year, month: date.month, day: date.day}
+    let prevDay = date.day - 1;
+    if (prevDay > 0) {
+      prevDate.day = prevDay; return prevDate;
+    }
+    let prevMonth = date.month - 1;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevDate.year = prevDate.year - 1;
+    }
+    prevDate.day = this.getMonthDescriptor(date.year, date.month).duration;
+    return prevDate;
+  }
 
   getCWNumbersForMonth(year: number, month: number){
     let monthData: any = this.getMonthDescriptor(year, month);

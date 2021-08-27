@@ -58,11 +58,14 @@ export class DayComponent implements OnInit {
 
   ngOnInit(): void {
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this),
-     ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay'])
+     ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay', 'switchTaskViewerToNextDay'])
   }
   handleMessages(eventType: string, data: any){
     if (eventType == 'eventWasMovedAndDayWasCreated'){
       if (data.day == this.day && data.month == this.month) this.getNewEvents();
+    }
+    if (eventType == 'switchTaskViewerToNextDay'){
+      if (data.day == this.day && data.month == this.month) this.onClick();
     }
     if (eventType == 'calendarEventsForDay'){
       if (data != null){

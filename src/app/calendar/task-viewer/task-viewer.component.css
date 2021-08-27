@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .shutter{
     position: absolute;
     top: 0;
@@ -45,6 +46,7 @@
 .date{
     font-size: 2rem;
     height: 2rem;
+    cursor: default;
 }
 .hours{
     position: relative;
@@ -123,6 +125,7 @@ th{
     padding-left: 5px;
     padding-right: 5px;
     font-size: 40px;
+    cursor: pointer;
 }
 .arrow:hover{
     transition: 0.3s;
@@ -139,6 +142,35 @@ th{
 }
 .arrow:active{
     background-color: rgb(230, 230, 120);
+}
+
+.huge-button{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5rem;
+    height: 5rem;
+    font-size: 4rem;
+}
+
+.huge-button:before{
+    visibility: hidden;
+    content: 'Add first event';
+    position: absolute;
+    font-size: 1.4rem;
+    
+    top: -7rem;
+    padding: 1rem;
+    background-color: transparent;
+    transition-duration: 0.3s;
+    border-radius: 64% 36% 70% 30% / 16% 79% 21% 84% ;
+}
+.huge-button:hover:before{
+    visibility: visible;
+    background-color: rgb(210, 210, 210);
+    transition-duration: 0.3s;
+    transition-delay: 1s;
 }
 .editable{
     outline: none;

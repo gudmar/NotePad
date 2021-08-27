@@ -5,6 +5,7 @@ import { EEXIST } from 'constants';
 import { ConcatSource } from 'webpack-sources';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
 import { EventManagerService } from '../services/event-manager.service';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'task-viewer',
@@ -13,6 +14,7 @@ import { EventManagerService } from '../services/event-manager.service';
 })
 export class TaskViewerComponent implements OnInit {
   uniqueId: string = 'taskViewerId'
+  allCalendarEvents: any;
   @Input() day: number = 0;
   @Input() month: number = 0;
   @Input() year: number = 0;
@@ -39,8 +41,11 @@ export class TaskViewerComponent implements OnInit {
     private calendarProvider: CalendarObjectProviderService,
     private uuidProvider: UniqueIdProviderService
   ) { 
-    communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['eventViewerShouldBeDisplayed'])
+    communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), 
+    ['eventViewerShouldBeDisplayed', 'calendarEvents'])
   }
+
+
 
   hourValidationClass = {'valid': false,'notValid': false}
   validateHours(event: any){
@@ -73,15 +78,21 @@ export class TaskViewerComponent implements OnInit {
   }
 
   handleMessages(eventType: string, data: any){
-    this.day = data.day;
-    this.month = data.month;
-    this.year = data.year;
-    this.cw = data.cw;
-    this.events = data.events;
-    this.shouldBeDisplayed = true;
+    if (eventType == 'calendarEvents') {
+      this.allCalendarEvents = data;
+    }
+    if (eventType == 'eventViewerShouldBeDisplayed'){
+      this.day = data.day;
+      this.month = data.month;
+      this.year = data.year;
+      this.cw = data.cw;
+      this.events = data.events;
+      this.shouldBeDisplayed = true;
+    }
   }
 
   ngOnInit(): void {
+    this.communicator.inform('provideCalendarEvents', '')
   }
 
   close(){
@@ -92,7 +103,7 @@ export class TaskViewerComponent implements OnInit {
   addEventAfter(event: any, uniqueId: string){
     let eventToAddAfterIndex = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId);
     this.events.splice(eventToAddAfterIndex, 0, {
-      hours: 0, minutes: 0, diration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId
+      hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId
     })
   }
 
@@ -156,6 +167,7 @@ export class TaskViewerComponent implements OnInit {
   }
   durationValidationFunction(toValidate: string | number){
     let nonDigitRe = new RegExp('\\D')
+    if (toValidate == '') return false;
     if (nonDigitRe.test(toValidate.toString())) return false;
     if (parseInt(toValidate.toString()) > 999) return false
     return true;
@@ -178,6 +190,29 @@ export class TaskViewerComponent implements OnInit {
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }
     return array.findIndex(singleMatch);
+  }
+
+  addFirstTask(){
+    let executionStatus = this.eventManager.addFirstTask(
+      {day: this.day, month: this.month, year: this.year}, 
+      this.allCalendarEvents, 
+      this.uuidProvider.getUniqueId()
+  )
+    this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries
+    this.infromComponentsAboutChange(executionStatus)
+  }
+
+  infromComponentsAboutChange(whatObjecsWereAdded: any){
+    if (!whatObjecsWereAdded.newYearWasCreated){ //as year components are not created at all
+      if (whatObjecsWereAdded.newDayWasCreated) this.informDayComponentsAboutChange();
+    }
+  }
+
+  informDayComponentsAboutChange(){
+    this.communicator.inform('eventWasMovedAndDayWasCreated', {day: this.day, month: this.month})
+  }
+  informMonthComponentsAboutChange(){
+    this.communicator.inform('eventWasMovedAndMonthWasCreated', {month: this.month})
   }
 
 }

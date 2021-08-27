@@ -119,6 +119,27 @@
 .new-date-year{
     width: 4rem;
 }
+
+.new-date:before{
+    position: absolute;
+    top: -90%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 0.8rem;
+    font-size: 0.8rem;
+}
+
+
+.new-date-year:before{
+    content:"Year";
+}
+.new-date-month:before{
+    content:"Month";
+}
+.new-date-day:before{
+    content:"Day";
+}
+
 .hover-info{
     visibility: hidden;
     position: absolute;

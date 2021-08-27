@@ -19,14 +19,13 @@ export class TaskViewerComponent implements OnInit {
   @Input() cw: number = 0;
   @Input() events: any[] = [];
   @Input() shouldBeDisplayed: boolean = true;
-  shouldMoveWindowBeVisible: boolean = true;
+  shouldMoveWindowBeVisible: boolean = false;
   eventToMoveId: string = '';
 
 
   openMoveWindow(uniqueId: string) {
     this.eventToMoveId = uniqueId;
     this.shouldMoveWindowBeVisible = true;
-    // debugger;
   }
 
   get entries() {return this.events}
@@ -82,13 +81,12 @@ export class TaskViewerComponent implements OnInit {
     this.shouldBeDisplayed = true;
   }
 
-  test(){console.log('changed')}
-
   ngOnInit(): void {
   }
 
   close(){
     this.shouldBeDisplayed = false;
+    this.shouldMoveWindowBeVisible = false;
   }
 
   addEventAfter(event: any, uniqueId: string){

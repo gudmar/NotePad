@@ -1,7 +1,7 @@
 <ng-container *ngIf = "shouldBeDisplayed">
     <div class="shutter center">
         <div class="viewer-window center">
-            <div class="nav-bar">
+            <div class="nav-bar center">
                 <div class="arrow">&lt;&lt;</div>
                 <div class="date">
                     <span class="conditional-display">{{dayAsString}}</span>
@@ -98,6 +98,7 @@
                 [day] = "day"
                 [events] = "events"
                 [targetEventId] = "eventToMoveId"
+                [calendarEventsObject] = ""
                 (closeMoveWindowEvent) = "shouldMoveWindowBeVisible = false"
             >
             </move-to-window>

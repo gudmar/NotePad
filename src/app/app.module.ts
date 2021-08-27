@@ -36,6 +36,7 @@ import { MobileViewComponent } from './calendar/mobile-view/mobile-view.componen
 import { WaitingSpinnerComponent } from './common/waiting-spinner/waiting-spinner.component';
 import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.component';
 import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/move-to-window.component';
+import { ValidateYearDirective } from './calendar/directives/validate-year.directive';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/mov
     WaitingSpinnerComponent,
     TaskViewerComponent,
     MoveToWindowComponent,
+    ValidateYearDirective,
     
   ],
   imports: [

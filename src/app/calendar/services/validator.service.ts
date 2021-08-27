@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CalendarObjectProviderService } from './calendar-object-provider.service';
+import { ConcatSource } from 'webpack-sources';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,30 @@ import { CalendarObjectProviderService } from './calendar-object-provider.servic
 export class ValidatorService {
   calendar: CalendarObjectProviderService = new CalendarObjectProviderService();
   constructor() { }
+
+  setColorsToYear(event: any){
+    setTimeout(()=>{
+      let isValid = this.isYearValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
+
+  setEndYear(event: any, valueIfNotValid: any){
+    setTimeout(()=>{
+    let isValid = this.isYearValid(event.target.innerText);
+    console.log(event.target.innerText)
+    console.log(valueIfNotValid)
+    if (isValid){
+      valueIfNotValid = parseInt(event.target.innerText);
+      
+    } else {
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  })
+  }
 
   isYearValid(valueToTest: number ){
     let digitTestPattern = new RegExp("\\d{4}")

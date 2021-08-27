@@ -4,6 +4,7 @@ import { CommunicationService } from '../../services/communication.service'
 import { EventManagerService } from '../services/event-manager.service';
 import { ConcatSource } from 'webpack-sources';
 import { StorageManagerService } from '../../services/storage-manager.service';
+import { ValidatorService } from '../services/validator.service';
 @Component({
   selector: 'month-view',
   templateUrl: './month-view.component.html',
@@ -14,7 +15,7 @@ export class MonthViewComponent implements OnInit {
   uniqueId: string = 'month-view-id'
   @Input() events: any[] = [];
   @Input() set year(val: number) {
-    if (val != this._year && this.isYearValid(val)){
+    if (val != this._year && this.validator.isYearValid(val)){
       console.log(performance.now())
       this._year = val; 
       this.refreshYear();  
@@ -35,7 +36,8 @@ export class MonthViewComponent implements OnInit {
     private calendarProvider: CalendarObjectProviderService,
     private communicator: CommunicationService,
     private eventManater: EventManagerService,
-    private storageManager: StorageManagerService
+    private storageManager: StorageManagerService,
+    private validator: ValidatorService
   ) { }
 
   ngOnInit(): void {
@@ -114,21 +116,25 @@ export class MonthViewComponent implements OnInit {
     if (this.year.toString() != data.target.innerText) data.target.innerText = this.year;
   }
 
-  isYearValid(valueToTest: number ){
-    let digitTestPattern = new RegExp("\\d{4}")
-    let otherTestPattern = new RegExp('\\D')
-    let s = digitTestPattern.test(valueToTest.toString())
-    let w = otherTestPattern.test(valueToTest.toString())
-    if (!digitTestPattern.test(valueToTest.toString())) return false
-    if (otherTestPattern.test(valueToTest.toString())) return false
-    if (valueToTest > 3000) return false
-    return true;
-  }
+  // isYearValid(valueToTest: number ){
+  //   let digitTestPattern = new RegExp("\\d{4}")
+  //   let otherTestPattern = new RegExp('\\D')
+  //   let s = digitTestPattern.test(valueToTest.toString())
+  //   let w = otherTestPattern.test(valueToTest.toString())
+  //   if (!digitTestPattern.test(valueToTest.toString())) return false
+  //   if (otherTestPattern.test(valueToTest.toString())) return false
+  //   if (valueToTest > 3000) return false
+  //   return true;
+  // }
   switchToNotes(){
     this.communicator.inform('switchToNotes', '')
   }
   displaySaveWindow(){
     this.communicator.inform('displaySaveWindow', '')
+  }
+
+  validateYear(event:any){
+
   }
 
   test(){

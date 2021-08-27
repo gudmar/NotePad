@@ -11,7 +11,9 @@
                     <tr *ngFor = "let cw of cwIndexes">
                         <td>{{cw}}</td>
                         <td *ngFor = "let day of getDays(cw)">
-                            <day [dayDescriptor]="day"></day>
+                            <day [dayDescriptor]="day" 
+                [isItCueentMonthDay] = 'doesDayBelongToCurrentMonth(day.month, monthDescriptor.monthIndex) '>
+                            </day>
                         </td>
                     </tr>
                 </tbody>

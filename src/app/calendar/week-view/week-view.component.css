@@ -1,0 +1,90 @@
+.view-wrapper{
+    font-family: Arial, Helvetica, sans-serif;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 10000;
+}
+.nav-bar{
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    width: 90%;
+    height: 4rem;
+} 
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.title-wrapper{}
+
+.title{
+    
+}
+.close{
+}
+.content-wrapper{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
+
+
+
+.arrow{
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 50px;
+    margin: 0;
+    color: white;
+    font-weight: bold;
+    background-color: rgba(200, 200, 200, 0.5);
+    transition: 0.3s;
+}
+.button {
+    border-radius: 35% 65% 34% 66% / 64% 34% 66% 36%;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.button:hover{
+    transition: 0.3s;
+    transform: scale(1.2);
+}
+
+.button:active{
+    transition: 0.3s;
+    transform: scale(0.8);
+}
+
+.arrow:hover{
+    transition: 0.3s;
+    background-color: rgba(200, 200, 200, 1);
+    cursor: pointer;
+}
+.arrow:hover>div{
+    transition: 0.3s;
+    transform: scale(1.2);
+}
+.arrow:active>div{
+    transition: 0.3s;
+    transform: scale(0.8);
+}
+.arrow:active{
+    background-color: rgb(230, 230, 120);
+}

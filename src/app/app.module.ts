@@ -39,6 +39,8 @@ import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/mov
 import { ValidateYearDirective } from './calendar/directives/validate-year.directive';
 import { ValidateDayDirective } from './calendar/directives/validate-day.directive';
 import { ValidateMonthDirective } from './calendar/directives/validate-month.directive';
+import { WeekDayComponent } from './calendar/week-view/week-day/week-day.component';
+import { SummaryEventComponent } from './calendar/week-view/week-day/summary-event/summary-event.component';
 
 
 @NgModule({
@@ -74,6 +76,8 @@ import { ValidateMonthDirective } from './calendar/directives/validate-month.dir
     ValidateYearDirective,
     ValidateDayDirective,
     ValidateMonthDirective,
+    WeekDayComponent,
+    SummaryEventComponent,
     
   ],
   imports: [

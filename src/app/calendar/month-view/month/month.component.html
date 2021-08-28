@@ -9,7 +9,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor = "let cw of cwIndexes">
-                        <td>{{cw}}</td>
+                        <td (click) = "displayWeekView(cw)">{{cw}}</td>
                         <td *ngFor = "let day of getDays(cw)">
                             <day [dayDescriptor]="day" 
                 [isItCueentMonthDay] = 'doesDayBelongToCurrentMonth(day.month, monthDescriptor.monthIndex) '>

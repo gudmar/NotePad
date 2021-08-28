@@ -1,1 +1,17 @@
-<p>week-view works!</p>
+<ng-container *ngIf="shouldBeDisplayed">
+    <div class="view-wrapper">
+        <div class="nav-bar center">
+            <div class="arrow" (click)="switchToAnotherCw(-1)">&lt;&lt;</div>
+            <div class="title-wrapper center">
+                <span class="title">{{currentCwIndex}}</span>
+            </div>
+            <div class="arrow" (click)="switchToAnotherCw(1)">&gt;&gt;</div>
+
+            <div class="arrow button">Save</div>
+            <div class="button close" (click)="close()">&times;</div>
+        </div>
+        <div class="content-wrapper">
+            <week-day *ngFor="let day of daysOfCurrnetCw" [dayDescriptor]="day"></week-day>
+        </div>
+    </div>
+</ng-container>

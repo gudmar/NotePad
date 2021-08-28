@@ -63,6 +63,7 @@ export class MonthViewComponent implements OnInit {
 
   refreshYear(){
     this.months = this.calendarProvider.getYearAsObject(this.year, this.events).months
+    console.dir(this.months)
     // debugger
   }  
 
@@ -103,7 +104,6 @@ export class MonthViewComponent implements OnInit {
     let currentDate = Date.now();
     let dateObj = new Date(currentDate);
     this.year = dateObj.getFullYear();
-    
     // this.months = this.calendarProvider.getYearAsObject(this.year).months;
   }
 

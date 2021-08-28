@@ -115,6 +115,10 @@ export class FalseDataMockService {
         {hours: 15, minutes: 50, duration: 50, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
         {hours: 16, minutes: 50, duration:  30, summary: "This is a test event 4", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
         {hours: 17, minutes: 50, duration: 20, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+        {hours: 16, minutes: 50, duration:  30, summary: "This is a test event 4", description: this.getDescription(), uniqueId: this.idProvider.getUniqueId()},
+        {hours: 17, minutes: 50, duration: 20, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+        {hours: 17, minutes: 50, duration: 20, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
+
       ],
       [
         {hours: 7, minutes: 15, duration: 10, summary: "This is a test event 1", description: this.getDescription()  , uniqueId: this.idProvider.getUniqueId()},
@@ -123,6 +127,7 @@ export class FalseDataMockService {
         {hours: 15, minutes: 50, duration: 70, summary: "This is a test event 5", description: this.getDescription() , uniqueId: this.idProvider.getUniqueId()},
       ],     
     ] 
+    let that = this;
     
     let getMonthEvents = function(){
       let output: any[] = [];
@@ -136,7 +141,7 @@ export class FalseDataMockService {
     let getDayEvents = function() {
       let output : any[] = []
       for (let i = 0; i<days.length ; i++){
-        let eventsForDay = eventManager.getCalendarDayEntryAsObject(days[i], events[i])
+        let eventsForDay = that.getDeepCopy(eventManager.getCalendarDayEntryAsObject(days[i], events[i]))
         output.push(eventsForDay)
       }
       return output;
@@ -156,6 +161,8 @@ export class FalseDataMockService {
   getDescription(){
     return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper, augue sit amet tempor imperdiet, .'
   }
+
+  getDeepCopy(obj: any) { return JSON.parse(JSON.stringify(obj))}
 
   // return{
   //   hours: hours, 

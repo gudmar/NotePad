@@ -113,7 +113,7 @@ export class MonthViewComponent implements OnInit {
 
   changeYear(data: any){
     this.year = parseInt(data.target.innerText);
-    if (this.year.toString() != data.target.innerText) data.target.innerText = this.year;
+    // if (this.year.toString() != data.target.innerText) data.target.innerText = this.year;
   }
 
   // isYearValid(valueToTest: number ){

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { EventManagerService } from '../../services/event-manager.service';
 import { ValidatorService } from '../../services/validator.service';
 import { CommunicationService } from '../../../services/communication.service';
@@ -32,10 +32,18 @@ private _shouldDisplay: boolean = false;
   this._shouldDisplay = val;
 }
 @Output() closeMoveWindowEvent: EventEmitter<any> = new EventEmitter();
+@ViewChild('year') 
+yearField: any;
+@ViewChild('month')
+monthField: any;
+@ViewChild('day')
+dayField: any;
+
 toDay: number = this.day;
 toMonth: number = this.month;
 toYear: number = this.year;
 allCalendarEvents: any = [];
+shouldInformDateNotValid: boolean = false;
 get shouldDisplay() {return this._shouldDisplay}
 uniqueId: string = 'moveEventId'
   constructor(
@@ -52,7 +60,9 @@ uniqueId: string = 'moveEventId'
     this.getAllCalendarEvents();
   }
 
-  closeMoveWindow(){this.closeMoveWindowEvent.emit()}
+  closeMoveWindow(){
+    this.closeMoveWindowEvent.emit();
+  }
 
   getAllCalendarEvents(){
     this.communicator.inform('provideCalendarEvents', '')//, this.handleMessages.bind(this), )
@@ -64,14 +74,9 @@ uniqueId: string = 'moveEventId'
   }
 
   setEndDay(event: any){
-    let isValid = this.validator.isDayValid(event.target.innerText, this.toMonth - 1, this.toDay);
-    // -1 is difference between real month and js conunting from 0
-    if (isValid){
+    if (this.validator.isDayValid(event.target.innerText, this.toMonth, this.toDay)){
       this.toDay = parseInt(event.target.innerText);
-    } else {
-      event.target.innerText = this.toDay;
     }
-    event.target.style.backgroundColor = '';
   }
 
   validateDay(event: any){
@@ -98,19 +103,11 @@ uniqueId: string = 'moveEventId'
   }
 
   validateMonth(event: any){ this.validate(event, this.validator.isMonthValid.bind(this.validator))}
-  
-  setEndYear(event: any){
-    let isValid = this.validator.isYearValid(event.target.innerText);
-    if (isValid){
-      this.toYear = parseInt(event.target.innerText);
-      
-    } else {
-      event.target.innerText = this.toYear;
-    }
-    event.target.style.backgroundColor = '';
-  }
 
-  validateYear(event: any){this.validate(event, this.validator.isYearValid)}
+  setEndYear(event: any){
+    this.toYear = parseInt(event.target.innerText);
+  }
+  
 
   validate(event: any, validationFunction: Function){
     setTimeout(()=>{
@@ -120,15 +117,30 @@ uniqueId: string = 'moveEventId'
   }
   
 
-  moveEvent(){
-    let whatObjecsWereAdded = this.eventManager.moveEvent(
-      {year: this.year, month: this.month - 1, day: this.day}, 
-      {year: this.toYear, month: this.toMonth - 1, day: this.toDay}, 
-      this.allCalendarEvents, 
-      this.targetEventId
-    )
-    this.infromComponentsAboutChange(whatObjecsWereAdded);
-    this.closeMoveWindow();
+  moveEvent(event:any){
+    if (this.toDateDifferentCurrentDate()){
+      let whatObjecsWereAdded = this.eventManager.moveEvent(
+        {year: this.year, month: this.month - 1, day: this.day}, 
+        {year: this.toYear, month: this.toMonth - 1, day: this.toDay}, 
+        this.allCalendarEvents, 
+        this.targetEventId
+      )
+      this.infromComponentsAboutChange(whatObjecsWereAdded);
+      this.closeMoveWindow();
+    }  else { this.informDateDidNotChange()}
+  }
+
+  toDateDifferentCurrentDate(){
+    if (this.toYear != this.year) return true;
+    if (this.toMonth != this.month) return true;
+    if (this.toDay != this.day) return true;
+    return false;
+  }
+
+  informDateDidNotChange(){
+    this.shouldInformDateNotValid = true;
+    let that = this;
+    let t = setTimeout(() => {that.shouldInformDateNotValid = false}, 1300)
   }
 
   infromComponentsAboutChange(whatObjecsWereAdded: any){

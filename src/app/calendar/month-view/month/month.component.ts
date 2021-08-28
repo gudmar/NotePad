@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Z_PARTIAL_FLUSH } from 'zlib';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'month',
@@ -8,6 +9,7 @@ import { Z_PARTIAL_FLUSH } from 'zlib';
 })
 export class MonthComponent implements OnInit {
   @Input() events: any[] = []
+  @Input() currentYear: number = 0;
   @Input() monthDescriptor: {
     monthIndex: number,
     monthName: string,
@@ -41,7 +43,15 @@ export class MonthComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(private communicator: CommunicationService) { }
+
+  displayWeekView(data: any){
+    this.communicator.inform('displayWeekView', {
+      cwIndex: data,
+      monthIndex: this.monthDescriptor.monthIndex,
+      currentYear: this.currentYear
+    })
+  }
 
   ngOnInit(): void {
   }

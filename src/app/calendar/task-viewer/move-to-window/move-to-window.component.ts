@@ -79,45 +79,40 @@ uniqueId: string = 'moveEventId'
     }
   }
 
-  validateDay(event: any){
-    let that = this;
-    function dayValidator(month: number, year: number){
-      let y = year;
-      let m = month - 1;
-      // -1 is difference between real month and js conunting from 0
-      return function(day: number){
-        return that.validator.isDayValid(day, m, y)
-      }
-    }
-    return this.validate(event, dayValidator(this.toMonth, this.year).bind(this))
-  }
+  // validateDay(event: any){
+  //   let that = this;
+  //   function dayValidator(month: number, year: number){
+  //     let y = year;
+  //     let m = month - 1;
+  //     // -1 is difference between real month and js conunting from 0
+  //     return function(day: number){
+  //       return that.validator.isDayValid(day, m, y)
+  //     }
+  //   }
+  //   return this.validate(event, dayValidator(this.toMonth, this.year).bind(this))
+  // }
 
   setEndMonth(event: any){
-    let isValid = this.validator.isMonthValid(event.target.innerText);
-    if (isValid){
-      this.toMonth = parseInt(event.target.innerText);
-    } else {
-      event.target.innerText = this.toMonth;
-    }
-    event.target.style.backgroundColor = '';
+      if (this.validator.isMonthValid(event.target.innerText)) this.toMonth = parseInt(event.target.innerText);
   }
 
-  validateMonth(event: any){ this.validate(event, this.validator.isMonthValid.bind(this.validator))}
+  // validateMonth(event: any){ this.validate(event, this.validator.isMonthValid.bind(this.validator))}
 
   setEndYear(event: any){
-    this.toYear = parseInt(event.target.innerText);
+    if (this.validator.isYearValid(event.target.innerText)) this.toYear = parseInt(event.target.innerText);
   }
   
 
-  validate(event: any, validationFunction: Function){
-    setTimeout(()=>{
-      let isValid = validationFunction(event.target.innerText);
-      event.target.style.backgroundColor = isValid ? 'rgb(200, 255, 200)' : 'rgb(255, 200, 200)'
-    })
-  }
+  // validate(event: any, validationFunction: Function){
+  //   setTimeout(()=>{
+  //     let isValid = validationFunction(event.target.innerText);
+  //     event.target.style.backgroundColor = isValid ? 'rgb(200, 255, 200)' : 'rgb(255, 200, 200)'
+  //   })
+  // }
   
 
   moveEvent(event:any){
+    console.error('After moving component to month 12, view in task editor is not updated!!. Task is moved, but veiw not updated. Rest works as expectd')
     if (this.toDateDifferentCurrentDate()){
       let whatObjecsWereAdded = this.eventManager.moveEvent(
         {year: this.year, month: this.month - 1, day: this.day}, 

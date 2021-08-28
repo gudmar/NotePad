@@ -18,6 +18,14 @@ export class ValidatorService {
     })
   }
 
+  setColorsToMonth(event: any){
+    setTimeout(()=>{
+      let isValid = this.isMonthValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
   setColorsToDay(event: any, day: number, month: number, year: number){
     setTimeout(()=>{
       let isValid = this.isDayValid(event.target.innerText, month, year);
@@ -40,16 +48,19 @@ export class ValidatorService {
     })
   }
 
+  setEndMonth(event: any, valueIfNotValid: any){
+    let isValid = this.isMonthValid(event.target.innerText);
+    if (!isValid){
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  }
+
 
   setEndYear(event: any, valueIfNotValid: any){
     setTimeout(()=>{
     let isValid = this.isYearValid(event.target.innerText);
-    console.log(event.target.innerText)
-    console.log(valueIfNotValid)
-    if (isValid){
-      valueIfNotValid = parseInt(event.target.innerText);
-      
-    } else {
+    if (!isValid){
       event.target.innerText = valueIfNotValid;
     }
     event.target.style.backgroundColor = '';
@@ -57,6 +68,7 @@ export class ValidatorService {
   }
 
   isYearValid(valueToTest: number | string ){
+    console.log(valueToTest)
     let digitTestPattern = new RegExp("\\d{4}")
     let otherTestPattern = new RegExp('\\D')
     if (!digitTestPattern.test(valueToTest.toString())) return false

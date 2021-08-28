@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommunicationService } from '../../services/communication.service'
 import { CalendarObjectProviderService } from '../services/calendar-object-provider.service'
-import { EEXIST } from 'constants';
-import { ConcatSource } from 'webpack-sources';
+// import { EEXIST } from 'constants';
+// import { ConcatSource } from 'webpack-sources';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
 import { EventManagerService } from '../services/event-manager.service';
-import { ConstantPool } from '@angular/compiler';
+// import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'task-viewer',
@@ -13,6 +13,7 @@ import { ConstantPool } from '@angular/compiler';
   styleUrls: ['./task-viewer.component.css']
 })
 export class TaskViewerComponent implements OnInit {
+  private _shouldMoveWindowBeVisible: boolean = false;
   uniqueId: string = 'taskViewerId'
   allCalendarEvents: any;
   @Input() day: number = 0;
@@ -21,7 +22,11 @@ export class TaskViewerComponent implements OnInit {
   @Input() cw: number = 0;
   @Input() events: any[] = [];
   shouldBeDisplayed: boolean = false;
-  shouldMoveWindowBeVisible: boolean = false;
+  set shouldMoveWindowBeVisible(val: boolean) {
+    this._shouldMoveWindowBeVisible = val;
+    if (val == false) this.eventToMoveId = '';
+  }
+  get shouldMoveWindowBeVisible() {return this._shouldMoveWindowBeVisible}
   eventToMoveId: string = '';
 
 

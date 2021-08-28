@@ -38,6 +38,7 @@ import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.componen
 import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/move-to-window.component';
 import { ValidateYearDirective } from './calendar/directives/validate-year.directive';
 import { ValidateDayDirective } from './calendar/directives/validate-day.directive';
+import { ValidateMonthDirective } from './calendar/directives/validate-month.directive';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { ValidateDayDirective } from './calendar/directives/validate-day.directi
     MoveToWindowComponent,
     ValidateYearDirective,
     ValidateDayDirective,
+    ValidateMonthDirective,
     
   ],
   imports: [

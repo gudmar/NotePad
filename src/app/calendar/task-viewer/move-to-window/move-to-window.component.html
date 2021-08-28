@@ -7,15 +7,15 @@
         <div class="button arrow" (click)="closeMoveWindow()">&times;</div>
     </div>
     <div class="new-date-wrapper center">
-        <div 
+        <div  #day
+            validateDay [ifNotValid] = "toDay" [monthToValidate] = "toMonth" [yearToValidate] = "toYear"
             class="new-date new-date-day" 
             placeholder="dd"
             contenteditable="true"
             (focusout)="setEndDay($event)"
-            (keydown)="validateDay($event)"
-            (mousedown)="validateDay($event)"
         >{{toDay}}</div>
-        <div 
+
+        <div #month
             class="new-date new-date-month" 
             placeholder="mm"
             contenteditable="true"
@@ -23,15 +23,23 @@
             (keydown)="validateMonth($event)"
             (mousedown)="validateMonth($event)"
         >{{toMonth}}</div>
-        <div 
+        <div #year validateYear [ifNotValid] = "toYear"
             class="new-date new-date-year" 
             placeholder="year"
             contenteditable="true"
             (focusout)="setEndYear($event)"
-            (keydown)="validateYear($event)"
-            (mousedown)="validateYear($event)"
         >{{toYear}}</div>
     </div>
-    <div class="arrow button" (click)="moveEvent()">Ok</div>
+    <div class="arrow button" (click)="moveEvent($event)">Ok</div>
+    <div class="info" *ngIf="shouldInformDateNotValid">Enter date different than present</div>
 </div>
 </ng-container>
+
+<!-- yearFromFieldBeforeDirectiveChanged: string = '0';
+monthFromFieldBeforeDirectiveChanged: string = '0';
+dayFromFieldBeforeDirectiveChanged -->
+
+<!-- (focusout)="setEndYear($event)" -->
+
+<!-- (keydown)="validateDay($event)"
+(mousedown)="validateDay($event)" -->

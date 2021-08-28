@@ -37,6 +37,7 @@ import { WaitingSpinnerComponent } from './common/waiting-spinner/waiting-spinne
 import { TaskViewerComponent } from './calendar/task-viewer/task-viewer.component';
 import { MoveToWindowComponent } from './calendar/task-viewer/move-to-window/move-to-window.component';
 import { ValidateYearDirective } from './calendar/directives/validate-year.directive';
+import { ValidateDayDirective } from './calendar/directives/validate-day.directive';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { ValidateYearDirective } from './calendar/directives/validate-year.direc
     TaskViewerComponent,
     MoveToWindowComponent,
     ValidateYearDirective,
+    ValidateDayDirective,
     
   ],
   imports: [

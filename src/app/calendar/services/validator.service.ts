@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CalendarObjectProviderService } from './calendar-object-provider.service';
 import { ConcatSource } from 'webpack-sources';
+import { ConstantPool } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,28 @@ export class ValidatorService {
       let isValid = this.isYearValid(event.target.innerText);
       if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
       if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
+  setColorsToDay(event: any, day: number, month: number, year: number){
+    setTimeout(()=>{
+      let isValid = this.isDayValid(event.target.innerText, month, year);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
+  
+
+  setEndDay(event: any, month: number, year: number, valueIfNotValid: any){
+    setTimeout(()=>{
+      let day = event.target.innerText
+      let isValid = this.isDayValid(day, month - 1, year);
+      // -1 is difference between real month and js conunting from 0
+      if (!isValid){
+        event.target.innerText = valueIfNotValid;
+      }
+      event.target.style.backgroundColor = '';
     })
   }
 
@@ -33,12 +56,12 @@ export class ValidatorService {
   })
   }
 
-  isYearValid(valueToTest: number ){
+  isYearValid(valueToTest: number | string ){
     let digitTestPattern = new RegExp("\\d{4}")
     let otherTestPattern = new RegExp('\\D')
     if (!digitTestPattern.test(valueToTest.toString())) return false
     if (otherTestPattern.test(valueToTest.toString())) return false
-    if (valueToTest > 3000) return false
+    if (parseInt(valueToTest.toString()) > 3000) return false
     return true;
   }
 
@@ -46,7 +69,7 @@ export class ValidatorService {
     return this.is2digitValid(valueToTest, 12);
   }
 
-  isDayValid(day: number, month: number, year: number){
+  isDayValid(day: number | string, month: number, year: number){
     let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month).duration;
     return this.is2digitValid(day, nrOfDaysInMonth);
   }

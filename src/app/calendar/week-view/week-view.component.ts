@@ -20,8 +20,7 @@ export class WeekViewComponent implements OnInit {
   get cwInCurrentMonth() {
     let weekObjects: any = this.helper.getMonthOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex);
     let weeks: any[] = [];
-    debugger
-    for (let week of weekObjects) { weeks.push(week.cwIndex)}
+    for (let week of weekObjects.weeks) { weeks.push(week.cwIndex)}
     return weeks;
   }
   get daysOfCurrnetCw(){
@@ -59,7 +58,7 @@ export class WeekViewComponent implements OnInit {
     this.configureHelper();
     let newDate = this.helper.calculateNextCW(offset)
     this.currentCwIndex = newDate.cw;
-    this.currentMonthIndex = newDate.cw;
+    this.currentMonthIndex = newDate.month;
     this.currentYear = newDate.year;
   }
 }

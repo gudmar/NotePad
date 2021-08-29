@@ -23,6 +23,7 @@ import { WbMenuComponent } from './work-book/wb-menu/wb-menu.component';
 import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component';
 import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
 import { StorageManagerService } from './services/storage-manager.service';
+import { CalendarObjectProviderService } from './calendar/services/calendar-object-provider.service'
 import { SetColorsDirective } from './directives/set-colors.directive';
 import { KillMeComponent } from './common/kill-me/kill-me.component';
 import { ConfirmationWindowComponent } from './common/confirmation-window/confirmation-window.component';
@@ -91,6 +92,7 @@ import { SummaryEventComponent } from './calendar/week-view/week-day/summary-eve
               CommunicationService,
               DescriptorToDataService,
               StorageManagerService,
+              CalendarObjectProviderService
             ],
   bootstrap: [AppComponent]
 })

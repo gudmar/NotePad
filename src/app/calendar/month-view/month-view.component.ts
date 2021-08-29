@@ -62,7 +62,7 @@ export class MonthViewComponent implements OnInit {
   }
 
   refreshYear(){
-    this.months = this.calendarProvider.getYearAsObject(this.year, this.events).months
+    this.months = this.calendarProvider.getYearAsObject(this.year).months
     console.dir(this.months)
     // debugger
   }  

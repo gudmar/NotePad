@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CalendarObjectProviderService } from './calendar-object-provider.service';
-import { ConcatSource } from 'webpack-sources';
-import { ConstantPool } from '@angular/compiler';
+import { EventManagerService } from './event-manager.service';
+// import { ConcatSource } from 'webpack-sources';
+// import { ConstantPool } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidatorService {
-  calendar: CalendarObjectProviderService = new CalendarObjectProviderService();
+  calendar: CalendarObjectProviderService = new CalendarObjectProviderService(new EventManagerService());
   constructor() { }
 
   setColorsToYear(event: any){

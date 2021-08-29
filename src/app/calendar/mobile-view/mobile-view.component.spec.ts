@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MobileViewComponent } from './mobile-view.component';
 
-describe('MobileViewComponent', () => {
+xdescribe('MobileViewComponent', () => {
   let component: MobileViewComponent;
   let fixture: ComponentFixture<MobileViewComponent>;
 

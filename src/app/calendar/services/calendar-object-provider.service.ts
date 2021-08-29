@@ -8,7 +8,6 @@ import { ConcatSource } from 'webpack-sources';
 import { getTranslationDeclStmts } from '@angular/compiler/src/render3/view/template';
 
 
-
 @Injectable()
 export class CalendarObjectProviderService {
 
@@ -16,9 +15,9 @@ export class CalendarObjectProviderService {
 
 
   date: Date = new Date();
-  eventManager = new EventManagerService();
+  // eventManager = new EventManagerService();
   events: any = [];
-  constructor() { 
+  constructor(private eventManager:EventManagerService) { 
   }
 
   getYearAsObject(year: number, events?: any[]){

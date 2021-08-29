@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MonthViewComponent } from './month-view.component';
 
-describe('MonthViewComponent', () => {
+xdescribe('MonthViewComponent', () => {
   let component: MonthViewComponent;
   let fixture: ComponentFixture<MonthViewComponent>;
 

@@ -1,0 +1,33 @@
+.wrapper{
+
+}
+.summary{
+
+}
+.summary-text{
+    display: flex;
+}
+.summary-text>div{
+    padding: 3px;
+}
+.time{
+
+}
+.duration{
+
+}
+.summary{
+
+}
+.detail-text{
+    position: absolute;
+    visibility: hidden;
+    background-color: wheat;
+    padding: 5px;
+    border-radius: 7px;
+    border: black thin solid;
+}
+.summary-text:hover>.detail-text{
+    visibility: visible;
+}
+

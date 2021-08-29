@@ -9,9 +9,7 @@ import { getTranslationDeclStmts } from '@angular/compiler/src/render3/view/temp
 
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CalendarObjectProviderService {
 
 
@@ -19,27 +17,9 @@ export class CalendarObjectProviderService {
 
   date: Date = new Date();
   eventManager = new EventManagerService();
+  events: any = [];
   constructor() { 
   }
-
-  test(){
-    let currentDate = Date.now();
-    let day = this.date.getDay();
-    let month = this.date.getMonth();
-    let year = this.date.getFullYear();
-    let saturday = new Date("August 22, 2021");
-    
-  }
-
-  // getYearAsObjectAsync(year: number){
-  //   return new Promise<any>(
-  //     (resolve, reject) => {
-  //       ()=>{
-  //        setTimeout(() => { resolve(this.getYearAsObject(year))}, 5000)
-  //       };
-  //     }
-  //   )
-  // }
 
   getYearAsObject(year: number, events?: any[]){
     let descriptor: any = {
@@ -52,7 +32,7 @@ export class CalendarObjectProviderService {
       let singleMonth: any = {
         monthIndex: month,
         monthName: monthDescriptor.name,
-        weeks: this.getMonthObject(year, month, events)
+        weeks: this.getMonthObject(year, month, this.events)
       };
       descriptor.months.push(singleMonth)
     }
@@ -65,7 +45,7 @@ export class CalendarObjectProviderService {
     for(let cw of calendarWeeks){
       let cwDescriptor: any = {
         cwIndex: cw,
-        days: month==0 && cw>51 ? this.getDaysOfCW(year-1, cw, events): this.getDaysOfCW(year, cw, events)
+        days: month==0 && cw>51 ? this.getDaysOfCW(year-1, cw): this.getDaysOfCW(year, cw)
       }
       descriptor.push(cwDescriptor)
     }
@@ -81,23 +61,23 @@ export class CalendarObjectProviderService {
     // }
   }
 
-  getDaysOfCW(year: number, cw: number, events?: any[]){
+  getDaysOfCW(year: number, cw: number){
     let firstCWDayDate = this.getDateOfFirstCWDay(year, cw);
     let weekDuration = 7;
     let arrayOfCWDays: any[] = [];
     let currentDate = firstCWDayDate;
     for (let day=0; day < weekDuration; day++){
-      arrayOfCWDays.push(this.getSingleDayDescriptor(currentDate, events));
+      arrayOfCWDays.push(this.getSingleDayDescriptor(currentDate));
       currentDate = this.getNextDay(currentDate);
     }
     return arrayOfCWDays;
   }
 
-  getSingleDayDescriptor(date: {year: number, month: number, day: number}, events?: any[]): any {
+  getSingleDayDescriptor(date: {year: number, month: number, day: number}): any {
     let dateAsString = this.getDateAsString(date.year, date.month, date.day);
     let dateAsObject = this.getDateObject(date.year, date.month, date.day);
-    if (events == undefined) events = [];
-    let eventsForTheDay = this.eventManager.fetchDayEvents(date.year, date.month, date.day, events)
+    // if (this.events == undefined) events = [];
+    let eventsForTheDay = this.eventManager.fetchDayEvents(date.year, date.month, date.day, this.events)
     function convertDayIndex(dayIndexSaturday0: number) {
       return dayIndexSaturday0 == 0 ? 7 : dayIndexSaturday0;
     }
@@ -260,6 +240,8 @@ export class CalendarObjectProviderService {
     if (typeof(month) != 'string') month = this.getMonthDescriptor(year, month).name;
     return `${month} ${day}, ${year}`
   }
+
+  injectEvents(events: any){this.events = events}
 
   getMonthDescriptor(year: number, month: number): {name: string, duration: number}{
     let months = [

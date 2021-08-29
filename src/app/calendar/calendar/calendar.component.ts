@@ -22,7 +22,8 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.communicator.subscribe(this.uniqueId, 
-      this.messageHandler.bind(this), ['provideCalendarEvents', 'provideCalendarEventsForSingleDay'])
+      this.messageHandler.bind(this), ['provideCalendarEvents', 'provideCalendarEventsForSingleDay']);
+    this.calendarProvider.injectEvents(this.events)
     console.dir(this.events)
   }
 

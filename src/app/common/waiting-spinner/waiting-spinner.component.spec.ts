@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WaitingSpinnerComponent } from './waiting-spinner.component';
 
-describe('WaitingSpinnerComponent', () => {
+xdescribe('WaitingSpinnerComponent', () => {
   let component: WaitingSpinnerComponent;
   let fixture: ComponentFixture<WaitingSpinnerComponent>;
 

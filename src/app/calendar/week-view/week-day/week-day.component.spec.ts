@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WeekDayComponent } from './week-day.component';
 
-describe('WeekDayComponent', () => {
+xdescribe('WeekDayComponent', () => {
   let component: WeekDayComponent;
   let fixture: ComponentFixture<WeekDayComponent>;
 

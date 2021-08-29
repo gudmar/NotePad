@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MoveToWindowComponent } from './move-to-window.component';
 
-describe('MoveToWindowComponent', () => {
+xdescribe('MoveToWindowComponent', () => {
   let component: MoveToWindowComponent;
   let fixture: ComponentFixture<MoveToWindowComponent>;
 

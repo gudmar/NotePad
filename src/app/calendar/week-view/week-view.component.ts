@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommunicationService } from '../../services/communication.service';
 import { EventManagerService } from '../services/event-manager.service';
 import { ConcatSource } from 'webpack-sources';
+import { NgModule } from '@angular/compiler/src/core';
+import { WeekViewHelperService } from '../services/week-view-helper.service';
 
 @Component({
   selector: 'week-view',
@@ -16,19 +18,25 @@ export class WeekViewComponent implements OnInit {
   currentCwIndex: number = 0;
   uniqueId: string = 'week-view-id';
   get cwInCurrentMonth() {
-    let weekObjects: any = this.getMonthOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex);
+    let weekObjects: any = this.helper.getMonthOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex);
     let weeks: any[] = [];
+    debugger
     for (let week of weekObjects) { weeks.push(week.cwIndex)}
     return weeks;
   }
   get daysOfCurrnetCw(){
-    return this.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days
+    return this.helper.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days
   }
   constructor(
     private communicator: CommunicationService,
-    private eventManager: EventManagerService
+    private eventManager: EventManagerService,
+    private helper: WeekViewHelperService
   ) { 
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displayWeekView'])
+  }
+
+  configureHelper() {
+    this.helper.configure(this.currentCwIndex, this.currentMonthIndex, this.currentYear,this.cwInCurrentMonth)
   }
 
   handleMessages(eventType: string, data: any){
@@ -47,40 +55,11 @@ export class WeekViewComponent implements OnInit {
     this.shouldBeDisplayed = false;
   }
 
-  getMonthOutOfCalendar(calendarObj: any, monthIndex: number){
-    let indexOfFoundElement: number = this.eventManager.getIndexOfElemetnInArray(calendarObj, 'monthIndex', monthIndex);
-    return calendarObj[indexOfFoundElement]
+  switchToAnotherCw(offset: -1 | 1){
+    this.configureHelper();
+    let newDate = this.helper.calculateNextCW(offset)
+    this.currentCwIndex = newDate.cw;
+    this.currentMonthIndex = newDate.cw;
+    this.currentYear = newDate.year;
   }
-
-  getCwOutOfCalendar(calendarObj: any, monthIndex: number, cwIndex: number){
-    let monthObj: any = this.getMonthOutOfCalendar(calendarObj, monthIndex);
-    let weeks = monthObj.weeks;
-    let indexOfFoundElement = this.eventManager.getIndexOfElemetnInArray(weeks, 'cwIndex', cwIndex);
-    return weeks[indexOfFoundElement]
-  }
-
-  switchToAnotherCw(offset: number){
-    // let plannedCwIndex = this.currentCwIndex + offset;
-    // if (this.doesCwBelongToCurrnetMonth(plannedCwIndex)) {
-    //   this.currentCwIndex = plannedCwIndex;
-    //   return true;
-    // }
-    // let planndedMonthIndex = 
-    //   (plannedCwIndex > Math.max(...this.cwInCurrentMonth))?this.currentMonthIndex+1:this.currentCwIndex-1;
-    // if (this.doesPlannedCwBelongToCurrentYear(plannedCwIndex, planndedMonthIndex)) {
-    //   this.currentCwIndex = plannedCwIndex;
-    //   this.currentMonthIndex = planndedMonthIndex;
-    //   return false;
-    // }
-    // console.warn('Switching to next year needs implementation'); return false;
-  }
-
-  doesCwBelongToCurrnetMonth(cwIndex: number):boolean{
-    return this.cwInCurrentMonth.findIndex((element)=>{return element == cwIndex})==-1?false: true;
-  }
-  doesPlannedCwBelongToCurrentYear(cwIndex:number, monthIndex: number){
-    // if (monthIndex < 11 && monthIndex > 0) return true;
-    // if (cwIndex == 1) return false;
-  }
-
 }

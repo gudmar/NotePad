@@ -5,7 +5,7 @@
         [ngClass] = "tabShapeClasses" 
         [style.border-bottom-color]="bgColor">
         <span>
-            <span class = "title-holder">{{tabTitle}}</span>
+            <span class = "title-holder" [attr.contenteditable]="inTitleEditMode">{{tabTitle}}</span>
             <!-- <span *ngIf="!setBehind">&#8285;</span>
              -->
              <span class = "kill-me" *ngIf="!setBehind" (click)="killRelatedPage($event)">&times;</span>

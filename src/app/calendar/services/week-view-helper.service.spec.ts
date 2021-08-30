@@ -66,6 +66,11 @@ describe('WeekViewHelperService', () => {
         config:{currentCwIndex: 52, currentMonthIndex:11, currentYear: 2021, cwInCurrentMonth: [ 48, 49, 50, 51, 52]},
         offset: 1,
         expectedOutput: {cw: 1, month: 0, year: 2022}
+      },
+      {
+        config:{currentCwIndex: 53, currentMonthIndex:11, currentYear: 2020, cwInCurrentMonth: [ 49, 50, 51, 52, 53]},
+        offset: 1,
+        expectedOutput: {cw: 1, month: 0, year: 2021}
       }
     ]
     for(let tc of testCases){

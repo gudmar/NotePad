@@ -33,6 +33,7 @@ export class WeekViewHelperService {
     let monthObj: any = this.getMonthOutOfCalendar(calendarObj, monthIndex);
     let weeks = monthObj.weeks;
     let indexOfFoundElement = this.eventManager.getIndexOfElemetnInArray(weeks, 'cwIndex', cwIndex);
+    // debugger;
     return weeks[indexOfFoundElement]
   }
 

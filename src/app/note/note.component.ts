@@ -80,7 +80,8 @@ export class NoteComponent implements OnInit {
     })
   }
 
-  killMe(){
+  killMe(event: any){
+    event.stopPropagation();
     this.messenger.inform('killMe', this.uniqueId)
   }
 

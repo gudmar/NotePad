@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener} from '@angular/core';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
 import { CommunicationService } from '../../services/communication.service'
-import { ConcatSource } from 'webpack-sources';
+// import { ConcatSource } from 'webpack-sources';
 import { SetColorsDirective } from '../../directives/set-colors.directive'
-import { Z_PARTIAL_FLUSH } from 'zlib';
+// import { Z_PARTIAL_FLUSH } from 'zlib';
 
 @Component({
   selector: 'tab',
@@ -12,7 +12,8 @@ import { Z_PARTIAL_FLUSH } from 'zlib';
   providers: [UniqueIdProviderService]
 })
 export class TabComponent implements OnInit {
-  idProviderInstance = new UniqueIdProviderService();
+  private idProviderInstance = new UniqueIdProviderService();
+  inTitleEditMode: boolean = false;
   private nrOfOwnChildren: number = 0;
   private _isActive: boolean = false;
   private _isActiveBehind: boolean = false;
@@ -24,12 +25,6 @@ export class TabComponent implements OnInit {
   @Input() isRectangleTab: boolean = false;
   @Input() tabTitle: string = "newTab";
   @Input() uniqueId: string = this.idProviderInstance.getUniqueId();
-  // @Input() set bgColor (val: string) { 
-  //   this._bgColor  = val;
-  //   this.fgColor = this.colorManager.getFgColor(val);
-  //   console.log(this.fgColor)
-  // }
-  // get bgColor() {return this._bgColor}
   @Input() set setBehind(val:boolean) {
     this._isActiveBehind = val;
     this.tabShapeClasses['active-behind'] = val;
@@ -49,6 +44,21 @@ export class TabComponent implements OnInit {
   onThisTabSelect(){
     this.tabChosen.emit(this.uniqueId)
   }
+  @HostListener('dblclick', ['$event'])
+  enterChangeTitleMode(evetn: any){
+    evetn.stopPropagation();
+    this.inTitleEditMode = true;
+  }
+  @HostListener('focusout', ['$event'])
+    exitChangeTitleMode(event: any){
+    this.inTitleEditMode = false;
+    let textValue = event.target.innerText;
+    if (textValue != this.tabTitle) this.tabTitle = textValue;
+    this.messenger.inform('changeCurrentPageTitle', {
+      title: textValue,
+      pageId: this.uniqueId
+    })
+  }
 
   killRelatedPage(data: any){
     // nrOfChidren uniqueId)
@@ -64,3 +74,7 @@ export class TabComponent implements OnInit {
     this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['nrOfChidrenYouHave'])
   }
 }
+//   if (eventType === 'changeCurrentPageTitle'){
+//     if (this.currentPageId == data.pageId) {
+//       this.getCurrentPageDescriptor().title = data.title;
+// }

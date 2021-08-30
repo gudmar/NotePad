@@ -39,7 +39,7 @@ export class SheetComponent implements OnInit {
     this.messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page']
+      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page', 'changeCurrentPageTitle']
     )
   }
 
@@ -62,6 +62,11 @@ export class SheetComponent implements OnInit {
           'nrOfChidrenYouHave', 
           {uniqueId: data, nrOfOwnChildren: queriedPageDescriptor.notes.length}
         )
+    }
+    if (eventType === 'changeCurrentPageTitle'){
+      if (this.currentPageId == data.pageId) {
+        this.getCurrentPageDescriptor().title = data.title;
+      }
     }
   }
 

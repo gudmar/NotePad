@@ -52,7 +52,13 @@ export class WorkBookComponent implements OnInit {
     messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['storageOperation', 'addNextSheet', 'saveDocument', 'loadDocument', 'switchToCalendar', 'switchToNotes']
+      ['storageOperation', 
+       'addNextSheet', 
+       'saveDocument', 
+       'loadDocument', 
+       'switchToCalendar', 
+       'switchToNotes',
+       'changeSheetTitle']
     )
   }
 
@@ -94,6 +100,11 @@ export class WorkBookComponent implements OnInit {
       this.application = 'calendar'
     }
     if (eventType == 'switchToNotes'){this.application = 'notes'}
+    if (eventType == "changeSheetTitle"){
+      if (data.uniqueId == this.activeSheetId){
+        this.extractSheetDescriptor(data.uniqueId).title = data.title;
+      }
+    }
   }
 
   reloadDocument(documentData: any){

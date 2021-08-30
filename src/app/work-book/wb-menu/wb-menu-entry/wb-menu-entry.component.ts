@@ -10,6 +10,7 @@ import { CommunicationService } from '../../../services/communication.service'
 })
 export class WbMenuEntryComponent implements OnInit {
   _isActive: boolean = true;
+  changeSheetsTitleMode = false;
   @Input() isKillable: boolean = true;
   // private _bgColor:string = 'white';
   // fgColor: string = "black";
@@ -47,6 +48,20 @@ export class WbMenuEntryComponent implements OnInit {
   killRelatedSheet(data: any){
     data.stopPropagation();
     this.messenger.inform('killSheet', this.uniqueId)
+  }
+
+  enterChangeSheetsTitleMode(){
+    this.changeSheetsTitleMode = true;
+  }
+
+  @HostListener('focusout', ['$event'])
+  saveSheetsTitle(event: any){
+    this.changeSheetsTitleMode = true;
+    let titleFromText = event.target.innerText;
+    this.messenger.inform('changeSheetTitle', {
+      uniqueId: this.uniqueId,
+      title: titleFromText
+    })
   }
 
 }

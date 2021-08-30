@@ -28,7 +28,7 @@ export class WorkBookComponent implements OnInit {
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
-  application: string = 'calendar'; //'notes' //'calendar'
+  application: string = 'notes' //'calendar'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }
@@ -122,10 +122,12 @@ export class WorkBookComponent implements OnInit {
   }
 
   initializeNewSheet(newSheetId: string){
+  
     let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
     this.currentSheetBgColor = currentSheetDescriptor.bgColor;
     this.currentSheetPages = currentSheetDescriptor.pages;
     this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
+  
   }
 
   extractSheetDescriptor(sheetId: string): any{

@@ -24,4 +24,10 @@
     border-top: none;
     border-bottom: none;
 }
+.hidden-menu-button:hover>.hidden-tabs{
+    visibility: visible;
+}
+.hidden-tabs{
+    visibility: hidden;
+}
 

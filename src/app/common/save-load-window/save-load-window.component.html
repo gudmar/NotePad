@@ -24,15 +24,20 @@
                 </span>
                 <div class="edit-field" 
                     [attr.contenteditable]="saveLoadMode == 'save'" 
+                    [ngClass]="{'non-editable': saveLoadMode == 'load'}" 
                     (focusout) = "onChange($event)"
                 >
                     {{currentlySelectedItem}}
                 </div>
                 <div class="button-wrapper">
                         <div *ngIf="saveLoadMode=='save'" class="button" (click) = "save()">Save</div>
-                        <div *ngIf="saveLoadMode=='load'" class="button" (click) = "loadKey()">Load</div>
+                        <div *ngIf="saveLoadMode=='load'" class="button" 
+                            (click) = "loadKey()" [ngClass]="{'disabled': !isCurrentlySelectedItemOnList()}">Load
+                        </div>
                         <div class="button" (click) = "shutSaveLoadWindow()">Close</div>
-                        <div class="button" (click) = "removeCurrent()">Remove</div>
+                        <div class="button" (click) = "removeCurrent()"
+                            [ngClass]="{'disabled': !isCurrentlySelectedItemOnList()}">Remove
+                        </div>
                         <!-- <div class="button" (click) = "clearAllContent()">Clear all</div> -->
                         <!-- <div class="button" (click) = "refresh()">Refresh</div> -->
                         <!-- <div class="button" (click) = "generateMocks()">Test</div> -->

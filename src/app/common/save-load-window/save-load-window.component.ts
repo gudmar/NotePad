@@ -55,6 +55,11 @@ export class SaveLoadWindowComponent implements OnInit {
     }
   }
 
+  isCurrentlySelectedItemOnList(){
+    let indexOfItemInList = this.keys.findIndex((element: string)=>{return element == this.currentlySelectedItem})
+    return indexOfItemInList == -1 ? false : true;
+  }
+
   getAllKesyFromStorage(){
 
     return this.storageManager.getAllItemsFromStorage()

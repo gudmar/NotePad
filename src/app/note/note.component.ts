@@ -96,7 +96,6 @@ export class NoteComponent implements OnInit {
 
   informAboutContentChange(data: any){
     this.noteContentChanged.emit(data);
-    console.dir(this.contentHolder)
     this.messenger.inform('noteContentChanged', {
       objectId: this.uniqueId,
       content: this.contentHolder.nativeElement.innerHTML

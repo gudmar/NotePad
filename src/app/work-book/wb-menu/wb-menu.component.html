@@ -14,22 +14,33 @@
         <wb-button [uniqueId] = "'newContentId'"
             [isPushed] = "false"
             [pictogram] = "'New'"
-            (wasClicked) = "passDataFromStorageToWBComponent('newDocument')"
+            (wasClicked) = "getNewPage()"
  >
         </wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
+                [isPushed] = "false"
+                [pictogram] = "'Save'"
+                (wasClicked) = "saveToLastUsedKey()"
+        ></wb-button>
+        <wb-button [uniqueId] = "'saveContentId'"
                    [isPushed] = "false"
-                   [pictogram] = "'Memory'"
-                   (wasClicked) = "openMemoryManager()"
-        >
+                   [pictogram] = "'Save as'"
+                   (wasClicked) = "openMemoryManager('save')"
+        ></wb-button>
+        <wb-button [uniqueId] = "'saveContentId'"
+        [isPushed] = "false"
+        [pictogram] = "'Load'"
+        (wasClicked) = "openMemoryManager('load')"
+>
+
         </wb-button>
 
-        <wb-button [uniqueId] = "'GetAllFromStoratge'"
+        <!-- <wb-button [uniqueId] = "'GetAllFromStoratge'"
             [isPushed] = "false"
             [pictogram] = "'Get all'"
             (wasClicked) = "passDataFromStorageToWBComponent('getAllKeysFromStorage')"
-        >
-        </wb-button>
+        
+        </wb-button>> -->
         <wb-button [uniqueId] = "'CalendarButtonId'"
         [isPushed] = "false"
         [pictogram] = "'Calendar'"

@@ -63,6 +63,8 @@ export class StorageManagerService {
     if (this.hasKey(key)) {
       let memObj = this.getMemoryObject();
       delete memObj[key]
+      this.setObject(memObj)
+      if (key == this.getLastUsedNoteDocument()) localStorage.removeItem('__notePad_lastUsed')
     }
   }
 
@@ -108,6 +110,17 @@ export class StorageManagerService {
   getLastUsedNoteDocument(){
     return localStorage.getItem('__notePad_lastUsed')
   }
+  saveAsLastUsedKey(dataToSave: any){
+    let lastUsedKey = this.getLastUsedNoteDocument();
+    if (lastUsedKey == null || lastUsedKey == ''){
+      lastUsedKey = this.getDefaultKey();
+    }
+    this.saveContentAs(lastUsedKey, dataToSave)
+  }
+  getDefaultKey(){
+    let now = new Date(Date.now());
+    return `${now.getFullYear()}${now.getMonth()}${now.getDay()}${now.getHours}${now.getMinutes}${now.getSeconds}`
+  }
 
 
   handleStorageOperation(operationType: string, applicationData: any){
@@ -131,6 +144,11 @@ export class StorageManagerService {
 
 
     return {information: 'operation not supported'}
+  }
+
+  getNewDocumentAndClearLastUsed(){
+    localStorage.removeItem('__notePad_lastUsed');
+    return this.getFreshDocument();
   }
 
   getFreshDocument(){

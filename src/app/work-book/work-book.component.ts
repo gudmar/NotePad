@@ -58,7 +58,8 @@ export class WorkBookComponent implements OnInit {
        'loadDocument', 
        'switchToCalendar', 
        'switchToNotes',
-       'changeSheetTitle']
+       'changeSheetTitle',
+       'loadFreshDocument']
 
 
     )
@@ -103,6 +104,10 @@ export class WorkBookComponent implements OnInit {
       this.storageManager.saveContentAs(data, this.document)
 
     }
+    if (eventType === 'saveToLastUsedKey'){
+      this.storageManager.saveAsLastUsedKey(this.document);
+    }
+    // getNewDocumentAndClearLastUsed
     if (eventType == 'loadDocument'){
       let newDocument = this.storageManager.loadContent(data)
       this.reloadDocument(newDocument)
@@ -115,6 +120,10 @@ export class WorkBookComponent implements OnInit {
       if (data.uniqueId == this.activeSheetId){
         this.extractSheetDescriptor(data.uniqueId).title = data.title;
       }
+    }
+    if (eventType =='loadFreshDocument'){
+      let newDocument = this.storageManager.getNewDocumentAndClearLastUsed();
+      this.reloadDocument(newDocument)
     }
   }
 

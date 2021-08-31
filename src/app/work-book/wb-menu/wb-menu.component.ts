@@ -63,6 +63,10 @@ export class WbMenuComponent implements OnInit {
     }
   }
 
+  getNewPage(){
+    this.messenger.inform('loadFreshDocument', '');
+  }
+
   deleteSheet(idOfSheetToDelete: string){
     let deletedSheetIndex = this.getIndexOfSheetById(idOfSheetToDelete)
     this.sheets.splice(deletedSheetIndex, 1);
@@ -96,10 +100,14 @@ export class WbMenuComponent implements OnInit {
     // !!!!!!!!!!! NOT NEEDED - CLEAR EVERYTHING RELATED
   }
 
-  openMemoryManager(){
-    this.messenger.inform('displaySaveWindow', '')
+  openMemoryManager(mode: 'save' | 'load'){
+    if (mode == "save") this.messenger.inform('displaySaveWindow', '')
+    if (mode == "load") this.messenger.inform('displayLoadWindow', '')
   }
 
+  saveToLastUsedKey(){
+    this.messenger.inform('saveToLastUsedKey', '')
+  }
 
   addNextSheet(){
     this.messenger.inform('addNextSheet', {after: 'last'})

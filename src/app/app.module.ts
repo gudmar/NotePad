@@ -42,6 +42,7 @@ import { ValidateDayDirective } from './calendar/directives/validate-day.directi
 import { ValidateMonthDirective } from './calendar/directives/validate-month.directive';
 import { WeekDayComponent } from './calendar/week-view/week-day/week-day.component';
 import { SummaryEventComponent } from './calendar/week-view/week-day/summary-event/summary-event.component';
+import { ResizePointComponent } from './movable-point/resize-point/resize-point.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { SummaryEventComponent } from './calendar/week-view/week-day/summary-eve
     ValidateMonthDirective,
     WeekDayComponent,
     SummaryEventComponent,
+    ResizePointComponent,
     
   ],
   imports: [

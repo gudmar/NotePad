@@ -10,6 +10,7 @@ import { ConcatSource } from 'webpack-sources';
   styleUrls: ['./save-load-window.component.css']
 })
 export class SaveLoadWindowComponent implements OnInit {
+
   itemsFromStorage: any[] = [];
   private _currentlySelectedItem: string = '';
   set currentlySelectedItem(val: string){
@@ -19,7 +20,7 @@ export class SaveLoadWindowComponent implements OnInit {
   get currentlySelectedItem() {return this._currentlySelectedItem}
   keys: any[] = [];
   @Input() shouldBeDisplayed: boolean = false;
-  @Input() isItSaveApplicationVariant: boolean = true;
+  @Input() saveLoadMode: 'save' | 'load' = 'save';
   uniqueId: string = 'saveLoadId';
   constructor(
     private storageManager: StorageManagerService,
@@ -45,11 +46,11 @@ export class SaveLoadWindowComponent implements OnInit {
 
   handleMessages(eventType: string, data: any){
     if (eventType === 'displaySaveWindow') {
-      this.isItSaveApplicationVariant = true;
+      this.saveLoadMode = "save";
       this.shouldBeDisplayed = true;
     }
     if (eventType === 'displayLoadWindow') {
-      this.isItSaveApplicationVariant = false;
+      this.saveLoadMode = 'load';
       this.shouldBeDisplayed = true;
     }
   }
@@ -63,7 +64,7 @@ export class SaveLoadWindowComponent implements OnInit {
     this.currentlySelectedItem = value;
   }
 
-  confirmation(){
+  save(){
     if (this.currentlySelectedItem == '') this.currentlySelectedItem = "Default"
     this.communicator.inform('saveDocument', this.currentlySelectedItem);
     this.refresh();

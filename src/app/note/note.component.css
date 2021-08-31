@@ -36,15 +36,19 @@ align-items: center; */
     height: calc(100% - 30px);
     top: 30px;
 }
+.content-holder{
+    font-family: Arial, Helvetica, sans-serif;
+}
 movable-point:nth-child(1){
     /* position: relative; */
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
 }
-movable-point:last-child{
-    right: -25px;
-    bottom: -25px;
-    z-index: 100;
+resize-point{
+    right: -0px;
+    bottom: -0px;
+    z-index: 20;
+    transform: translate(50%, 50%)
 }
 

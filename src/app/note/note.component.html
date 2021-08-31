@@ -18,7 +18,7 @@
         >
             <span #contentHolder class = "content-holder" contenteditable="true" [innerHTML] = "content"></span>
         </div>
-    <movable-point  
+    <resize-point  
                     data-role="resize" 
                     resizeparent [nestedLevel]="2"
                     [initialWidth] = "initialWidth"
@@ -26,5 +26,5 @@
                     [movableElementId] = "'resizeId'"
                     (elementResized) = "informAboutResize($event)"
                     [style.visibility]="isActive?'visible':'hidden'"
-    ></movable-point>
+    ></resize-point>
 </div>

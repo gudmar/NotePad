@@ -59,7 +59,18 @@ export class WorkBookComponent implements OnInit {
        'switchToCalendar', 
        'switchToNotes',
        'changeSheetTitle']
+
+
     )
+  }
+
+  loadLastDocument(){
+    let lastUsedDocument = this.storageManager.getLastUsedNoteDocument();
+    if (lastUsedDocument != null){
+      this.document = this.storageManager.loadContent(lastUsedDocument)
+    } else {
+      this.document = this.storageManager.getFreshDocument();
+    }
   }
 
   handleMessages(eventType: string, data: any){
@@ -124,6 +135,7 @@ export class WorkBookComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadLastDocument();
     this.listOfSheets = this.document.sheets;
     this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;

@@ -5,43 +5,110 @@ import { NextColorGeneratorService } from './next-color-generator.service'
 @Injectable({
   providedIn: 'root'
 })
+
+
+
 export class StorageManagerService {
   constructor(private idProvider: UniqueIdProviderService,
     private colorProvider: NextColorGeneratorService) { }
+  
+  notePadMemoryObject: string = 'notePadMemoryObject'
 
   saveContent(data: any){
-    localStorage.setItem('notePad', JSON.stringify(data))
+    // localStorage.setItem('notePad', JSON.stringify(data))
   }
 
   saveContentAs(key: string, data: any){
-    localStorage.setItem(key, JSON.stringify(data))
+    // localStorage.setItem(key, JSON.stringify(data))
+    let memObj = this.getMemoryObject();
+    Object.assign(memObj, {[key]: data});
+    this.setObject(memObj)
+    this.setLastUsedNoteDocumentToStorage(key)
+  }
+
+  setObject(obj: any){
+    localStorage.setItem(this.notePadMemoryObject, JSON.stringify(obj))
   }
 
   deleteSingleKey(key: string){
-    localStorage.removeItem(key)
+    // localStorage.removeItem(key)
+    this.removeItemFromStorage(key)
   }
 
   loadContent(key: string){
-    let content = localStorage.getItem(key)
-    if (content == null) return content
-    return JSON.parse(content);
+    // let content = localStorage.getItem(key)
+    // if (content == null) return content
+    // return JSON.parse(content);
+    let memObj = this.getMemoryObject();
+    if (this.hasKey(key)) {
+      this.setLastUsedNoteDocumentToStorage(key);
+      return memObj[key];
+    }
+    return null;
   }
 
   hasKey(key: string){
-    return localStorage.getItem(key) != null;
+    // return localStorage.getItem(key) != null;
+    let memObj = this.getMemoryObject();
+    return memObj.hasOwnProperty(key)
   }
 
   clearStorage(){
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.removeItem(this.notePadMemoryObject)
   }
 
   removeItemFromStorage(key: string){
-    localStorage.removeItem(key)
+    // localStorage.removeItem(key)
+    if (this.hasKey(key)) {
+      let memObj = this.getMemoryObject();
+      delete memObj[key]
+    }
   }
 
+  getMemoryObject(){
+    if (!this.isMemoryObjectStored()) this.createNotepadMemoryObject();
+    let a = <string>localStorage.getItem(this.notePadMemoryObject)
+    let b = this.notePadMemoryObject
+    return JSON.parse(<string>localStorage.getItem(this.notePadMemoryObject));
+  } 
+
+  // getKeyIndex(key: string):number{
+  //   if (this.isMemoryObjectStored()) {
+  //     let memoryObject = JSON.parse(<string>localStorage.getItem(this.notePadMemoryObject));
+
+  //   }
+  //   return -1;
+  // }
+
   getAllItemsFromStorage(){
-    return Object.keys(localStorage);
+    let isMemoryObjectStored = this.isMemoryObjectStored();
+    let memObj = localStorage.getItem(this.notePadMemoryObject);
+    if (memObj != null){
+      if (this.isMemoryObjectStored()) return Object.keys(JSON.parse(memObj))
+    }
+    return []
+    // return Object.keys(localStorage);
   }
+
+
+  createNotepadMemoryObject(){
+    if (!this.isMemoryObjectStored()) localStorage.setItem(this.notePadMemoryObject, '{}');
+  }
+
+  private isMemoryObjectStored(): boolean{
+    let keys = Object.keys(localStorage);
+    let isMemoryObjectStored = (keys.findIndex((e:string)=>{return e==this.notePadMemoryObject})!=-1);
+    return isMemoryObjectStored
+  }
+
+  setLastUsedNoteDocumentToStorage(documentName: string){
+    localStorage.setItem('__notePad_lastUsed', documentName)
+  }
+  getLastUsedNoteDocument(){
+    return localStorage.getItem('__notePad_lastUsed')
+  }
+
 
   handleStorageOperation(operationType: string, applicationData: any){
     if (operationType === 'saveWholeDocument') { 

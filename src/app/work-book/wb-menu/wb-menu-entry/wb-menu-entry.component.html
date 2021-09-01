@@ -1,6 +1,6 @@
 <div class="wb-menu-entry">
     <span class = "color-wrapper" setColors [dBgColor]="bgColor" [shouldSetBgColor]="true">
-        <span class="title"  [ngClass]="dynamicClasses"   >
+        <span class="title"  [ngClass]="dynamicClasses"  [ngClass]="{'special': !isKillable}"  >
             <span (dblclick)="enterChangeSheetsTitleMode()" [attr.contenteditable] = "changeSheetsTitleMode">
                 {{title}}
             </span>

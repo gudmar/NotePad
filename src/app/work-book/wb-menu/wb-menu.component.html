@@ -27,6 +27,11 @@
                    [pictogram] = "'Save as'"
                    (wasClicked) = "openMemoryManager('save')"
         ></wb-button>
+        <wb-button [uniqueId] = "'saveFileId'"
+            [isPushed] = "false"
+            [pictogram] = "'Save file'"
+            (wasClicked) = "saveToAFile()"
+        ></wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
         [isPushed] = "false"
         [pictogram] = "'Load'"

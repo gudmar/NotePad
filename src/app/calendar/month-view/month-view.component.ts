@@ -56,7 +56,6 @@ export class MonthViewComponent implements OnInit {
 
       // this.events = this.eventManater.fetchYearEvents(this.year, newDocument.calendarInputs).entries
       this.events = newDocument.calendarInputs
-      // debugger
       this.refreshYear(); console.log('message receivced')
     }
   }

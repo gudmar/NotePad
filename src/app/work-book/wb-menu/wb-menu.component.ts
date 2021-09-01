@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { CommunicationService } from '../../services/communication.service'
 import { NextColorGeneratorService } from '../../services/next-color-generator.service'
+import { FileOperationsService } from '../../services/file-operations.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class WbMenuComponent implements OnInit {
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
+    private fileOperations: FileOperationsService
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +63,10 @@ export class WbMenuComponent implements OnInit {
       }
       
     }
+  }
+
+  saveToAFile(){
+    this.messenger.inform('saveToFile', '')
   }
 
   getNewPage(){

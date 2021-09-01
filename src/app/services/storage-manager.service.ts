@@ -119,7 +119,7 @@ export class StorageManagerService {
   }
   getDefaultKey(){
     let now = new Date(Date.now());
-    return `${now.getFullYear()}${now.getMonth()}${now.getDay()}${now.getHours}${now.getMinutes}${now.getSeconds}`
+    return `NotePad${now.getFullYear()}${now.getMonth()}${now.getDay()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`
   }
 
 
@@ -175,7 +175,7 @@ export class StorageManagerService {
   }
 
   getFreshCalendar(){
-    return {}
+    return []
   }
   getFreshSheet(startColor: string){
     let freshPage = this.getFreshPage(startColor);

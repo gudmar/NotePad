@@ -5,6 +5,7 @@ import { NextColorGeneratorService } from '../services/next-color-generator.serv
 import { DescriptorToDataService } from '../services/descriptor-to-data.service'
 import { CommunicationService } from '../services/communication.service'
 import { StorageManagerService } from '../services/storage-manager.service'
+import { FileOperationsService } from '../services/file-operations.service';
 
 
 @Component({
@@ -46,7 +47,8 @@ export class WorkBookComponent implements OnInit {
     private idProvider: UniqueIdProviderService,
     private messenger: CommunicationService,
     private storageManager: StorageManagerService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private fileOperations: FileOperationsService
     
   ) { 
     messenger.subscribe(
@@ -59,7 +61,8 @@ export class WorkBookComponent implements OnInit {
        'switchToCalendar', 
        'switchToNotes',
        'changeSheetTitle',
-       'loadFreshDocument']
+       'loadFreshDocument',
+       'saveToFile']
 
 
     )
@@ -124,6 +127,9 @@ export class WorkBookComponent implements OnInit {
     if (eventType =='loadFreshDocument'){
       let newDocument = this.storageManager.getNewDocumentAndClearLastUsed();
       this.reloadDocument(newDocument)
+    }
+    if (eventType == 'saveToFile'){
+      this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
   }
 

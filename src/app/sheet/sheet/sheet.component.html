@@ -8,7 +8,8 @@
         </tab-menu>
     </div>
     <div class="page-container">
-        <page [notes] = "currentPageNotes" 
+        <page dropZone
+              [notes] = "currentPageNotes" 
               [bgColor] = "getCurrentPagesColor()" 
               [uniqueId] = "currentPageId">
         </page>

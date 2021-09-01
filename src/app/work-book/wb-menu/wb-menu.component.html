@@ -8,7 +8,7 @@
                     (sheetChanged) = "switchSheet($event)"
         >
         </wb-menu-entry>
-        <wb-menu-entry [title]="'Add +'" [isActive]="true" [bgColor]="'black'" (click)="addNextSheet()"></wb-menu-entry>
+        <wb-menu-entry [isKillable] = "false" [title]="'Add +'" [isActive]="true" [bgColor]="'black'" (click)="addNextSheet()"></wb-menu-entry>
     </div>
     <div class="wb-menu-options">
         <wb-button [uniqueId] = "'newContentId'"

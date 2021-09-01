@@ -67,3 +67,7 @@
     transition: 0.3;
     transform: scale(0.8);
 }
+.special{
+    cursor: pointer;
+    width: 100%;
+}

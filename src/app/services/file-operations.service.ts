@@ -13,7 +13,6 @@ export class FileOperationsService {
     let dummyLink = document.createElement('a');
     dummyLink.href = window.URL.createObjectURL(blob);
     dummyLink.download = name;
-    debugger;
     dummyLink.click();
   }
 

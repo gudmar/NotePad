@@ -29,8 +29,10 @@ export class DropZoneDirective {
     } 
     let dataItem = data.items[0];
     if (dataItem.kind=='file') {
-      let fileContent = await this.getFileContent(dataItem.getAsFile())
-      console.log(this.decodeFileContent(fileContent));
+      let fileContent = await this.getFileContent(dataItem.getAsFile());
+      let decodedFileContent = this.decodeFileContent(fileContent)
+      this.communicator.inform('gotFileWithDataToLoad', decodedFileContent)
+      console.log(decodedFileContent);
     }
     console.log(data)
     return null;
@@ -48,8 +50,6 @@ export class DropZoneDirective {
     return new Promise((resolve, reject) => {
         let reader = new FileReader();
         reader.onload = () => {
-            // resolve(csv2array(decoder.decode(reader.result)))
-            // resolve(decoder.decode(reader.result))
             resolve(reader.result)
         }
         reader.onerror = reject

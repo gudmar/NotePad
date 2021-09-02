@@ -19,10 +19,62 @@ export class DocumentValidatorService {
     return parsedDocument;
   }
 
-  isCalendarValid(calendarSubobject: any[]){
-    // if (this.eachArrayElementShouldContainKeys(calendarSubobject, 'entries'))
-    return null;
+  isCalendarValid(calendar: any[]){
+    if (calendar.length == 0) return true;
+    for (let input of calendar){
+      let itemKeys = Object.keys(input);
+      if (!this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])) return false;
+      if (!this.objectShouldContainKeys(itemKeys, ['year'])) return false;
+      if (this.objectShouldContainKeys(itemKeys, ['entries'])) {
+        if (!this.validateCalendarYearEntry(itemKeys.entries)) return false;
+      }
+    }
+    return true;
   }
+
+  validateCalendarYearEntry(object: any){
+    if (object.length == 0) return true;
+    for (let input of object){
+      let itemKeys = Object.keys(input);
+      if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
+      if (!this.objectShouldContainKeys(itemKeys, ['month'])) return false;
+      if (this.objectShouldContainKeys(itemKeys, ['entries'])) {
+        if (!this.validateCalendarMonthEntry(itemKeys.entries)) return false;
+      }
+    }
+    return true;
+  }
+
+  validateCalendarMonthEntry(object: any){
+    if (object.length == 0) return true;
+    for (let input of object){
+      let itemKeys = Object.keys(input);
+      if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
+      if (!this.objectShouldContainKeys(itemKeys, ['day'])) return false;
+      if (this.objectShouldContainKeys(itemKeys, ['entries'])) {
+        if (!this.validateCalendarDayEntry(itemKeys.entries)) return false;
+      }
+    }
+    return true;
+  }
+
+  validateCalendarDayEntry(dayEntries: any[]){
+    if (!this.objectShouldContainKeys(dayEntries, 
+      ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description'])) return false;
+    if (!this.objectShouldNotContainKeysOtherThen(dayEntries, 
+      ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description'])) return false
+    for(let entry of dayEntries){
+      if (!this.keyValueShouldBeTypeOf(entry, 'hours', 'number')) return false;
+      if (!this.keyValueShouldBeTypeOf(entry, 'minutes', 'number')) return false;
+      if (!this.keyValueShouldBeTypeOf(entry, 'duration', 'number')) return false;
+      if (!this.keyValueShouldBeTypeOf(entry, 'summary', 'string')) return false;
+      if (!this.keyValueShouldBeTypeOf(entry, 'description', 'string')) return false;
+      if (!this.keyValueShouldBeTypeOf(entry, 'uniqueId', 'string')) return false;
+    }
+    return true;
+  }
+
+
 
   objectShouldNotContainKeysOtherThen(dataAsObject: any, listOfKeys: string[]){
     // true if object does not contain other keys

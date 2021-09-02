@@ -6,6 +6,7 @@ import { DescriptorToDataService } from '../services/descriptor-to-data.service'
 import { CommunicationService } from '../services/communication.service'
 import { StorageManagerService } from '../services/storage-manager.service'
 import { FileOperationsService } from '../services/file-operations.service';
+import { DocumentValidatorService } from '../services/document-validator.service';
 
 
 @Component({
@@ -48,8 +49,8 @@ export class WorkBookComponent implements OnInit {
     private messenger: CommunicationService,
     private storageManager: StorageManagerService,
     private changeDetector: ChangeDetectorRef,
-    private fileOperations: FileOperationsService
-    
+    private fileOperations: FileOperationsService,
+    private documentValidator: DocumentValidatorService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -62,7 +63,9 @@ export class WorkBookComponent implements OnInit {
        'switchToNotes',
        'changeSheetTitle',
        'loadFreshDocument',
-       'saveToFile']
+       'saveToFile',
+       'gotFileWithDataToLoad'
+      ]
 
 
     )
@@ -110,10 +113,14 @@ export class WorkBookComponent implements OnInit {
     if (eventType === 'saveToLastUsedKey'){
       this.storageManager.saveAsLastUsedKey(this.document);
     }
-    // getNewDocumentAndClearLastUsed
     if (eventType == 'loadDocument'){
       let newDocument = this.storageManager.loadContent(data)
       this.reloadDocument(newDocument)
+    }
+    if (eventType == 'gotFileWithDataToLoad'){
+      let validatedData = this.documentValidator.validateAsString(data);
+      if (validatedData == null) this.messenger.inform('informUser', 'Passed file is not valid')
+      else (console.log(validatedData))
     }
     if (eventType == 'switchToCalendar'){
       this.application = 'calendar'

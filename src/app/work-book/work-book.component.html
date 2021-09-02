@@ -1,7 +1,7 @@
 <div class="workbook">
     <ng-container *ngIf="application == 'notes'">
         <div class="menu">
-                <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>
+            <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>          
         </div>
         <div class="sheet-container">
             <sheet  

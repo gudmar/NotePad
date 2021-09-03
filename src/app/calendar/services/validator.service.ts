@@ -69,7 +69,6 @@ export class ValidatorService {
   }
 
   isYearValid(valueToTest: number | string ){
-    console.log(valueToTest)
     let digitTestPattern = new RegExp("\\d{4}")
     let otherTestPattern = new RegExp('\\D')
     if (!digitTestPattern.test(valueToTest.toString())) return false

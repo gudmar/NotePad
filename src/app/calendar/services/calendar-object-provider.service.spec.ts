@@ -130,7 +130,6 @@ xdescribe('CalendarObjectProviderService', () => {
     for (let tc of testCases){
       let descriptors = calendar.getDaysOfCW(tc.input.year, tc.input.cw);
       let calculatedValues = getValuesFromDescriptor(tc.output.key, descriptors)
-      console.dir(calculatedValues)
       expect(calculatedValues).toEqual(tc.output.values)
     }
   })

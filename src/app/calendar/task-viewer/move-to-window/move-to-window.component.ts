@@ -112,7 +112,6 @@ uniqueId: string = 'moveEventId'
   
 
   moveEvent(event:any){
-    console.error('After moving component to month 12, view in task editor is not updated!!. Task is moved, but veiw not updated. Rest works as expectd')
     if (this.toDateDifferentCurrentDate()){
       let whatObjecsWereAdded = this.eventManager.moveEvent(
         {year: this.year, month: this.month - 1, day: this.day}, 

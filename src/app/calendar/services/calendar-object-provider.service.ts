@@ -159,7 +159,6 @@ export class CalendarObjectProviderService {
     if (lowBoundry < 0) lowBoundry = 0;
     if (highBoundry > 11) highBoundry = 11;
     if (lowBoundry > 10) lowBoundry = 10;
-    // console.log(`search ${cwIndex} in ${lowBoundry}    ${highBoundry}`)
     return this.getDateOfFirstCWDay_startDate_endDate(year, cwIndex)
 
   }

@@ -19,7 +19,6 @@ export class WaitingSpinnerComponent implements OnInit {
 
   handleMessages(eventType: String, data: any){
     this.shouldBeDisplayed = data;
-    console.log( this.shouldBeDisplayed)
   }
 
 }

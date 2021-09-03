@@ -152,12 +152,7 @@ describe('MovableParentDirective', () => {
     let steps = [[50, 0], [0, 25], [5, 10], [53, 200], [10, 220], [67, 99], [99, 67], [444, 45], [500, 300]];
     for (let step of steps){
       let movedElement = fixture.nativeElement.querySelector('.this-should-be-moved')
-      console.log('before movement: ' + step[0] + ' ' + step[1])
-      console.log(movedElement.getBoundingClientRect())
-      console.log(getElementsAbsolutePosition(movedElement))
         moveAndCheck(step[0], step[1]);
-      console.log(getElementsAbsolutePosition(movedElement))
-      console.log(movedElement.getBoundingClientRect())
     }       
   })
 

@@ -102,7 +102,6 @@ export class SaveLoadWindowComponent implements OnInit {
   loadKey(){
     if (this.storageManager.hasKey(this.currentlySelectedItem)){
       this.communicator.inform('loadDocument', this.currentlySelectedItem)
-      console.log('load key send')
     }
     this.refresh();
   }

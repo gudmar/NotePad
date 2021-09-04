@@ -21,6 +21,69 @@ export class DocumentValidatorService {
     return parsedDocument;
   }
 
+  isNotepadValid(parsedDocument: any){
+    if(parsedDocument.activeSheetId.length == 0) return false;
+    if (parsedDocument.sheets.length == 0) return true;
+    return this.validateSheetObjects(parsedDocument.sheets)
+  }
+
+  validateSheetObjects(sheetsSubobject:any[]){
+    let sheetIds = Object.keys(sheetsSubobject);
+    for (let sheet of sheetsSubobject){
+      if(!this.objectShouldContainKeys(sheet, ['bgColor', 'originalColor', 'pages','startPageId','title'])) return false;
+      if (this.propsShouldNotBeEmpty(sheetsSubobject, ['bgColor','originalColor','pages','startPageId','title'])) return false;
+      if (!this.arePageDescriptorsValid(sheet.pages)) return false;
+    }
+    let uniqueIdArray = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(sheetsSubobject, 'uniqueId');
+    let doIdsRepete = this.hasStringArrayRepetingValues(uniqueIdArray);
+    if (doIdsRepete) return false;
+    return true;
+  }
+
+  arePageDescriptorsValid(pageDescriptorArray: any[]){
+    for (let page of pageDescriptorArray){
+      if (this.isSinglePageDescriptorValid(page)) return false;
+    }
+    return true;
+  }
+
+  isSinglePageDescriptorValid(pageDescriptor: any){
+    if(!this.objectShouldContainKeys(pageDescriptor, ['bgColor', 'notes', 'originalColor', 'title'])) return false;
+    if(!this.propsShouldNotBeEmpty(pageDescriptor, ['bgColor', 'originalColor'])) return false;
+    if(!this.validateNoteDescriptors(pageDescriptor.notes)) return false;
+    return true;
+  }
+
+  validateNoteDescriptors(noteDescriptorArray: any[]){
+    for(let note of noteDescriptorArray){
+      if (!this.objectShouldContainKeys(note, 
+        ['uniqueId','initialWidth','initialHeight','initialTop','initialLeft','content'])) return false;
+      if (!this.propsShouldNotBeEmpty(note, 
+        ['uniqueId','initialWidth','initialHeight','initialTop','initialLeft'])) return false;
+      if (typeof(note.content) != 'string') return false;
+      if (typeof(note.initialHeight) != 'number') return false;
+      if (typeof(note.initialLeft) != 'number' ) return false;
+      if (typeof(note.initialTop) != 'number' ) return false;
+      if (typeof(note.initialWidth) != 'number' ) return false;
+      if (typeof(note.uniqueId) != 'string') return false;
+    }
+    return true;
+  }
+
+  propsShouldNotBeEmpty(object: any, propsArray: string[]){
+    let isSinglePropEmpty = function(prop: string){
+      let value = object[prop];
+      if (typeof(value) == 'string' && value.length == 0) return true;
+      if (Array.isArray(value) && value.length == 0) return true;
+      if (value == undefined || value == null) return true;
+      return false;
+    }
+    for (let prop of propsArray) {
+      if (isSinglePropEmpty(prop)) return false;
+    }
+    return true;
+  }
+
   isCalendarValid(calendar: any[]){
     if (calendar.length == 0) return true;
     for (let input of calendar){

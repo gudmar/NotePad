@@ -76,9 +76,17 @@ export class SheetComponent implements OnInit {
   }
 
   deletePage(pageId: string){
-    let pageIndex = this.getPageIndexById(pageId);
-    this.pages.splice(pageIndex, 1);
-    this.messenger.inform('pageWasDeleted', pageId)
+    if(this.pages.length > 1){
+      let pageIndex = this.getPageIndexById(pageId);
+      this.pages.splice(pageIndex, 1);
+      this.messenger.inform('pageWasDeleted', pageId)  
+    } else {
+      this.messenger.inform('userInfo', {
+        type: 'error',
+        message: 'Last sheet page cannot be deleted',
+        timeout: 2500
+      })
+    }
   }
 
   showOtherPageAfterDeletion(deletedPageId: string){

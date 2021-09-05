@@ -34,26 +34,33 @@ export class WbMenuComponent implements OnInit {
       return nrOfPages;
     }
     if (eventType == 'killSheet') {
-      let sheetForDeletionIndex = this.getIndexOfSheetById(data)
-      let sheetPlannedForDeletionObject: any = this.sheets[sheetForDeletionIndex]
-      let sheetForDeletionDescriptor: any = Object.values(sheetPlannedForDeletionObject)[0];
-      let nrOfChildrenSheetHas = sheetForDeletionDescriptor.pages.length;
-      let nrOfNotesFirstPageHas = getNrOfNotesFirstPageHas(sheetForDeletionDescriptor)
-      if (nrOfChildrenSheetHas == 0) {
-        if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-        this.deleteSheet(data);
-      } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) == 0) {
-        if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-        this.deleteSheet(data)
+      if (this.sheets.length > 1){
+        let sheetForDeletionIndex = this.getIndexOfSheetById(data)
+        let sheetPlannedForDeletionObject: any = this.sheets[sheetForDeletionIndex]
+        let sheetForDeletionDescriptor: any = Object.values(sheetPlannedForDeletionObject)[0];
+        let nrOfChildrenSheetHas = sheetForDeletionDescriptor.pages.length;
+        let nrOfNotesFirstPageHas = getNrOfNotesFirstPageHas(sheetForDeletionDescriptor)
+        if (nrOfChildrenSheetHas == 0) {
+          if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
+          this.deleteSheet(data);
+        } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) == 0) {
+          if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
+          this.deleteSheet(data)
+        } else {
+          this.messenger.inform(
+            'confirmationMessage',
+            {
+              message: 'Sheet selected for deletion has child pages. Are you sure you want to delete it?',
+              uniqueId: data
+            }
+          )
+        } 
       } else {
-        this.messenger.inform(
-          'confirmationMessage',
-          {
-            message: 'Sheet selected for deletion has child pages. Are you sure you want to delete it?',
-            uniqueId: data
-          }
-        )
-      } 
+        this.messenger.inform('userInfo', {
+          message: 'Last sheet cannot be deleted', timeout: 2500, type: 'error'
+        })
+      }
+      
     }
     if (eventType == "obliteratePage"){
       let sheetForDeletionIndex = this.getIndexOfSheetById(data)

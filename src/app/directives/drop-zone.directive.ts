@@ -1,12 +1,16 @@
 import { Directive, HostListener } from '@angular/core';
 import { CommunicationService} from '../services/communication.service'
+import { DocumentValidatorService } from '../services/document-validator.service';
 
 @Directive({
   selector: '[dropZone]'
 })
 export class DropZoneDirective {
   // isDraggedOver: boolean = false;
-  constructor(private communicator: CommunicationService) { }
+  constructor(
+    private communicator: CommunicationService,
+    private validator: DocumentValidatorService
+  ) { }
 
   @HostListener('dragover', ['$event'])
   onDragOver(event: any){
@@ -30,11 +34,18 @@ export class DropZoneDirective {
     let dataItem = data.items[0];
     if (dataItem.kind=='file') {
       let fileContent = await this.getFileContent(dataItem.getAsFile());
+      console.log('File received')
       let decodedFileContent = this.decodeFileContent(fileContent)
-      this.communicator.inform('gotFileWithDataToLoad', decodedFileContent)
-      console.log(decodedFileContent);
+      this.communicator.inform('gotFileWithDataToLoad', decodedFileContent);
+      let isFileValid = this.validator.validateAsString(decodedFileContent);
+      if (!isFileValid) this.communicator.inform('informUser', `File corrupted`)
+      console.log(data)
+      if (isFileValid) this.communicator.inform('LoadFromFile', JSON.parse(decodedFileContent));
+
+      console.log(`Document validation outcome: ${isFileValid}`)
+      if (isFileValid)console.log(JSON.parse(decodedFileContent));
     }
-    console.log(data)
+    // console.log(data)
     return null;
   }
 

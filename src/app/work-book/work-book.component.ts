@@ -59,6 +59,7 @@ export class WorkBookComponent implements OnInit {
        'addNextSheet', 
        'saveDocument', 
        'loadDocument', 
+       'LoadFromFile',
        'switchToCalendar', 
        'switchToNotes',
        'changeSheetTitle',
@@ -116,6 +117,9 @@ export class WorkBookComponent implements OnInit {
     if (eventType == 'loadDocument'){
       let newDocument = this.storageManager.loadContent(data)
       this.reloadDocument(newDocument)
+    }
+    if (eventType == 'LoadFromFile'){
+      this.reloadDocument(data)
     }
     if (eventType == 'gotFileWithDataToLoad'){
       let validatedData = this.documentValidator.validateAsString(data);

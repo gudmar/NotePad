@@ -11,21 +11,27 @@ export class DocumentValidatorService {
 
   validateAsString(stringifiedDocumnet: string){
     let parsedDocument = this.tryToParseContent(stringifiedDocumnet);
-    if (parsedDocument == null) return null;
-    if (!this.objectShouldContainKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return null;
-    if (!this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string')) return null;
-    if (!this.isValueOfKeyArray(parsedDocument, 'calendarInputs')) return null;
-    if (!this.isValueOfKeyArray(parsedDocument, 'sheets')) return null;
-    if (!this.isCalendarValid(parsedDocument.calendarInputs)) return null;
-
-    return parsedDocument;
+    if (parsedDocument == null) return false;
+    
+    let a = !this.objectShouldContainKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets']);
+    let b = !this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string');
+    let c = !this.isValueOfKeyArray(parsedDocument, 'calendarInputs');
+    let d = !this.isCalendarValid(parsedDocument.calendarInputs);
+    // debugger;
+    if (!this.objectShouldContainKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
+    if (!this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string')) return false;
+    if (!this.isValueOfKeyArray(parsedDocument, 'calendarInputs')) return false;
+    if (!this.isValueOfKeyArray(parsedDocument, 'sheets')) return false;
+    if (this.isCalendarValid(parsedDocument.calendarInputs)) return false;
+    if (!this.isNotepadValid(parsedDocument)) return false;
+    return true;
   }
 
   isNotepadValid(parsedDocument: any){
     if(parsedDocument.activeSheetId.length == 0) return false;
     if (parsedDocument.sheets.length == 0) return true;
-    this.doPageObjectsHaveUniqueId(parsedDocument.sheets)
-    
+    let pagesHaveUniqueId = this.doPageObjectsHaveUniqueId(parsedDocument.sheets)
+    if (!pagesHaveUniqueId) return false;
     return this.validateSheetObjects(parsedDocument.sheets)
   }
 
@@ -230,9 +236,9 @@ export class DocumentValidatorService {
     for (let key of keys){
       if (this.arrayShouldContainStringElement(objectKeys, key)) nrOfMatches++;
     }
-    console.log('sholdContainKeys')
-    console.log(nrOfMatches)
-    console.log(keys.length)
+    // console.log('sholdContainKeys')
+    // console.log(nrOfMatches)
+    // console.log(keys.length)
     return nrOfMatches == keys.length;
   }
 

@@ -20,14 +20,25 @@ export class DropZoneDirective {
     // this.isDraggedOver = true;
     // let timeOut = setTimeout(()=>{this.isDraggedOver = false; clearTimeout(timeOut)}, 100)
   }
-  
+  // timeout:null|number=null;
+  // type: 'warning'|'error'|'info' = 'info';
+  // uniqueId='userInformatorId'
+  // shouldBeDisplayed: boolean = false;
+  // message: string = ''
+  // title: string = '';
+
   @HostListener('drop', ['$event'])
   async onDrop(event: any){
     // event.stopPropagation();
     event.preventDefault();
     let data = event.dataTransfer;
     if (data.files.length > 1) {
-      this.communicator.inform('informUser', 'Only one file at a time is supported at the moment.')
+      this.communicator.inform('informUser', {
+        message: 'Only one file at a time is supported at the moment.',
+        timeout: 2500,
+        type: 'warning',
+      }
+    )
       console.log('Only one file at a time supported')
       return null;
     } 
@@ -38,8 +49,9 @@ export class DropZoneDirective {
       let decodedFileContent = this.decodeFileContent(fileContent)
       this.communicator.inform('gotFileWithDataToLoad', decodedFileContent);
       let isFileValid = this.validator.validateAsString(decodedFileContent);
-      if (!isFileValid) this.communicator.inform('informUser', `File corrupted`)
-      console.log(data)
+      if (!isFileValid) this.communicator.inform('informUser', {
+        message: `File corrupted`, timeout: 2000, type: 'error'}
+      )
       if (isFileValid) this.communicator.inform('LoadFromFile', JSON.parse(decodedFileContent));
 
       console.log(`Document validation outcome: ${isFileValid}`)

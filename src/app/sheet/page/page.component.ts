@@ -12,6 +12,7 @@ import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_c
 })
 export class PageComponent implements OnInit {
   _isInEditMode: boolean = false;
+  private newNoteIsAdded: boolean = false;
   set isInEditMode(val: boolean) {
     this._isInEditMode = val;
   }
@@ -26,8 +27,11 @@ export class PageComponent implements OnInit {
 
   @HostListener('click', ['$event'])
   informThatThisPageWasClicked($event: any){
-    this.messenger.inform('pageWasClicked', $event)
     $event.stopPropagation();
+    if (!this.newNoteIsAdded){
+      this.messenger.inform('pageWasClicked', $event)
+    }
+    this.newNoteIsAdded = false;
   }
 
   ngOnInit(): void {
@@ -81,8 +85,10 @@ export class PageComponent implements OnInit {
 
   
   addNewNoteIfInEditState($event: any){
-    if (this.isInEditMode && !this.areAllChidNotesInActiveState()) {
+    if (this.isInEditMode && !this.isAnyChildNoteInActiveState()) {
+      this.newNoteIsAdded = true
       let newNote = this.storeManager.getNote(200, 200, $event.clientY, $event.clientX, '', true);
+      newNote.isActive = true;
       this.notes.push(newNote);
     }
   }
@@ -98,9 +104,21 @@ export class PageComponent implements OnInit {
     return this.notes.findIndex(singleMatch)
   }
 
-  areAllChidNotesInActiveState(){
-    let singleMatch = function(element:any){return element.Values[0].isActive == true};
-    return this.notes.includes(singleMatch)
+  isAnyChildNoteInActiveState(){
+    console.log(this.notes)
+    let singleMatch = function(element:any){
+      let a = element.isActive;
+      // debugger
+      return element.isActive == true
+    };
+    let a = this.notes.includes(singleMatch)
+    return this.notes.findIndex(singleMatch) == -1?false:true;
+    // return this.notes.includes(singleMatch)
+  }
+
+  changeNoteActiveState(data: any){
+    let targetNote = this.notes[this.findNoteById(data.uniqueId)];
+    targetNote.isActive = data.data;
   }
 
   deleteThisPage(){

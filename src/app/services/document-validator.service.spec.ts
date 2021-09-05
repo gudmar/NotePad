@@ -14,7 +14,7 @@ describe('DocumentValidatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should execute [objectShouldContainKeys] properly',()=>{
+  xit('should execute [objectShouldContainKeys] properly',()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -54,7 +54,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('should execute [keyValueShouldBeTypeOf] correctly', ()=>{
+  xit('should execute [keyValueShouldBeTypeOf] correctly', ()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -96,7 +96,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('should execute [eachArrayElementShouldContainKeys] correctly', ()=>{
+  xit('should execute [eachArrayElementShouldContainKeys] correctly', ()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -127,7 +127,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('should execute [objectShouldNotContainKeysOtherThen] correctly', ()=>{
+  xit('should execute [objectShouldNotContainKeysOtherThen] correctly', ()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -158,7 +158,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('shuld validate day entry correctly', () => {
+  xit('shuld validate day entry correctly', () => {
     let service = new DocumentValidatorService();
     let testCases:any = [
       {
@@ -207,7 +207,7 @@ describe('DocumentValidatorService', () => {
 
   })
 
-  it('should validate month correctly', ()=>{
+  xit('should validate month correctly', ()=>{
     let service = new DocumentValidatorService();
     let tcObject1 = {
       calendarInputs: [
@@ -285,7 +285,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('should validate calendar correctly', ()=>{
+  xit('should validate calendar correctly', ()=>{
     let service = new DocumentValidatorService();
     let tcObject1 = {
       calendarInputs: [
@@ -367,7 +367,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('Should [getArrayOfAllPropertyOccurenceInGetericObject_nested] get all nested properties from object', ()=>{
+  xit('Should [getArrayOfAllPropertyOccurenceInGetericObject_nested] get all nested properties from object', ()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -398,7 +398,7 @@ describe('DocumentValidatorService', () => {
     }
   })
 
-  it('Should [hasStringArrayRepetingValues] detect repeting values in array', () => {
+  xit('Should [hasStringArrayRepetingValues] detect repeting values in array', () => {
     let service = new DocumentValidatorService();
     let testCases = [
       {inputArr: ['1', '2', '3', '4'], output: false},
@@ -410,7 +410,271 @@ describe('DocumentValidatorService', () => {
     }
   } )
 
+  xit ('should [arePageDescriptorsValid] work in expected way', ()=>{
+    let sercive = new DocumentValidatorService();
+    let testCases: any[] = [
+      {
+        input: [
+          {
+          'pageId1': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'1',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        },
+        {
+          'pageId2': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'5',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'6',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'7',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'8',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        },
+        {
+          'pageId3': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'9',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'0',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'A',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'B',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        }
+        ],
+        expectedOutput: true
+      },
+      {
+        input: [
+          {
+          'pageId1': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'1',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:'1',content:'asdf'},
+              {uniqueId:'4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        },
+        ],
+        expectedOutput: false
+      },
+      {
+        input: [
+          {
+          'pageId1': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'1',initialWidth:1,initialHeight:1,initialTop:1,content:'asdf'},
+              {uniqueId:'2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+              {uniqueId:'3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:'1',content:'asdf'},
+              {uniqueId:'4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        },
+        ],
+        expectedOutput: false
+      },
+      {
+        input: [
+          {
+          'pageId1': {
+            bgColor:'white', originalColor:'white',title:'name',
+            notes:[
+              {uniqueId:'2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf', additionalKey:'d'},
+              {uniqueId:'3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:'1',content:'asdf'},
+              {uniqueId:'4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+            ]
+          }
+        },
+        ],
+        expectedOutput: false
+      }
+    ]
+    for (let tc of testCases){
+      let calculated = service.arePageDescriptorsValid(tc.input);
+      expect(calculated).toBe(tc.expectedOutput);
+    }
+  } )
+
+  it('should validate notePad properly', ()=> {
+    let sercive = new DocumentValidatorService();
+    let testCases:any[] = [
+      {
+        input:{
+          activeSheetId: 'someId',
+          calendarInputs:[],
+          sheets: [
+            {
+              'shId1': {
+                bgColor: 'black',originalColor:'white',startPageId:'1',title: 'title',
+                pages:[
+                  {
+                    'pageId1': {
+                      bgColor:'white', originalColor:'white',title:'name',
+                      notes:[
+                        {uniqueId:'2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                      ]
+                    }
+                  },
+                  {
+                    'pageId2': {
+                      bgColor:'white', originalColor:'white',title:'name',
+                      notes:[
+                        {uniqueId:'a2',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'a3',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'a4',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                      ]
+                    }
+                  }
+                  
+                ]
+              }
+            },
+            {
+              'shId2': {
+                bgColor: 'black',originalColor:'white',startPageId:'1',title: 'title',
+                pages:[
+                  {
+                    'pageId3': {
+                      bgColor:'white', originalColor:'white',title:'name',
+                      notes:[
+                        {uniqueId:'2b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'3b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'4b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                      ]
+                    }
+                  },
+                  {
+                    'pageId4': {
+                      bgColor:'white', originalColor:'white',title:'name',
+                      notes:[
+                        {uniqueId:'a2b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'a3b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                        {uniqueId:'a4b',initialWidth:1,initialHeight:1,initialTop:1,initialLeft:1,content:'asdf'},
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        expectedOutput:true
+      }
+    ]
+    for (let tc of testCases){
+      let calculated = sercive.isNotepadValid(tc.input);
+      expect(calculated).toBe(tc.expectedOutput)
+    }
+  })
+
+  it ('should execute [getKeysOfObjectsBeingElementsOfArray] properly', ()=>{
+    let servcie = new DocumentValidatorService();
+    let testCases = [
+      {
+        input: [
+          {'1':{}},
+          {'2':{}},
+          {'3':{}},
+          {'4':{}},
+        ],
+        expectedOutput: ['1', '2', '3', '4']
+      }
+    ]
+    for(let tc of testCases){
+      let calculated = servcie.getKeysOfObjectsBeingElementsOfArray(tc.input);
+      expect(calculated).toEqual(tc.expectedOutput)
+    }
+  })
+
+  it('should check if pages have repeting values [doPageObjectsHaveUniqueId]', ()=>{
+    let servcie = new DocumentValidatorService();
+    let testCases:any[] = [
+      {
+        input:[
+          {
+            'sh1':{
+              pages: [
+                {'pg1':{}},
+                {'pg2':{}},
+                {'pg3':{}},
+              ]
+            }
+          },
+          {
+            'sh2':{
+              pages: [
+                {'pg4':{}},
+                {'pg5':{}},
+                {'pg7':{}},
+              ]
+            }
+          },
+          {
+            'sh3':{
+              pages: [
+                {'pg7':{}},
+                {'pg8':{}},
+                {'pg9':{}},
+              ]
+            },
+          }
+        ],
+        expectedOutput: false
+      },
+      {
+        input:[
+          {
+            'sh1':{
+              pages: [
+                {'pg1':{}},
+                {'pg2':{}},
+                {'pg3':{}},
+              ]
+            }
+          },
+          {
+            'sh2':{
+              pages: [
+                {'pg4':{}},
+                {'pg5':{}},
+                {'pg6':{}},
+              ]
+            }
+          },
+          {
+            'sh3':{
+              pages: [
+                {'pg7':{}},
+                {'pg8':{}},
+                {'pg9':{}},
+              ]
+            },
+          }
+        ],
+        expectedOutput: true
+      },
+    ]
+
+    for (let tc of testCases){
+      let calculated  = service.doPageObjectsHaveUniqueId(tc.input);
+      expect(calculated).toBe(tc.expectedOutput)
+    }
+  })
 });
+
+
 
 
 

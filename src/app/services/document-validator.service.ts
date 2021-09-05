@@ -24,30 +24,60 @@ export class DocumentValidatorService {
   isNotepadValid(parsedDocument: any){
     if(parsedDocument.activeSheetId.length == 0) return false;
     if (parsedDocument.sheets.length == 0) return true;
+    this.doPageObjectsHaveUniqueId(parsedDocument.sheets)
+    
     return this.validateSheetObjects(parsedDocument.sheets)
   }
 
   validateSheetObjects(sheetsSubobject:any[]){
-    let sheetIds = Object.keys(sheetsSubobject);
+
     for (let sheet of sheetsSubobject){
+      sheet = Object.values(sheet)[0]
       if(!this.objectShouldContainKeys(sheet, ['bgColor', 'originalColor', 'pages','startPageId','title'])) return false;
       if (this.propsShouldNotBeEmpty(sheetsSubobject, ['bgColor','originalColor','pages','startPageId','title'])) return false;
       if (!this.arePageDescriptorsValid(sheet.pages)) return false;
     }
+
+    let sheetIds = this.getKeysOfObjectsBeingElementsOfArray(sheetsSubobject)
+    let doSheetIdsRepete = this.hasStringArrayRepetingValues(sheetIds);
+    if (doSheetIdsRepete) return false;
+
+
     let uniqueIdArray = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(sheetsSubobject, 'uniqueId');
     let doIdsRepete = this.hasStringArrayRepetingValues(uniqueIdArray);
     if (doIdsRepete) return false;
     return true;
   }
 
+  doPageObjectsHaveUniqueId(sheetArray:any[]){
+    let allPageIds:any[] = [];
+    for(let sheet in sheetArray){
+      // debugger
+      let internalObj:any = Object.values(sheetArray[sheet])[0];
+      let pages: any = internalObj.pages;
+      // debugger
+      for (let pg of pages){
+        allPageIds = allPageIds.concat(Object.keys(pg))
+      }
+      // let pages:any = internalObj.pages;
+      // pages = Object.values(sheetArray[sheet])[0];
+      // debugger
+      // allPageIds = allPageIds.concat(this.getKeysOfObjectsBeingElementsOfArray(internalObj))
+    }
+    let doPagesHaveRepetingValues = this.hasStringArrayRepetingValues(allPageIds);
+    // debugger
+    return !doPagesHaveRepetingValues;
+  }
+
   arePageDescriptorsValid(pageDescriptorArray: any[]){
     for (let page of pageDescriptorArray){
-      if (this.isSinglePageDescriptorValid(page)) return false;
+      if (!this.isSinglePageDescriptorValid(page)) return false;
     }
     return true;
   }
 
   isSinglePageDescriptorValid(pageDescriptor: any){
+    pageDescriptor = Object.values(pageDescriptor)[0];
     if(!this.objectShouldContainKeys(pageDescriptor, ['bgColor', 'notes', 'originalColor', 'title'])) return false;
     if(!this.propsShouldNotBeEmpty(pageDescriptor, ['bgColor', 'originalColor'])) return false;
     if(!this.validateNoteDescriptors(pageDescriptor.notes)) return false;
@@ -68,6 +98,15 @@ export class DocumentValidatorService {
       if (typeof(note.uniqueId) != 'string') return false;
     }
     return true;
+  }
+
+  getKeysOfObjectsBeingElementsOfArray(arrayOfObjects:any[]){
+    let keys:string[] = [];
+    for(let item of arrayOfObjects){
+      let itemKeys = Object.keys(item);
+      keys = keys.concat(itemKeys)
+    }
+    return keys;
   }
 
   propsShouldNotBeEmpty(object: any, propsArray: string[]){
@@ -191,6 +230,9 @@ export class DocumentValidatorService {
     for (let key of keys){
       if (this.arrayShouldContainStringElement(objectKeys, key)) nrOfMatches++;
     }
+    console.log('sholdContainKeys')
+    console.log(nrOfMatches)
+    console.log(keys.length)
     return nrOfMatches == keys.length;
   }
 
@@ -236,19 +278,14 @@ getArrayOfAllPropertyOccurenceInObject_nested(object:any, queriedPropertyKey:str
   if (typeof(object) == 'object'){
     if (Array.isArray(object)) {
       arr = arr.concat(this.getArrayOfAllPropertyOccurenceInArray_nested)
-      console.log('Is array')
     }
     else {
       let keys = Object.keys(object);
-      // debugger
       for(let key of keys){
         let value = object[key];
-        console.log(value)
-        console.log(typeof(value))
         if (key == queriedPropertyKey) arr.push(value)
         else if (typeof(value) == 'object'){
           let deb = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(value, queriedPropertyKey);
-          console.log(deb)
           arr = arr.concat(deb)
         }
       }

@@ -121,11 +121,11 @@ export class WorkBookComponent implements OnInit {
     if (eventType == 'LoadFromFile'){
       this.reloadDocument(data)
     }
-    if (eventType == 'gotFileWithDataToLoad'){
-      let validatedData = this.documentValidator.validateAsString(data);
-      if (validatedData == null) this.messenger.inform('informUser', 'Passed file is not valid')
-      else (console.log(validatedData))
-    }
+    // if (eventType == 'gotFileWithDataToLoad'){
+    //   let validatedData = this.documentValidator.validateAsString(data);
+    //   if (validatedData == null) this.messenger.inform('informUser', 'Passed file is not valid')
+    //   else (console.log(validatedData))
+    // }
     if (eventType == 'switchToCalendar'){
       this.application = 'calendar'
     }

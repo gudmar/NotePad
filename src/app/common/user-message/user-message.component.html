@@ -1,0 +1,10 @@
+<ng-container *ngIf="shouldBeDisplayed">
+    <div class="shutter center">
+        <div class="message-window center" [style.backgroundColor]="getBgColor()">
+            <div class="title-bar">
+                <div class="title">{{title}}</div><div *ngIf="timeout==null" class="close" (click)="close()">&times;</div>
+            </div>
+            <div class="message-container"><p>{{message}}</p></div>
+        </div>
+    </div>
+</ng-container>

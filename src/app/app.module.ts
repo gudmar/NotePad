@@ -44,6 +44,7 @@ import { WeekDayComponent } from './calendar/week-view/week-day/week-day.compone
 import { SummaryEventComponent } from './calendar/week-view/week-day/summary-event/summary-event.component';
 import { ResizePointComponent } from './movable-point/resize-point/resize-point.component';
 import { DropZoneDirective } from './directives/drop-zone.directive';
+import { UserMessageComponent } from './common/user-message/user-message.component';
 
 
 @NgModule({
@@ -83,6 +84,7 @@ import { DropZoneDirective } from './directives/drop-zone.directive';
     SummaryEventComponent,
     ResizePointComponent,
     DropZoneDirective,
+    UserMessageComponent,
     
   ],
   imports: [

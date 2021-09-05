@@ -30,6 +30,7 @@ export class NoteComponent implements OnInit {
   @Input() bgColor: string = '';
   @Input() set isActive (val: boolean) {
     this._isActive = val;
+    this.noteAcitiveChanged.emit({uniqueId: this.uniqueId, data: val})
     if (val == true){
       if (this.colorManager.getFgColor(this.bgColor) === 'white') {
         this.dynamicClass['active-bgDark'] = true;
@@ -49,6 +50,7 @@ export class NoteComponent implements OnInit {
   @Output() noteWasMoved: EventEmitter<any> = new EventEmitter();
   @Output() noteWasResized: EventEmitter<any> = new EventEmitter();
   @Output() noteContentChanged: EventEmitter<any> = new EventEmitter();
+  @Output() noteAcitiveChanged: EventEmitter<any> = new EventEmitter();
   private _wasActivated: boolean = false;
   @ViewChild('contentHolder') contentHolder: any;
 
@@ -69,7 +71,9 @@ export class NoteComponent implements OnInit {
     private messenger: CommunicationService, 
     private colorManager: NextColorGeneratorService,
     private elRef: ElementRef
-  ) { }
+  ) { 
+    // this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['pageWasClicked'])
+  }
 
   informAboutMovement(data: any){
     this.noteWasMoved.emit(data)
@@ -111,7 +115,9 @@ export class NoteComponent implements OnInit {
       }
     }
     if (messageType == 'pageWasClicked'){
+      
       this.isActive = false;
+      // debugger;
     }
     if (messageType == 'eachNoteShouldShow'){
       this.isActive = true;

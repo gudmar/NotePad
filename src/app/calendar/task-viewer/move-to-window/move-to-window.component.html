@@ -1,35 +1,37 @@
 <ng-container *ngIf="shouldDisplay">
-<div class="move-event-window center">
-    <div class="move-to-title-bar">
-        <div class="move-to-title">Move event to:
-            <div class="hover-info">move event id: {{targetEventId}}</div>
+<div class="shutter center">
+    <div class="move-event-window center">
+        <div class="move-to-title-bar">
+            <div class="move-to-title">Move event to:
+                <div class="hover-info">move event id: {{targetEventId}}</div>
+            </div>
+            <div class="button arrow" (click)="closeMoveWindow()">&times;</div>
         </div>
-        <div class="button arrow" (click)="closeMoveWindow()">&times;</div>
-    </div>
-    <div class="new-date-wrapper center">
-        <div 
-            validateDay [ifNotValid] = "toDay" [monthToValidate] = "toMonth" [yearToValidate] = "toYear"
-            class="new-date new-date-day" 
-            placeholder="dd"
-            contenteditable="true"
-            (focusout)="setEndDay($event)"
-        >{{toDay}}</div>
+        <div class="new-date-wrapper center">
+            <div 
+                validateDay [ifNotValid] = "toDay" [monthToValidate] = "toMonth" [yearToValidate] = "toYear"
+                class="new-date new-date-day" 
+                placeholder="dd"
+                contenteditable="true"
+                (focusout)="setEndDay($event)"
+            >{{toDay}}</div>
 
-        <div 
-            validateMonth [ifNotValid] = "toMonth"
-            class="new-date new-date-month" 
-            placeholder="mm"
-            contenteditable="true"
-            (focusout)="setEndMonth($event)"
-        >{{toMonth}}</div>
-        <div validateYear [ifNotValid] = "toYear"
-            class="new-date new-date-year" 
-            placeholder="year"
-            contenteditable="true"
-            (focusout)="setEndYear($event)"
-        >{{toYear}}</div>
+            <div 
+                validateMonth [ifNotValid] = "toMonth"
+                class="new-date new-date-month" 
+                placeholder="mm"
+                contenteditable="true"
+                (focusout)="setEndMonth($event)"
+            >{{toMonth}}</div>
+            <div validateYear [ifNotValid] = "toYear"
+                class="new-date new-date-year" 
+                placeholder="year"
+                contenteditable="true"
+                (focusout)="setEndYear($event)"
+            >{{toYear}}</div>
+        </div>
+        <div class="arrow button" (click)="moveEvent($event)">Ok</div>
+        <div class="info" *ngIf="shouldInformDateNotValid">Enter date different than present</div>
     </div>
-    <div class="arrow button" (click)="moveEvent($event)">Ok</div>
-    <div class="info" *ngIf="shouldInformDateNotValid">Enter date different than present</div>
 </div>
 </ng-container>

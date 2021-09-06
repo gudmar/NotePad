@@ -70,12 +70,20 @@
     align-items: center;
     justify-content: center;
 }
-
-.move-event-window{
+.shutter{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;    
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 46% 54% 51% 49% / 22% 20% 80% 78% ;
+    box-shadow: 0px 0px 50px 45px rgba(255,255,255,0.7);
+    padding: 4rem;
+}
+
+.move-event-window{
+    position: relative;
     display: flex;
     font-family: Arial, Helvetica, sans-serif;
     background-color: rgba(200, 230, 200, 0.9);

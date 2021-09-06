@@ -65,7 +65,8 @@ export class WorkBookComponent implements OnInit {
        'changeSheetTitle',
        'loadFreshDocument',
        'saveToFile',
-       'gotFileWithDataToLoad'
+       'gotFileWithDataToLoad',
+       'saveToLastUsedKey'
       ]
 
 

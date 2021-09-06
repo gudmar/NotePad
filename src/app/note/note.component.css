@@ -43,12 +43,12 @@ movable-point:nth-child(1){
     /* position: relative; */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 100;
+    z-index: 2;
 }
 resize-point{
     right: -0px;
     bottom: -0px;
-    z-index: 20;
+    z-index: 2;
     transform: translate(50%, 50%)
 }
 

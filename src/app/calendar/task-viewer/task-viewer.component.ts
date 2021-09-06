@@ -211,14 +211,15 @@ export class TaskViewerComponent implements OnInit {
       this.allCalendarEvents, 
       this.uuidProvider.getUniqueId()
   )
+    console.log(this.events)
     this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries
     this.infromComponentsAboutChange(executionStatus)
+    console.log(executionStatus)
+    console.log(this.events)
   }
 
   infromComponentsAboutChange(whatObjecsWereAdded: any){
-    if (!whatObjecsWereAdded.newYearWasCreated){ //as year components are not created at all
-      if (whatObjecsWereAdded.newDayWasCreated) this.informDayComponentsAboutChange();
-    }
+    if (whatObjecsWereAdded.newDayWasCreated) this.informDayComponentsAboutChange();
   }
 
   informDayComponentsAboutChange(){
@@ -227,5 +228,6 @@ export class TaskViewerComponent implements OnInit {
   informMonthComponentsAboutChange(){
     this.communicator.inform('eventWasMovedAndMonthWasCreated', {month: this.month})
   }
+  
 
 }

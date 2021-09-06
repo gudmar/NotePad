@@ -9,23 +9,11 @@ import { CommunicationService } from '../../../services/communication.service'
   styleUrls: ['./wb-menu-entry.component.css']
 })
 export class WbMenuEntryComponent implements OnInit {
-  _isActive: boolean = true;
   changeSheetsTitleMode = false;
   @Input() isKillable: boolean = true;
-  // private _bgColor:string = 'white';
-  // fgColor: string = "black";
   @Input() uniqueId: string = '';
   @Input() title: string = 'newSheet';
-  @Input() set isActive(val: boolean) {
-    this._isActive = val;
-    this.dynamicClasses.active = val;
-  }
-  // @Input() set bgColor (val: string) { 
-  //   this._bgColor  = val;
-  //   this.fgColor = this.colorManager.getFgColor(val);
-  //   console.log(this.fgColor)
-  // }
-  // get bgColor() {return this._bgColor}
+  @Input() isActive:boolean = false;
   @Input() bgColor: string = 'white'
 
   dynamicClasses: any = {

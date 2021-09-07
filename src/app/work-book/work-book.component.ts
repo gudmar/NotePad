@@ -109,8 +109,12 @@ export class WorkBookComponent implements OnInit {
       }
     }
     if (eventType === 'saveDocument'){
+      let copyOfDocument = JSON.parse(JSON.stringify(this.document));
+      let activeNoteData = this.getActiveNoteData();
+      if (activeNoteData != null) {
+        this.changeNoteContent(copyOfDocument, activeNoteData.content, activeNoteData.uniqueId)
+      }
       this.storageManager.saveContentAs(data, this.document)
-
     }
     if (eventType === 'saveToLastUsedKey'){
       this.storageManager.saveAsLastUsedKey(this.document);
@@ -144,6 +148,21 @@ export class WorkBookComponent implements OnInit {
       this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
   }
+
+  // ****************** MOVE TO SERVICE ******************************
+  getActiveNoteData(){
+    let tempId = 'getActiveNoteContent'
+    let activeNote: any = null;
+    let messageHandler = function(eventType: string, data: any){activeNote = data;}
+    this.messenger.subscribe(tempId, messageHandler, ['activeNoteDataIs']);
+    let wasTransmissionSuccess:boolean = this.messenger.informWithFeedback('getActiveNoteContent', '');
+    this.messenger.unsubscribe(tempId);
+    return activeNote
+  }
+  changeNoteContent(documentInstance: any, activeNoteContent:string, noteId:string){
+
+  }
+  /**************************************************************/
 
   reloadDocument(documentData: any){
     this.loadDocumentToView(this.mockDataProvider.getFreshDocument())

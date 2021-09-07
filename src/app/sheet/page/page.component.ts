@@ -52,7 +52,7 @@ export class PageComponent implements OnInit {
   reactToDataFromMessengar(eventType: string, data: any){
     if (eventType === 'noteWasMoved') {this.updateTargetNoteState(data.objectId, data)}
     if (eventType === 'noteWasResized') {this.updateTargetNoteState(data.objectId, data)}
-    if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data); console.log(data)}
+    if (eventType === 'noteContentChanged') {this.updateTargetNoteState(data.objectId, data);}
     if (eventType === 'killMe') {this.obliterateNote(data);}
     if (eventType === 'noteWasClicked') {}
     if (eventType === 'showAllNotes') {
@@ -79,7 +79,7 @@ export class PageComponent implements OnInit {
         if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
       }
     } else {
-      console.error(`${this.constructor.name}: element with id ${noteId} informed about state change, but it was not found`)
+      console.error(`${this.constructor.name}: element with id ${noteId} informed parent page about state change, but its id was not found in global object`)
     } 
   }
 

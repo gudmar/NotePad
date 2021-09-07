@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UniqueIdProviderService } from './unique-id-provider.service';
 import { NextColorGeneratorService } from './next-color-generator.service'
+import { CommunicationService } from './communication.service';
+import { FindNoteByIdService } from './find-note-by-id.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +12,21 @@ import { NextColorGeneratorService } from './next-color-generator.service'
 
 export class StorageManagerService {
   constructor(private idProvider: UniqueIdProviderService,
-    private colorProvider: NextColorGeneratorService) { }
+    private colorProvider: NextColorGeneratorService,
+    private communicator: CommunicationService,
+    private noteByIdFinder: FindNoteByIdService,
+  ) { }
   
   notePadMemoryObject: string = 'notePadMemoryObject'
 
   saveContent(data: any){
     // localStorage.setItem('notePad', JSON.stringify(data))
+  }
+
+  saveAsGeneral(key: string, data: any){
+    let activeNoteData = this.getActiveNoteData();
+    if (activeNoteData == null) this.saveContentAs(key, data);
+    else this.saveWithActiveNoteContent(key, data, activeNoteData);
   }
 
   saveContentAs(key: string, data: any){
@@ -24,6 +35,25 @@ export class StorageManagerService {
     Object.assign(memObj, {[key]: data});
     this.setObject(memObj)
     this.setLastUsedNoteDocumentToStorage(key)
+  }
+
+  saveWithActiveNoteContent(key:string, data:any, activeNoteInfo: any){
+    let copyOfCurrentObject = JSON.parse(JSON.stringify(data));
+    let activeNoteContent = activeNoteInfo.content;
+    let activeNoteId = activeNoteInfo.uniqueId;
+    let noteReferenceInCopiedObj = this.noteByIdFinder.fetchNoteReferenceById(activeNoteId, copyOfCurrentObject);
+    noteReferenceInCopiedObj.content = activeNoteInfo.content;
+    this.saveContentAs(key, copyOfCurrentObject);
+  }
+
+  getActiveNoteData(){
+    let uniqueId = 'storageManagerId'
+    let data:any = null;
+    let messageHandle = function(eventType: string, data: any){data = data}
+    this.communicator.subscribe(uniqueId, messageHandle, ['activeNoteResponse']);
+    let isThereAnActiveNote = this.communicator.informWithFeedback('ifThereIsAnyActiveNotePleaseTransmitData', '');
+    this.communicator.unsubscribe(uniqueId);
+    return data;
   }
 
   setObject(obj: any){
@@ -115,8 +145,10 @@ export class StorageManagerService {
     if (lastUsedKey == null || lastUsedKey == ''){
       lastUsedKey = this.getDefaultKey();
     }
-    this.saveContentAs(lastUsedKey, dataToSave)
+    this.saveAsGeneral(lastUsedKey, dataToSave)
   }
+
+
   getDefaultKey(){
     let now = new Date(Date.now());
     return `NotePad${now.getFullYear()}${now.getMonth()}${now.getDay()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`
@@ -233,34 +265,34 @@ export class StorageManagerService {
 
 
 
-  fetchNoteReferenceById(noteId: string, documentInstance: any){
-    let sheets = this.fetchSheets(documentInstance);
-    for(let sheet of sheets){
-      let note = this.findNoteInSheet(noteId, Object.values(sheet)[0]);
-      if (note != null) return note;
-    }
-    return null;
-  }
+  // fetchNoteReferenceById(noteId: string, documentInstance: any){
+  //   let sheets = this.fetchSheets(documentInstance);
+  //   for(let sheet of sheets){
+  //     let note = this.findNoteInSheet(noteId, Object.values(sheet)[0]);
+  //     if (note != null) return note;
+  //   }
+  //   return null;
+  // }
 
-  findNoteInSheet(noteId: string, sheet: any){
-    let pages = sheet.pages;
-    for(let item of pages){
-      let page = Object.values(item)[0];
-      let note = this.findNoteInPage(noteId, page)
-      if (note != null) return note;
-    }
-    return null
-  }
+  // findNoteInSheet(noteId: string, sheet: any){
+  //   let pages = sheet.pages;
+  //   for(let item of pages){
+  //     let page = Object.values(item)[0];
+  //     let note = this.findNoteInPage(noteId, page)
+  //     if (note != null) return note;
+  //   }
+  //   return null
+  // }
 
-  findNoteInPage(noteId: string, page: any){
-    let notes = page.notes;
-    for (let note of notes){
-      if (note.uniqueId === noteId) return note;
-    }
-    return null;
-  }
+  // findNoteInPage(noteId: string, page: any){
+  //   let notes = page.notes;
+  //   for (let note of notes){
+  //     if (note.uniqueId === noteId) return note;
+  //   }
+  //   return null;
+  // }
 
-  fetchSheets(documentInstance: any){
-    return documentInstance.sheets;
-  }
+  // fetchSheets(documentInstance: any){
+  //   return documentInstance.sheets;
+  // }
 }

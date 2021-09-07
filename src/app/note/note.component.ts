@@ -138,12 +138,19 @@ export class NoteComponent implements OnInit {
         }
       )
     }
+    if(messageType == 'ifThereIsAnyActiveNotePleaseTransmitData'){
+      if (this.isActive) {
+        this.messenger.inform('activeNoteResponse',{
+          uniqueId: this.uniqueId, content: this.elRef.nativeElement.innerHTML
+        })
+      }
+    }
   }
 
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow']
+      ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
     )
   }
   ngOnDestroy(): void {

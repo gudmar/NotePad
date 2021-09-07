@@ -27,6 +27,17 @@ export class CommunicationService {
     }
   }
 
+  informWithFeedback(eventType: string, data: any, senderId?: string){
+    let wasInformationPassed = false;
+    for(let subscriber of this.subscribeFunctions){
+      if (this.checkIfSubscriberIsInterested(subscriber.eventsToInformAbout, eventType)){
+        subscriber.subscribeFunction(eventType, data);
+        wasInformationPassed = true;
+      }
+    }
+    return wasInformationPassed;
+  }
+
   unsubscribe(subscribersId: string){
     let subscribersIndex = this.getSubscribersIndex(subscribersId);
     this.deleteElementFromArray(this.subscribeFunctions, subscribersIndex)

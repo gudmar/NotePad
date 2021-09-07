@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, Host } from '@angular/core';
 import { UniqueIdProviderService} from './services/unique-id-provider.service';
 import { CommunicationService } from './services/communication.service'
 
@@ -11,4 +11,14 @@ import { CommunicationService } from './services/communication.service'
 export class AppComponent {
   title = 'NotePad';
   shouldDisplayWaitingSpinner = true;
+  constructor(private messenger:CommunicationService){}
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent){
+    if ((event.metaKey || event.ctrlKey) && event.key === 's'){
+      event.preventDefault();
+      this.messenger.inform('saveToLastUsedKey', '')
+    }
+
+  }
 }

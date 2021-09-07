@@ -98,6 +98,14 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  @HostListener('keyup', ["$event"])
+  onKeyUp(event: any) {
+    this.messenger.inform('noteContentChanged', {
+      objectId: this.uniqueId,
+      content: this.contentHolder.nativeElement.innerHTML
+    })
+  }
+
   informAboutContentChange(data: any){
     this.noteContentChanged.emit(data);
     this.messenger.inform('noteContentChanged', {
@@ -121,6 +129,14 @@ export class NoteComponent implements OnInit {
     }
     if (messageType == 'eachNoteShouldShow'){
       this.isActive = true;
+    }
+    if (messageType == 'getActiveNoteContent'){
+      if(this.isActive) this.messenger.inform('activeNoteDataIs', 
+        {
+          uniqueId: this.uniqueId,
+          content: this.elRef.nativeElement.innerHTML
+        }
+      )
     }
   }
 

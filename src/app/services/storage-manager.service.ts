@@ -1,21 +1,17 @@
 import { Injectable } from '@angular/core';
 import { UniqueIdProviderService } from './unique-id-provider.service';
 import { NextColorGeneratorService } from './next-color-generator.service'
-import { CommunicationService } from './communication.service';
 import { FindNoteByIdService } from './find-note-by-id.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 
 
 
 export class StorageManagerService {
   constructor(private idProvider: UniqueIdProviderService,
     private colorProvider: NextColorGeneratorService,
-    private communicator: CommunicationService,
     private noteByIdFinder: FindNoteByIdService,
-  ) { }
+  ) {}
   
   notePadMemoryObject: string = 'notePadMemoryObject'
 
@@ -23,10 +19,9 @@ export class StorageManagerService {
     // localStorage.setItem('notePad', JSON.stringify(data))
   }
 
-  saveAsGeneral(key: string, data: any){
-    let activeNoteData = this.getActiveNoteData();
-    if (activeNoteData == null) this.saveContentAs(key, data);
-    else this.saveWithActiveNoteContent(key, data, activeNoteData);
+  saveAsGeneral(key: string, dataToBeSaved: any, activeNoteData: any){
+    if (activeNoteData == null) this.saveContentAs(key, dataToBeSaved);
+    else this.saveWithActiveNoteContent(key, dataToBeSaved, activeNoteData);
   }
 
   saveContentAs(key: string, data: any){
@@ -46,16 +41,6 @@ export class StorageManagerService {
     this.saveContentAs(key, copyOfCurrentObject);
   }
 
-  getActiveNoteData(){
-    let uniqueId = 'storageManagerId'
-    let data:any = null;
-    let messageHandle = function(eventType: string, data: any){data = data}
-    this.communicator.subscribe(uniqueId, messageHandle, ['activeNoteResponse']);
-    let isThereAnActiveNote = this.communicator.informWithFeedback('ifThereIsAnyActiveNotePleaseTransmitData', '');
-    this.communicator.unsubscribe(uniqueId);
-    return data;
-  }
-
   setObject(obj: any){
     localStorage.setItem(this.notePadMemoryObject, JSON.stringify(obj))
   }
@@ -66,9 +51,6 @@ export class StorageManagerService {
   }
 
   loadContent(key: string){
-    // let content = localStorage.getItem(key)
-    // if (content == null) return content
-    // return JSON.parse(content);
     let memObj = this.getMemoryObject();
     if (this.hasKey(key)) {
       this.setLastUsedNoteDocumentToStorage(key);
@@ -140,12 +122,12 @@ export class StorageManagerService {
   getLastUsedNoteDocument(){
     return localStorage.getItem('__notePad_lastUsed')
   }
-  saveAsLastUsedKey(dataToSave: any){
+  saveAsLastUsedKey(dataToSave: any, activeNoteData: any){
     let lastUsedKey = this.getLastUsedNoteDocument();
     if (lastUsedKey == null || lastUsedKey == ''){
       lastUsedKey = this.getDefaultKey();
     }
-    this.saveAsGeneral(lastUsedKey, dataToSave)
+    this.saveAsGeneral(lastUsedKey, dataToSave, activeNoteData)
   }
 
 

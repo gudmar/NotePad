@@ -7,6 +7,7 @@ import { CommunicationService } from '../services/communication.service'
 import { StorageManagerService } from '../services/storage-manager.service'
 import { FileOperationsService } from '../services/file-operations.service';
 import { DocumentValidatorService } from '../services/document-validator.service';
+import { GetActiveNoteDataService } from '../services/get-active-note-data.service';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class WorkBookComponent implements OnInit {
     private storageManager: StorageManagerService,
     private changeDetector: ChangeDetectorRef,
     private fileOperations: FileOperationsService,
-    private documentValidator: DocumentValidatorService
+    private documentValidator: DocumentValidatorService,
+    private activeNoteGetter: GetActiveNoteDataService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -117,7 +119,8 @@ export class WorkBookComponent implements OnInit {
       this.storageManager.saveContentAs(data, this.document)
     }
     if (eventType === 'saveToLastUsedKey'){
-      this.storageManager.saveAsLastUsedKey(this.document);
+      let activeNoteData = this.activeNoteGetter.getActiveNoteData(this.messenger);
+      this.storageManager.saveAsLastUsedKey(this.document, activeNoteData);
     }
     if (eventType == 'loadDocument'){
       let newDocument = this.storageManager.loadContent(data)
@@ -160,7 +163,7 @@ export class WorkBookComponent implements OnInit {
     return activeNote
   }
   changeNoteContent(documentInstance: any, activeNoteContent:string, noteId:string){
-
+    
   }
   /**************************************************************/
 

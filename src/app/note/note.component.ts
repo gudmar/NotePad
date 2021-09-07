@@ -72,6 +72,10 @@ export class NoteComponent implements OnInit {
     private colorManager: NextColorGeneratorService,
     private elRef: ElementRef
   ) { 
+    this.messenger.subscribe(this.uniqueId, 
+      this.handleMessages.bind(this), 
+      ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
+    )
     // this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['pageWasClicked'])
   }
 
@@ -98,13 +102,13 @@ export class NoteComponent implements OnInit {
     })
   }
 
-  @HostListener('keyup', ["$event"])
-  onKeyUp(event: any) {
-    this.messenger.inform('noteContentChanged', {
-      objectId: this.uniqueId,
-      content: this.contentHolder.nativeElement.innerHTML
-    })
-  }
+  // @HostListener('keyup', ["$event"])
+  // onKeyUp(event: any) {
+  //   this.messenger.inform('noteContentChanged', {
+  //     objectId: this.uniqueId,
+  //     content: this.contentHolder.nativeElement.innerHTML
+  //   })
+  // }
 
   informAboutContentChange(data: any){
     this.noteContentChanged.emit(data);
@@ -125,7 +129,6 @@ export class NoteComponent implements OnInit {
     if (messageType == 'pageWasClicked'){
       
       this.isActive = false;
-      // debugger;
     }
     if (messageType == 'eachNoteShouldShow'){
       this.isActive = true;
@@ -139,19 +142,20 @@ export class NoteComponent implements OnInit {
       )
     }
     if(messageType == 'ifThereIsAnyActiveNotePleaseTransmitData'){
+      console.log('Check for actives')
       if (this.isActive) {
         this.messenger.inform('activeNoteResponse',{
-          uniqueId: this.uniqueId, content: this.elRef.nativeElement.innerHTML
+          uniqueId: this.uniqueId, content: this.elRef.nativeElement.querySelector('.content-holder').innerHTML
         })
       }
     }
   }
 
   ngOnInit(): void {
-    this.messenger.subscribe(this.uniqueId, 
-      this.handleMessages.bind(this), 
-      ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
-    )
+    // this.messenger.subscribe(this.uniqueId, 
+    //   this.handleMessages.bind(this), 
+    //   ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
+    // )
   }
   ngOnDestroy(): void {
     this.messenger.unsubscribe(this.uniqueId)

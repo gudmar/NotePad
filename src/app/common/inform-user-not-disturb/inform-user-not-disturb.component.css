@@ -1,0 +1,30 @@
+
+.message-box{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+.shutter{
+    position: absolute;
+    /* left: -100vw;
+    top: -100vh; */
+    bottom: 0;
+    right: 0;
+    border: medium solid black;
+    z-index: 1000;
+}
+.fill{
+    width: 100vw;
+    height: 100vh;
+}
+.message{
+    padding: 5px;
+    background-color: black;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.no-fill{
+    transition: 0.3s;
+    width: 0px;
+    height: 0px;
+}

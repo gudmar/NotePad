@@ -1,0 +1,14 @@
+<ng-container *ngIf="shouldDisplay">
+    <div class="shutter center">
+        <div class="window center">
+            <div class="title">{{title}}</div>
+            <div class="input center">
+                <div class="editable" contenteditable="true" (focusout)="updateProposedFileName($event)">{{fileName}}</div>
+            </div>
+            <div class="buttons">
+                <div class="button arrow" (click)="confirm()">Save</div>
+                <div class="button arrow" (click)="cancel()">Close</div>
+            </div>
+        </div>
+    </div>
+</ng-container>

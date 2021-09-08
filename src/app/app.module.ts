@@ -46,6 +46,7 @@ import { ResizePointComponent } from './movable-point/resize-point/resize-point.
 import { DropZoneDirective } from './directives/drop-zone.directive';
 import { UserMessageComponent } from './common/user-message/user-message.component';
 import { InformUserNotDisturbComponent } from './common/inform-user-not-disturb/inform-user-not-disturb.component';
+import { SaveToFileComponent } from './common/save-to-file/save-to-file.component';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import { InformUserNotDisturbComponent } from './common/inform-user-not-disturb/
     DropZoneDirective,
     UserMessageComponent,
     InformUserNotDisturbComponent,
+    SaveToFileComponent,
     
   ],
   imports: [

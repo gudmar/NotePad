@@ -17,7 +17,8 @@ export class AppComponent {
   onKeyDown(event: KeyboardEvent){
     if ((event.metaKey || event.ctrlKey) && event.key === 's'){
       event.preventDefault();
-      this.messenger.inform('saveToLastUsedKey', '')
+      this.messenger.inform('saveToLastUsedKey', '');
+      this.messenger.inform('displayMessageAndDoNotDisturb', {message: 'Saved...'})
     }
 
   }

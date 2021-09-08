@@ -1,0 +1,6 @@
+<ng-container *ngIf="shouldDisplay">
+    <div class="message-box">
+        <div class="shutter" [ngClass]="{'fill': beforeAnimation, 'no-fill': !beforeAnimation}"></div>
+        <div class="message">{{message}}</div>
+    </div>
+</ng-container>

@@ -45,6 +45,7 @@ import { SummaryEventComponent } from './calendar/week-view/week-day/summary-eve
 import { ResizePointComponent } from './movable-point/resize-point/resize-point.component';
 import { DropZoneDirective } from './directives/drop-zone.directive';
 import { UserMessageComponent } from './common/user-message/user-message.component';
+import { InformUserNotDisturbComponent } from './common/inform-user-not-disturb/inform-user-not-disturb.component';
 
 
 @NgModule({
@@ -85,6 +86,7 @@ import { UserMessageComponent } from './common/user-message/user-message.compone
     ResizePointComponent,
     DropZoneDirective,
     UserMessageComponent,
+    InformUserNotDisturbComponent,
     
   ],
   imports: [

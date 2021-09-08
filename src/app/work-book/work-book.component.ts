@@ -148,7 +148,8 @@ export class WorkBookComponent implements OnInit {
       this.reloadDocument(newDocument)
     }
     if (eventType == 'saveToFile'){
-      this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
+      this.messenger.inform('displaySaveToFileWindow', this.document)
+      // this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
   }
 

@@ -1,0 +1,18 @@
+<div class="wrapper">
+<wb-button [uniqueId] = "'expandableMenuId'"
+[isPushed] = "false"
+[pictogram] = "'Menu'"
+(click) = "display('That does nothing...')">
+</wb-button>
+<div class="menu-content center">
+    <div class="button" (click) = "menu.getNewPage()">New</div>
+    <div class="button" (click) = "menu.saveToLastUsedKey(); display('Saved...')">Save</div>
+    <div class="button" (click) = "menu.openMemoryManager('save')">Save as</div>
+    <div class="button" (click) = "menu.saveToAFile()">Save to file</div>
+    <div class="button" (click) = "menu.openMemoryManager('load')">Load from key</div>
+    <div class="button" *ngIf="whatAppAmIIn==='note'" (click) = "menu.switchToCalendar()">Calendar app</div>
+    <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.switchToNotepad()">Notes app</div>
+    <div class="button" (click) = "menu.displayHelp()">Help</div>
+</div>
+</div>
+

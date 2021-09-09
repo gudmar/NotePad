@@ -19,6 +19,7 @@ import { PageComponent } from './sheet/page/page.component';
 import { WorkBookComponent } from './work-book/work-book.component';
 import { PageMenuComponent } from './sheet/page/page-menu/page-menu.component';
 import { CommunicationService } from './services/communication.service';
+import { AppMenuOperationsService } from './services/app-menu-operations.service';
 import { WbMenuComponent } from './work-book/wb-menu/wb-menu.component';
 import { WbMenuEntryComponent } from './work-book/wb-menu/wb-menu-entry/wb-menu-entry.component';
 import { WbButtonComponent } from './work-book/wb-menu/wb-button/wb-button.component'
@@ -47,6 +48,8 @@ import { DropZoneDirective } from './directives/drop-zone.directive';
 import { UserMessageComponent } from './common/user-message/user-message.component';
 import { InformUserNotDisturbComponent } from './common/inform-user-not-disturb/inform-user-not-disturb.component';
 import { SaveToFileComponent } from './common/save-to-file/save-to-file.component';
+import { ExpandableMenuComponent } from './common/expandable-menu/expandable-menu.component';
+
 
 
 @NgModule({
@@ -89,6 +92,7 @@ import { SaveToFileComponent } from './common/save-to-file/save-to-file.componen
     UserMessageComponent,
     InformUserNotDisturbComponent,
     SaveToFileComponent,
+    ExpandableMenuComponent,
     
   ],
   imports: [
@@ -102,7 +106,8 @@ import { SaveToFileComponent } from './common/save-to-file/save-to-file.componen
               CommunicationService,
               DescriptorToDataService,
               StorageManagerService,
-              CalendarObjectProviderService
+              CalendarObjectProviderService,
+              AppMenuOperationsService
             ],
   bootstrap: [AppComponent]
 })

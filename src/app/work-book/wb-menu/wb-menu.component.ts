@@ -3,6 +3,7 @@ import { DescriptorToDataService } from '../../services/descriptor-to-data.servi
 import { CommunicationService } from '../../services/communication.service'
 import { NextColorGeneratorService } from '../../services/next-color-generator.service'
 import { FileOperationsService } from '../../services/file-operations.service';
+import { AppMenuOperationsService } from '../../services/app-menu-operations.service';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { FileOperationsService } from '../../services/file-operations.service';
 export class WbMenuComponent implements OnInit {
   uniqueId: string = 'workbookId'
   private idOfSheetSelectedForTermination: string = '';
+  menu: AppMenuOperationsService = new AppMenuOperationsService(this.messenger);
   @Input() sheets: any = []
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
@@ -20,7 +22,8 @@ export class WbMenuComponent implements OnInit {
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
-    private fileOperations: FileOperationsService
+    private fileOperations: FileOperationsService,
+    menu: AppMenuOperationsService,
   ) { }
 
   ngOnInit(): void {
@@ -72,14 +75,6 @@ export class WbMenuComponent implements OnInit {
     }
   }
 
-  saveToAFile(){
-    this.messenger.inform('saveToFile', '')
-  }
-
-  getNewPage(){
-    this.messenger.inform('loadFreshDocument', '');
-  }
-
   deleteSheet(idOfSheetToDelete: string){
     let deletedSheetIndex = this.getIndexOfSheetById(idOfSheetToDelete)
     this.sheets.splice(deletedSheetIndex, 1);
@@ -113,21 +108,8 @@ export class WbMenuComponent implements OnInit {
     // !!!!!!!!!!! NOT NEEDED - CLEAR EVERYTHING RELATED
   }
 
-  openMemoryManager(mode: 'save' | 'load'){
-    if (mode == "save") this.messenger.inform('displaySaveWindow', '')
-    if (mode == "load") this.messenger.inform('displayLoadWindow', '')
-  }
-
-  saveToLastUsedKey(){
-    this.messenger.inform('saveToLastUsedKey', '')
-  }
-
   addNextSheet(){
     this.messenger.inform('addNextSheet', {after: 'last'})
-  }
-
-  switchToCalendar(){
-    this.messenger.inform('switchToCalendar', '');
   }
 
   getSheetsId(descriptor: any){return this.descriptorTranslator.getDescriptorsId(descriptor)}

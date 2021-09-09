@@ -1,4 +1,7 @@
 <div class="wb-menu-wrapper">
+
+        <expandable-menu [whatAppAmIIn]="'note'"></expandable-menu>
+
     <div class="wb-menu-sheets">
         <wb-menu-entry *ngFor="let sheet of sheets" 
                     [title]="getSheetsTitle(sheet)"
@@ -10,86 +13,44 @@
         </wb-menu-entry>
         <wb-menu-entry [isKillable] = "false" [title]="'Add +'" [isActive]="true" [bgColor]="'black'" (click)="addNextSheet()"></wb-menu-entry>
     </div>
-    <div class="wb-menu-options">
+    <!-- <div class="wb-menu-options">
         <wb-button [uniqueId] = "'newContentId'"
             [isPushed] = "false"
             [pictogram] = "'New'"
-            (wasClicked) = "getNewPage()"
+            (wasClicked) = "menu.getNewPage()"
  >
         </wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
                 [isPushed] = "false"
                 [pictogram] = "'Save'"
-                (wasClicked) = "saveToLastUsedKey()"
+                (wasClicked) = "menu.saveToLastUsedKey()"
         ></wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
                    [isPushed] = "false"
                    [pictogram] = "'Save as'"
-                   (wasClicked) = "openMemoryManager('save')"
+                   (wasClicked) = "menu.openMemoryManager('save')"
         ></wb-button>
         <wb-button [uniqueId] = "'saveFileId'"
             [isPushed] = "false"
             [pictogram] = "'Save file'"
-            (wasClicked) = "saveToAFile()"
+            (wasClicked) = "menu.saveToAFile()"
         ></wb-button>
         <wb-button [uniqueId] = "'saveContentId'"
         [isPushed] = "false"
         [pictogram] = "'Load'"
-        (wasClicked) = "openMemoryManager('load')"
+        (wasClicked) = "menu.openMemoryManager('load')"
 >
 
         </wb-button>
-
-        <!-- <wb-button [uniqueId] = "'GetAllFromStoratge'"
-            [isPushed] = "false"
-            [pictogram] = "'Get all'"
-            (wasClicked) = "passDataFromStorageToWBComponent('getAllKeysFromStorage')"
-        
-        </wb-button>> -->
         <wb-button [uniqueId] = "'CalendarButtonId'"
         [isPushed] = "false"
         [pictogram] = "'Calendar'"
-        (wasClicked) = "switchToCalendar()"
+        (wasClicked) = "menu.switchToCalendar()"
     >
-    </wb-button>
-    </div>
+    </wb-button> -->
+    <!-- </div> -->
 </div>
 
-
-<!-- clearStorage(){
-    localStorage.clear();
-  }
-
-  removeItemFromStorage(key: string){
-    localStorage.removeItem(key)
-  }
-
-  getAllItemsFromStorage(){
-    return Object.keys(localStorage);
-  } -->
-
-<!-- load: &#128193;
-save: &#x1F4BE; -->
-
-
-
-<!-- export class WbButtonComponent implements OnInit {
-    @Input() uniqueId: string = '';
-    @Input() pictogram: string = '';
-    @Input() isPushed: boolean = false;
-    @Output() wasClicked: EventEmitter<any> = new EventEmitter();
-    dynamicClass: any = {
-      pushed: false
-    }
-    constructor() { }
-  
-    ngOnInit(): void {
-    }
-  
-    @HostListener('click')
-    onClick(){
-      this.wasClicked.emit()
-    } -->
 
 
 

@@ -1,0 +1,35 @@
+.wrapper{
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.title{
+    font-weight: bold;
+}
+.title::before{
+    position: relative;
+    content:">";
+    transition: 0.3s;    
+    display: inline-block;
+}
+.expanded>.title:before{
+    position: relative;
+    content:">";
+    transition: 0.3s;
+    transform: rotateZ(90deg);
+    display: inline-block;
+}
+.content{
+    position: absolute;
+    position: relative;
+    transition: 0.3s;
+    height: 0;
+    transform: scaleY(0);
+    overflow: hidden;
+}
+.expanded>.content{
+    height: auto;
+    position: relative;
+    height: auto;
+    transform: scaleY(1);
+    transition: 0.3s;
+}

@@ -49,6 +49,8 @@ import { UserMessageComponent } from './common/user-message/user-message.compone
 import { InformUserNotDisturbComponent } from './common/inform-user-not-disturb/inform-user-not-disturb.component';
 import { SaveToFileComponent } from './common/save-to-file/save-to-file.component';
 import { ExpandableMenuComponent } from './common/expandable-menu/expandable-menu.component';
+import { HelpComponent } from './common/help/help.component';
+import { HelpEntryComponent } from './common/help/help-entry/help-entry.component';
 
 
 
@@ -93,6 +95,8 @@ import { ExpandableMenuComponent } from './common/expandable-menu/expandable-men
     InformUserNotDisturbComponent,
     SaveToFileComponent,
     ExpandableMenuComponent,
+    HelpComponent,
+    HelpEntryComponent,
     
   ],
   imports: [

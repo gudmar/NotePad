@@ -1,6 +1,7 @@
 import { Component, HostListener, Host } from '@angular/core';
 import { UniqueIdProviderService} from './services/unique-id-provider.service';
 import { CommunicationService } from './services/communication.service'
+import { HelpContentService } from './services/help-content.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { CommunicationService } from './services/communication.service'
 export class AppComponent {
   title = 'NotePad';
   shouldDisplayWaitingSpinner = true;
-  constructor(private messenger:CommunicationService){}
+  helper = new HelpContentService();
+  constructor(private messenger:CommunicationService, helper: HelpContentService){}
 
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent){

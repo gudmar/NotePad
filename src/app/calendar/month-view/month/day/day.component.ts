@@ -35,6 +35,7 @@ export class DayComponent implements OnInit {
   get day() {return this.dayDescriptor.dayMonthIndex}
   get month() {return this.dayDescriptor.month}
   get year() {return this.dayDescriptor.year}
+  get dayWeekIndex():number {return this.dayDescriptor.dayWeekIndex;}
   get uniqueId() {return `${this.month}/${this.day}`}
 
   grayDayClas = {
@@ -50,6 +51,7 @@ export class DayComponent implements OnInit {
         month: this.dayDescriptor.month,
         year: this.dayDescriptor.year,
         cw: 0,
+        dayWeekIndex: this.dayWeekIndex,
         events: this.events
       }
       this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);

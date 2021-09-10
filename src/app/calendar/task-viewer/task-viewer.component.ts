@@ -118,8 +118,9 @@ export class TaskViewerComponent implements OnInit {
   addEventAfter(event: any, uniqueId: string){
     let eventToAddAfterIndex = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId);
     this.events.splice(eventToAddAfterIndex, 0, {
-      hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId
+      hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId()
     })
+    // debugger
   }
 
   removeEvent(event:any, uniqueId: string){

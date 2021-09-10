@@ -14,6 +14,7 @@ import { EventManagerService } from '../services/event-manager.service';
 })
 export class TaskViewerComponent implements OnInit {
   private _shouldMoveWindowBeVisible: boolean = false;
+  dayWeekIndex: number = 0;
   uniqueId: string = 'taskViewerId'
   allCalendarEvents: any;
   @Input() day: number = 0;
@@ -36,7 +37,7 @@ export class TaskViewerComponent implements OnInit {
   }
 
   get entries() {return this.events}
-  get dayAsString() {return this.calendarProvider.getDayName(this.day)}
+  get dayAsString() {return this.calendarProvider.getDayName(this.dayWeekIndex)}
   get currentDate() {
     return `${this.day} / ${this.month} / ${this.year} CW: ${this.cw}`
   }
@@ -91,6 +92,7 @@ export class TaskViewerComponent implements OnInit {
       this.month = data.month;
       this.year = data.year;
       this.cw = data.cw;
+      this.dayWeekIndex = data.dayWeekIndex,
       this.events = data.events;
       this.shouldBeDisplayed = true;
     }

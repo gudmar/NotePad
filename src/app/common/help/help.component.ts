@@ -16,7 +16,7 @@ export class HelpComponent implements OnInit {
     this._temp = val;
   }
   get currentEntries(){return this._temp}
-  shouldDisplay: boolean = true;
+  shouldDisplay: boolean = false;
   constructor(
     private seracher: SearchListService,
     private communicator: CommunicationService

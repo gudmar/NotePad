@@ -142,7 +142,6 @@ export class NoteComponent implements OnInit {
       )
     }
     if(messageType == 'ifThereIsAnyActiveNotePleaseTransmitData'){
-      console.log('Check for actives')
       if (this.isActive) {
         this.messenger.inform('activeNoteResponse',{
           uniqueId: this.uniqueId, content: this.elRef.nativeElement.querySelector('.content-holder').innerHTML

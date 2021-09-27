@@ -14,3 +14,20 @@
     justify-content: center;
     flex-direction: column;
 }
+.center{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.dropZone{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 3rem;
+    z-index: 1000;
+}

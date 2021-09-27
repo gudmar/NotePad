@@ -132,11 +132,6 @@ export class HelpContentService {
         content: `Menu (upper left corner), save, or <i>Ctrl+s</i>. Animation should aknowledge that data was saved.`
       }, 
       {
-        title: 'Saving current document to a file',
-        content: `Menu (upper left corner), save file. Dialog window will be showed and default name of file will be proposed.
-        It might be changed`
-      }, 
-      {
         title: 'Uploading file as current document / load from file',
         content: `Valid file should be dragged and dropped onto page component area. Then file is loaded`
       },                         

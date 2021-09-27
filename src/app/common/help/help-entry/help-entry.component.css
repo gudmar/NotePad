@@ -4,16 +4,31 @@
 }
 .title{
     font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+}
+.title:hover{
+    transition: 0.3s;
+    background-color: rgba(220, 220, 220, 0.8);    
 }
 .title::before{
     position: relative;
-    content:">";
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 0.5rem solid black;
+    border-top: 0.25rem solid transparent;
+    border-bottom: 0.25rem solid transparent;
+    border-right: 0rem solid transparent;
     transition: 0.3s;    
     display: inline-block;
+    margin-right: 0.5rem;
 }
 .expanded>.title:before{
     position: relative;
-    content:">";
+    content:"";
     transition: 0.3s;
     transform: rotateZ(90deg);
     display: inline-block;
@@ -25,6 +40,8 @@
     height: 0;
     transform: scaleY(0);
     overflow: hidden;
+    cursor: default;
+    
 }
 .expanded>.content{
     height: auto;
@@ -32,4 +49,6 @@
     height: auto;
     transform: scaleY(1);
     transition: 0.3s;
+    padding: 1rem;
 }
+

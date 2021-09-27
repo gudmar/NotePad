@@ -9,3 +9,18 @@
 th{
     font-size: 0.8rem;
 }
+.clicable{
+    transition: 0.3s;
+}
+.clicable:hover{
+    transition: 0.3s;
+    background-color: hsla(60, 40%, 60%, 0.8);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.no-interaction{
+    cursor: default;
+}
+.center{
+    text-align: center;
+}

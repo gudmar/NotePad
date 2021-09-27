@@ -1,15 +1,15 @@
 <div class="month-wrapper">
-        <div class="month-name">{{monthName}}</div>
+        <div class="month-name no-interaction">{{monthName}}</div>
         <div class="month-table">
             <table>
                 <thead>
                     <tr>
-                        <th *ngFor="let col of columnNames">{{col}}</th>
+                        <th class="no-interaction" *ngFor="let col of columnNames">{{col}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor = "let cw of cwIndexes">
-                        <td (click) = "displayWeekView(cw)">{{cw}}</td>
+                        <td class = "clicable center" (click) = "displayWeekView(cw)">{{cw}}</td>
                         <td *ngFor = "let day of getDays(cw)">
                             <day [dayDescriptor]="day" 
                 [isItCueentMonthDay] = 'doesDayBelongToCurrentMonth(day.month, monthDescriptor.monthIndex) '>

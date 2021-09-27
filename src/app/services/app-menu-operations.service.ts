@@ -37,6 +37,6 @@ export class AppMenuOperationsService {
   }
 
   displayHelp(){
-
+    this.messenger.inform('displayHelp', '');
   }
 }

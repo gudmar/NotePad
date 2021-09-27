@@ -31,7 +31,8 @@ export class WorkBookComponent implements OnInit {
   listOfSheets:any[] = this.document.sheets;
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
-  application: string = 'notes' //'calendar'
+  // application: string = 'notes' //'calendar'
+  application: string = 'calendar'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }
@@ -41,7 +42,14 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
-  calendarInputs: any = [];
+  private _calendarInputs:any;
+  // calendarInputs: any = [];
+  set calendarInputs(val: any){
+    this._calendarInputs = val;
+  }
+  get calendarInputs() {
+    return this._calendarInputs;
+  }
 
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
@@ -175,12 +183,17 @@ export class WorkBookComponent implements OnInit {
   }
 
   loadDocumentToView(documentData: any){
+    // this.calendarInputs = []
     this.document = documentData
     this.listOfSheets = this.document.sheets;
     this.activeSheetId = this.document.activeSheetId;    
-    this.initializeNewSheet(this.activeSheetId) 
+    setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
+    this.initializeNewSheet(this.activeSheetId);
+    
   }
-
+  ngAfterViewInit(){
+    setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
+  }
 
 
 

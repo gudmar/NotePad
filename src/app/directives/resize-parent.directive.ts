@@ -20,31 +20,47 @@ export class ResizeParentDirective extends MovableParentDirective{
     super(elRef);
   }
 
+  getPageXY(event:any){
+    if (event.type=='touchend') return {x:event.changedTouches[0].pageX, y:event.changedTouches[0].pageY}
+    return event.type.includes('touch')?
+      {x:event.touches[0].pageX,y:event.touches[0].pageY}:
+      {x:event.pageX,y:event.pageY}
+  }
+
   @HostListener('mousedown', ['$event'])
+  @HostListener('touchstart', ['$event'])
   calculateDotOffset(data:any){
-    this.resizeDotOffset = {x: data.pageX - this.elRef.nativeElement.offsetLeft - this.elementToMove.offsetLeft, 
-                            y: data.pageY - this.elRef.nativeElement.offsetTop - this.elementToMove.offsetTop}
+    let pageXY = this.getPageXY(data);
+    this.resizeDotOffset = {x: pageXY.x - this.elRef.nativeElement.offsetLeft - this.elementToMove.offsetLeft, 
+                            y: pageXY.y - this.elRef.nativeElement.offsetTop - this.elementToMove.offsetTop}
   }
 
 calculatedSize(data:{pageX: number, pageY:number}){
     let parentOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop}
     let width = data.pageX - parentOffset.x - this.resizeDotOffset.x; 
     let height = data.pageY - parentOffset.y - this.resizeDotOffset.y;
-    return {width: width < this.minWidth ? this.minWidth : width, height: height < this.minHeight ? this.minHeight : height}
+    return {
+      width: width < this.minWidth ? this.minWidth : width, 
+      height: height < this.minHeight ? this.minHeight : height
+    }
   }
 
 
   @HostListener('document:mouseMove', ['$event'])
+  @HostListener('document:touchmove', ['$event'])
   doMouseMove(data:any){
     let that = this;
     // let parentOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop}
 
     if (this.isInMoveState) {
-      let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
-      let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
-      let cs = this.calculatedSize(data);
+      let pageXY = this.getPageXY(data);
+      // let newCords = this.calculateNewPosition({x: pageXY.x, y: pageXY.y})
+      let correctedPosition = this.calculateNewPosition({x:pageXY.x, y:pageXY.y});
+      let cs = this.calculatedSize({pageX: pageXY.x, pageY: pageXY.y});
       this.elementToMove.style.width = cs.width + 'px';
       this.elementToMove.style.height = cs.height + 'px';
+      // debugger
+      console.log(cs)
     }
   }
 
@@ -56,9 +72,13 @@ calculatedSize(data:{pageX: number, pageY:number}){
   }
 
   @HostListener('document:mouseup', ['$event'])
+  @HostListener('document:touchend', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
     if (this.isInMoveState){
-      let calculatedWidthAndHeight = this.calculatedSize(event)
+      console.log(event)
+      let pageXY = {pageX: this.getPageXY(event).x, pageY: this.getPageXY(event).y}
+      
+      let calculatedWidthAndHeight = this.calculatedSize(pageXY)
       this.dispatchEventOnMovedElement({pageX: calculatedWidthAndHeight.width, pageY: calculatedWidthAndHeight.height})  
     }
     this.isInMoveState = false;

@@ -21,31 +21,75 @@ export class MovableParentDirective {
 
 
   @HostListener('mousedown', ['$event'])
+  @HostListener('touchstart', ['$event'])
   activateMoveMode(event: MouseEvent){
-    this.isInMoveState = true;
-    let elementToMoveOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop};
-    this.clickOffset = {x: event.pageX - elementToMoveOffset.x, y:event.pageY - elementToMoveOffset.y}
+    this.down.call(this, event);
+  }
+  // @HostListener('touchstart', ['$event'])
+  // activateMoveMode_touch(event: any){
+  //   this.down.call(this, event);
+    
+  // }
 
+  down(event: any){
+    this.isInMoveState = true;
+    let pageXY = this.getPageXY(event);
+    let elementToMoveOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop};
+    // this.clickOffset = {x: event.pageX - elementToMoveOffset.x, y:event.pageY - elementToMoveOffset.y}
+    this.clickOffset = {x: pageXY.x - elementToMoveOffset.x, y:pageXY.y - elementToMoveOffset.y}
+  }
+
+  getPageXY(event:any){
+    if (event.type=='touchend') return {x:event.changedTouches[0].pageX, y:event.changedTouches[0].pageY}
+    return event.type.includes('touch')?
+      {x:event.touches[0].pageX,y:event.touches[0].pageY}:
+      {x:event.pageX,y:event.pageY}
   }
 
   @HostListener('document:mouseup', ['$event'])
+  @HostListener('document:touchend', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
+    this.up.call(this, event)
+  }
+  // @HostListener('document:touchend', ['$event'])
+  // disacitvateMoveMode_touch(event: any){
+  //   this.up.call(this, event)
+  // }
+
+
+  up(event:any){
     if (this.isInMoveState){
       let absolutePositionOfMovableElement = this.getElementsAbsolutePosition(this.elementToMove)
       this.dispatchEventOnMovedElement({pageX: absolutePositionOfMovableElement.x, pageY: absolutePositionOfMovableElement.y})
       this.isInMoveState = false;  
-    }
+    }    
   }
 
   @HostListener('document:mousemove', ['$event'])
+  @HostListener('document:touchmove', ['$event'])
   doMouseMove(data: any){
+    this.onMove.call(this, data);
+  } 
+  // @HostListener('document:touchmove', ['$event'])
+  // doTouchMove(data: any){
+  //   // console.dir(event)
+  //   this.onMove.call(this, data);
+  // } 
+
+  onMove(data: any){
     if (this.isInMoveState) {
-      let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
-      let correctedPosition = this.calculateNewPosition({x: data.pageX, y: data.pageY});
+      let pageXY = this.getPageXY(data);
+      // console.dir(event)
+      // let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
+      // let correctedPosition = data.type=="touchmove"?
+      //   this.calculateNewPosition({x: data.touches[0].pageX, y: data.touches[0].pageY}):
+      //   this.calculateNewPosition({x: data.pageX, y: data.pageY});
+      let correctedPosition = this.calculateNewPosition({x: pageXY.x, y:pageXY.y})
+      // console.log(data.touches[0].pageX)
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
-    }
-  } 
+  }
+}
 
   setInitialPosition(position:{pageX: number, pageY: number, [prop: string]: any}){
     let that = this

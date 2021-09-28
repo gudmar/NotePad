@@ -32,7 +32,7 @@ export class WorkBookComponent implements OnInit {
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
   // application: string = 'notes' //'calendar'
-  application: string = 'calendar'
+  application: string = 'notes'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }

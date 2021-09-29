@@ -31,12 +31,16 @@
     font-size: 3rem;
     z-index: 1000;
 }
-
-.hidden{
-    left: -100px;
-    position: absolute;
+/* .not-hidden{
+    transition: 0.3s;
+    transform: translateX(0%);
 }
-.button{
+.hidden{
+    transform: translateX(-100%);
+    position: relative;
+    transition: 0.3s;
+} */
+/* .rewind-button{
     --duration: 0.33s;
     position: relative;
     right: -0.5rem;
@@ -51,35 +55,40 @@
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
     overflow: hidden;
+    transition: 0.3s;
 }
-.button>span:before{
+.rewind-button>span:before{
     content: '>>';
     position: absolute;
     left: -3rem;
 }
-.button>span:after{
+.rewind-button>span:after{
     content: '>>';
     position: absolute;
     left: -3rem;
 }
-.button>span{
+.rewind-button>span{
     display: inline-block;
     position: absolute; 
     color: white;
 }
 
-.button:hover>span{
+.rewind-button:hover>span{
     color: transparent;
     transition: 0.2s;
 }
-.button:hover>span::before{
+.rewind-button:hover>span::before{
     animation: animateButtonBefore 1s linear infinite;
     color: white;
 }
-.button:hover>span::after{
+.rewind-button:hover>span::after{
     animation: animateButtonAfter 1s linear infinite;
     animation-delay: 0.5s;
     color: white;
+}
+.rewind-button:active{
+    background-color: hsla(58, 55%, 66%, 1);
+    transition: 0.3s;
 }
 
 @keyframes animateButtonBefore {
@@ -91,4 +100,4 @@
     0% { left: -3rem; transition: var(--duration);}
     50% { left: 0rem; transition: var(--duration);}
     100% {left: 3rem; transition: var(--duration);}
-}
+} */

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { basename } from 'path';
 import { flatten } from '@angular/compiler';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WindowSizeEvaluatorService {
   _displayWidth: number = window.innerWidth;
   _displayHeight: number = window.innerHeight;
@@ -37,6 +35,12 @@ export class WindowSizeEvaluatorService {
     if (this.displayHeight < 600 && this.displayWidth < 400){
       return true;
     }
+    return false;
+  }
+
+  isWindowTooNarrow():boolean {
+    this.displayWidth = window.innerWidth;
+    if (this.displayWidth < 700) return true;
     return false;
   }
 

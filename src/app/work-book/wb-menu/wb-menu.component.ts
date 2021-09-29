@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, Host } from '@angular/core';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { CommunicationService } from '../../services/communication.service'
 import { NextColorGeneratorService } from '../../services/next-color-generator.service'
 import { FileOperationsService } from '../../services/file-operations.service';
 import { AppMenuOperationsService } from '../../services/app-menu-operations.service';
+import { WindowSizeEvaluatorService } from '../../services/window-size-evaluator.service';
 
 
 @Component({
@@ -16,6 +17,8 @@ export class WbMenuComponent implements OnInit {
   private idOfSheetSelectedForTermination: string = '';
   menu: AppMenuOperationsService = new AppMenuOperationsService(this.messenger);
   @Input() sheets: any = []
+  @Input() isHiddable: boolean = false;
+  @Input() shouldBeHidden: boolean = false;
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
   @Output() sheetAdded: EventEmitter<any> = new EventEmitter();
@@ -23,18 +26,43 @@ export class WbMenuComponent implements OnInit {
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
     private fileOperations: FileOperationsService,
+    private windowSize: WindowSizeEvaluatorService,
     menu: AppMenuOperationsService,
   ) { }
 
   ngOnInit(): void {
-    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['killSheet', 'obliteratePage'])
+    this.messenger.subscribe(
+      this.uniqueId, 
+      this.handleMessages.bind(this), 
+      ['killSheet', 'obliteratePage', 'pageWasClicked']
+    )
+    this.checkIfmenuNeedsToBeHidden();
+    // this.shouldBeHidden = this.isHiddable;
   }
+
+  @HostListener('window:resize', ['$event'])
+  checkIfmenuNeedsToBeHidden(){
+    this.isHiddable = this.windowSize.isWindowTooNarrow();
+    this.shouldBeHidden = this.isHiddable;
+    console.log(this.isHiddable)
+    if (this.isHiddable) console.log('isHiddable')
+  }
+
+  showMenu(){
+    this.shouldBeHidden = false;
+  }
+  hideMenu() {this.shouldBeHidden = true;}
+
+ @HostListener('')
 
   handleMessages(eventType: string, data:any){
     let getNrOfNotesFirstPageHas = function(sheetDescriptor: any){
       let firstPageDescriptor:any = Object.values(sheetDescriptor.pages[0])[0]
       let nrOfPages = firstPageDescriptor.notes.length;
       return nrOfPages;
+    }
+    if (eventType == 'pageWasClicked'){
+      if(this.isHiddable) this.shouldBeHidden = true;
     }
     if (eventType == 'killSheet') {
       if (this.sheets.length > 1){
@@ -117,3 +145,4 @@ export class WbMenuComponent implements OnInit {
   getSheetsBgColor(descriptor: any) {return this.descriptorTranslator.getDescriptorValues(descriptor).bgColor}
   checkIfSheetIsActive(descriptor: any) { return this.currentSheetId === this.getSheetsId(descriptor)}
 }
+

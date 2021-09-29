@@ -17,8 +17,8 @@ export class WbMenuComponent implements OnInit {
   private idOfSheetSelectedForTermination: string = '';
   menu: AppMenuOperationsService = new AppMenuOperationsService(this.messenger);
   @Input() sheets: any = []
-  @Input() isHiddable: boolean = false;
-  @Input() shouldBeHidden: boolean = false;
+  // @Input() isHiddable: boolean = false;
+  // @Input() shouldBeHidden: boolean = false;
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
   @Output() sheetAdded: EventEmitter<any> = new EventEmitter();
@@ -26,7 +26,7 @@ export class WbMenuComponent implements OnInit {
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
     private fileOperations: FileOperationsService,
-    private windowSize: WindowSizeEvaluatorService,
+    // private windowSize: WindowSizeEvaluatorService,
     menu: AppMenuOperationsService,
   ) { }
 
@@ -36,24 +36,22 @@ export class WbMenuComponent implements OnInit {
       this.handleMessages.bind(this), 
       ['killSheet', 'obliteratePage', 'pageWasClicked']
     )
-    this.checkIfmenuNeedsToBeHidden();
+    // this.checkIfmenuNeedsToBeHidden();
     // this.shouldBeHidden = this.isHiddable;
   }
 
-  @HostListener('window:resize', ['$event'])
-  checkIfmenuNeedsToBeHidden(){
-    this.isHiddable = this.windowSize.isWindowTooNarrow();
-    this.shouldBeHidden = this.isHiddable;
-    console.log(this.isHiddable)
-    if (this.isHiddable) console.log('isHiddable')
-  }
+  // @HostListener('window:resize', ['$event'])
+  // checkIfmenuNeedsToBeHidden(){
+  //   this.isHiddable = this.windowSize.isWindowTooNarrow();
+  //   this.shouldBeHidden = this.isHiddable;
+  //   console.log(this.isHiddable)
+  //   if (this.isHiddable) console.log('isHiddable')
+  // }
 
-  showMenu(){
-    this.shouldBeHidden = false;
-  }
-  hideMenu() {this.shouldBeHidden = true;}
-
- @HostListener('')
+  // showMenu(){
+  //   this.shouldBeHidden = false;
+  // }
+  // hideMenu() {this.shouldBeHidden = true;}
 
   handleMessages(eventType: string, data:any){
     let getNrOfNotesFirstPageHas = function(sheetDescriptor: any){
@@ -61,9 +59,9 @@ export class WbMenuComponent implements OnInit {
       let nrOfPages = firstPageDescriptor.notes.length;
       return nrOfPages;
     }
-    if (eventType == 'pageWasClicked'){
-      if(this.isHiddable) this.shouldBeHidden = true;
-    }
+    // if (eventType == 'pageWasClicked'){
+    //   if(this.isHiddable) this.shouldBeHidden = true;
+    // }
     if (eventType == 'killSheet') {
       if (this.sheets.length > 1){
         let sheetForDeletionIndex = this.getIndexOfSheetById(data)

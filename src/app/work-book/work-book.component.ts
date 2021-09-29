@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FalseDataMockService } from '../services/false-data-mock.service';
 import { UniqueIdProviderService } from '../services/unique-id-provider.service';
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
@@ -8,6 +8,7 @@ import { StorageManagerService } from '../services/storage-manager.service'
 import { FileOperationsService } from '../services/file-operations.service';
 import { DocumentValidatorService } from '../services/document-validator.service';
 import { GetActiveNoteDataService } from '../services/get-active-note-data.service';
+import { WindowSizeEvaluatorService } from '../services/window-size-evaluator.service';
 
 
 @Component({
@@ -22,10 +23,11 @@ import { GetActiveNoteDataService } from '../services/get-active-note-data.servi
 })
 export class WorkBookComponent implements OnInit {
   _document: any = this.mockDataProvider.getDocumentFromMemory();
+  @Input() isHiddable: boolean = false;
+  @Input() shouldBeHidden: boolean = false;
   set document(val: any) {
     this._document = val
     this.calendarInputs = val.calendarInputs
-    // debugger
   };
   get document() {return this._document}
   listOfSheets:any[] = this.document.sheets;
@@ -60,7 +62,8 @@ export class WorkBookComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private fileOperations: FileOperationsService,
     private documentValidator: DocumentValidatorService,
-    private activeNoteGetter: GetActiveNoteDataService
+    private activeNoteGetter: GetActiveNoteDataService,
+    private windowSize: WindowSizeEvaluatorService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -76,7 +79,8 @@ export class WorkBookComponent implements OnInit {
        'loadFreshDocument',
        'saveToFile',
        'gotFileWithDataToLoad',
-       'saveToLastUsedKey'
+       'saveToLastUsedKey',
+       'pageWasClicked'
       ]
 
 
@@ -107,10 +111,14 @@ export class WorkBookComponent implements OnInit {
       if (feedback.information === 'keysExistingInStorage'){
         console.log(feedback.payload)
       }
+      
       if (feedback.information === 'newContent'){
         this.loadDocumentToView(feedback.payload)
       }
       // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
+    }
+    if (eventType == 'pageWasClicked'){
+      if(this.isHiddable) this.shouldBeHidden = true;
     }
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
@@ -203,7 +211,8 @@ export class WorkBookComponent implements OnInit {
     this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;
     this.initializeNewSheet(this.activeSheetId);
-    console.dir(this.document)
+    // console.dir(this.document)
+    this.checkIfmenuNeedsToBeHidden();
 
   }
 
@@ -232,5 +241,18 @@ export class WorkBookComponent implements OnInit {
     this.currentSheetStartPageId = data.newPageId;
     this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
   }
+
+  @HostListener('window:resize', ['$event'])
+  checkIfmenuNeedsToBeHidden(){
+    this.isHiddable = this.windowSize.isWindowTooNarrow();
+    this.shouldBeHidden = this.isHiddable;
+    console.log(this.isHiddable)
+    if (this.isHiddable) console.log('isHiddable')
+  }
+
+  showMenu(){
+    this.shouldBeHidden = false;
+  }
+  hideMenu() {this.shouldBeHidden = true;}
 
 }

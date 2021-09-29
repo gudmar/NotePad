@@ -1,4 +1,5 @@
-<div class="wb-menu-wrapper">
+<div class="button center" *ngIf="isHiddable" onclick="showMenu()"><span>>></span></div>
+<div class="wb-menu-wrapper" [ngClass]="{'hidden':isHiddable}">
 
         <expandable-menu [whatAppAmIIn]="'note'"></expandable-menu>
 

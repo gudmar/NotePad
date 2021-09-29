@@ -31,3 +31,64 @@
     font-size: 3rem;
     z-index: 1000;
 }
+
+.hidden{
+    left: -100px;
+    position: absolute;
+}
+.button{
+    --duration: 0.33s;
+    position: relative;
+    right: -0.5rem;
+    top: 8rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: rgb(220, 220, 220);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    overflow: hidden;
+}
+.button>span:before{
+    content: '>>';
+    position: absolute;
+    left: -3rem;
+}
+.button>span:after{
+    content: '>>';
+    position: absolute;
+    left: -3rem;
+}
+.button>span{
+    display: inline-block;
+    position: absolute; 
+    color: white;
+}
+
+.button:hover>span{
+    color: transparent;
+    transition: 0.2s;
+}
+.button:hover>span::before{
+    animation: animateButtonBefore 1s linear infinite;
+    color: white;
+}
+.button:hover>span::after{
+    animation: animateButtonAfter 1s linear infinite;
+    animation-delay: 0.5s;
+    color: white;
+}
+
+@keyframes animateButtonBefore {
+    0% { left: -3rem; transition: var(--duration);}
+    50% { left: 0rem; transition: var(--duration);}
+    100% {left: 3rem; transition: var(--duration);}
+} 
+ @keyframes animateButtonAfter {
+    0% { left: -3rem; transition: var(--duration);}
+    50% { left: 0rem; transition: var(--duration);}
+    100% {left: 3rem; transition: var(--duration);}
+}

@@ -51,6 +51,7 @@ import { SaveToFileComponent } from './common/save-to-file/save-to-file.componen
 import { ExpandableMenuComponent } from './common/expandable-menu/expandable-menu.component';
 import { HelpComponent } from './common/help/help.component';
 import { HelpEntryComponent } from './common/help/help-entry/help-entry.component';
+import { WindowSizeEvaluatorService } from './services/window-size-evaluator.service';
 
 
 
@@ -111,7 +112,8 @@ import { HelpEntryComponent } from './common/help/help-entry/help-entry.componen
               DescriptorToDataService,
               StorageManagerService,
               CalendarObjectProviderService,
-              AppMenuOperationsService
+              AppMenuOperationsService,
+              WindowSizeEvaluatorService
             ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { NoteComponent } from '../../note/note.component'
 import { CommunicationService } from '../../services/communication.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
@@ -23,7 +23,11 @@ export class PageComponent implements OnInit {
   @Output() deleteThisPageEvent: EventEmitter<string> = new EventEmitter();
   @Output() addPageAfterThisPageEvent: EventEmitter<string> = new EventEmitter();
 
-  constructor(private messenger: CommunicationService, private storeManager: StorageManagerService) { }
+  constructor(
+    private messenger: CommunicationService, 
+    private storeManager: StorageManagerService,
+    private elRef: ElementRef
+  ) { }
 
   @HostListener('click', ['$event'])
   informThatThisPageWasClicked($event: any){
@@ -130,6 +134,36 @@ export class PageComponent implements OnInit {
 
   getUUIDTracker(index: number, item: any):any{
     return item.uniqueId
+  }
+
+  getPageWidth():string{
+    let cssDerivedWidth = parseInt(this.elRef.nativeElement.offsetWidth);
+    let notesDerivedWidth = this.getMostLeftPointOfPage(this.notes);
+    return notesDerivedWidth > cssDerivedWidth ? notesDerivedWidth + 'px' : '';
+  }
+
+  getPageHeight():string{
+    let cssDerivedHeight = parseInt(this.elRef.nativeElement.offsetHeight);
+    let notesDerivedHeight = this.getMostTopPointOfPage(this.notes);
+    return notesDerivedHeight > cssDerivedHeight ? notesDerivedHeight + 'px' : '';
+  }
+
+
+  getMostLeftPointOfPage(notesList: any[]){
+    return this.getMostAwayPointOfPage(notesList, 'initialLeft', 'initialWidth');
+  }
+
+  getMostTopPointOfPage(notesList: any[]){
+    return this.getMostAwayPointOfPage(notesList, 'initialTop', 'initialHeight');
+  }
+
+  getMostAwayPointOfPage(notesList: any[], position: 'initialLeft'|'initialTop', size: 'initialWidth' | 'initialHeight'){
+    let biggestSoFar: number = 0;
+    for (let note of notesList){
+      let currentSum = note.position + note.size;
+      if (currentSum > biggestSoFar) biggestSoFar = currentSum;
+    }
+    return biggestSoFar;
   }
 
 }

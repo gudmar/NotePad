@@ -1,6 +1,10 @@
 <div class="page" [style.backgroundColor] = "bgColor">
 
-    <div class="note-wrapper" (click) = "addNewNoteIfInEditState($event)">
+    <div class="note-wrapper" 
+        (click) = "addNewNoteIfInEditState($event)"
+        [style.width] = "getPageWidth()"
+        [style.height] = "getPageHeight()"
+    >
         <note *ngFor="let note of notes; trackBy: getUUIDTracker;"
             [initialWidth] = "note.initialWidth"
             [initialHeight] = "note.initialHeight"

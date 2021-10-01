@@ -28,6 +28,9 @@ align-items: center; */
 .note-content-wrapper>span{
     outline: none;
 }
+.note-content-wrapper>div{
+    outline: none;
+}
 
 .note-content-wrapper{
     position: relative;
@@ -35,9 +38,11 @@ align-items: center; */
     width: calc(100% - 0px);
     height: calc(100% - 30px);
     top: 30px;
+    outline: none;
 }
 .content-holder{
     font-family: Arial, Helvetica, sans-serif;
+    display: inline-block;
 }
 movable-point:nth-child(1){
     /* position: relative; */
@@ -49,6 +54,6 @@ resize-point{
     right: -0px;
     bottom: -0px;
     z-index: 2;
-    transform: translate(50%, 50%)
+    transform: translate(50%, 50%);
 }
 

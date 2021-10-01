@@ -22,7 +22,22 @@ import { NextColorGeneratorService } from '../services/next-color-generator.serv
 export class NoteComponent implements OnInit {
   private _isActive: boolean = false;
   @Input() initialWidth: number = 100;
-  @Input() initialHeight: number = 100;
+  // @Input() initialHeight: number = 100;
+  _initialHeight = 100;
+  @Input() set initialHeight(val: number){
+    this._initialHeight  = val;
+    this.resizeNote();
+    console.log(val)
+  }
+  noteToggler = true;
+  resizeNote() {
+    setTimeout(()=>{
+      let mem = this.noteToggler;
+      this.noteToggler = !mem;
+      return !mem;
+    })
+  }
+  get initialHeight() {return this._initialHeight}
   @Input() initialTop: number = 30;
   @Input() initialLeft: number = 30;
   @Input() content: string = '';
@@ -102,6 +117,19 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  @HostListener('keyup', ['$event'])
+  changeNoteHeight(){
+    let newHeight = this.recalculatedNoteSize();
+    console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
+    if (newHeight > this.initialHeight) {
+      this.messenger.inform('noteContentChanged', {
+        objectId: this.uniqueId,
+        newHeight: newHeight
+      })
+    }
+  }
+
+
   // @HostListener('keyup', ["$event"])
   // onKeyUp(event: any) {
   //   this.messenger.inform('noteContentChanged', {
@@ -158,6 +186,13 @@ export class NoteComponent implements OnInit {
   }
   ngOnDestroy(): void {
     this.messenger.unsubscribe(this.uniqueId)
+  }
+
+
+  recalculatedNoteSize(){
+    let actualHeight = parseInt(this.contentHolder.nativeElement.offsetHeight);
+    console.dir(this.contentHolder)
+    return actualHeight > this.initialHeight ? actualHeight : this.initialHeight;
   }
 
 }

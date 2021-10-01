@@ -7,10 +7,21 @@ import { ConcatSource } from 'webpack-sources';
   selector: '[resizeparent]'
 })
 export class ResizeParentDirective extends MovableParentDirective{
+  private _resizeparent = false;
+  @Input('resizeparent') set resizeparent(val: boolean){
+    this.setInitialSize({width: this.initialWidth, height: this.initialHeight});
+  } 
   @Input('minWidth') minWidth: number = 50;
   @Input('minHeight') minHeight: number = 50;
   @Input('initialWidth') initialWidth: number = 50;
-  @Input('initialHeight') initialHeight: number = 50;
+  // @Input('initialHeight') initialHeight: number = 50;
+  _initialHeight: number = 50;
+  @Input() set initialHeight(val: number){
+    this._initialHeight = val;
+    console.log(val);
+  }
+  get initialHeight(){return this._initialHeight}
+
   @Input('movableElementId') movableElementId: string = '';
   @Output() elementResized: EventEmitter<{movedElementId: string, width: number, height:number}> = new EventEmitter();
   

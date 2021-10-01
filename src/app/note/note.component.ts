@@ -91,7 +91,6 @@ export class NoteComponent implements OnInit {
       this.handleMessages.bind(this), 
       ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
     )
-    // this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['pageWasClicked'])
   }
 
   informAboutMovement(data: any){
@@ -128,15 +127,6 @@ export class NoteComponent implements OnInit {
       })
     }
   }
-
-
-  // @HostListener('keyup', ["$event"])
-  // onKeyUp(event: any) {
-  //   this.messenger.inform('noteContentChanged', {
-  //     objectId: this.uniqueId,
-  //     content: this.contentHolder.nativeElement.innerHTML
-  //   })
-  // }
 
   informAboutContentChange(data: any){
     this.noteContentChanged.emit(data);
@@ -179,10 +169,6 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.messenger.subscribe(this.uniqueId, 
-    //   this.handleMessages.bind(this), 
-    //   ['noteWasClicked', 'pageWasClicked', 'eachNoteShouldShow', 'ifThereIsAnyActiveNotePleaseTransmitData']
-    // )
   }
   ngOnDestroy(): void {
     this.messenger.unsubscribe(this.uniqueId)
@@ -191,7 +177,6 @@ export class NoteComponent implements OnInit {
 
   recalculatedNoteSize(){
     let actualHeight = parseInt(this.contentHolder.nativeElement.offsetHeight);
-    console.dir(this.contentHolder)
     return actualHeight > this.initialHeight ? actualHeight : this.initialHeight;
   }
 

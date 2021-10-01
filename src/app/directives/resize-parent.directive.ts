@@ -8,8 +8,12 @@ import { ConcatSource } from 'webpack-sources';
 })
 export class ResizeParentDirective extends MovableParentDirective{
   private _resizeparent = false;
+  private _initializationPhase = true;
   @Input('resizeparent') set resizeparent(val: boolean){
-    this.setInitialSize({width: this.initialWidth, height: this.initialHeight});
+    if (!this._initializationPhase){
+      this.setInitialSize({width: this.initialWidth, height: this.initialHeight});
+    }
+    this._initializationPhase = false;
   } 
   @Input('minWidth') minWidth: number = 50;
   @Input('minHeight') minHeight: number = 50;
@@ -18,7 +22,6 @@ export class ResizeParentDirective extends MovableParentDirective{
   _initialHeight: number = 50;
   @Input() set initialHeight(val: number){
     this._initialHeight = val;
-    console.log(val);
   }
   get initialHeight(){return this._initialHeight}
 
@@ -42,14 +45,17 @@ export class ResizeParentDirective extends MovableParentDirective{
   @HostListener('touchstart', ['$event'])
   calculateDotOffset(data:any){
     let pageXY = this.getPageXY(data);
-    this.resizeDotOffset = {x: pageXY.x - this.elRef.nativeElement.offsetLeft - this.elementToMove.offsetLeft, 
-                            y: pageXY.y - this.elRef.nativeElement.offsetTop - this.elementToMove.offsetTop}
+    let directiveTarget = this.elRef.nativeElement
+    this.resizeDotOffset = {
+      x: pageXY.x - directiveTarget.offsetLeft - this.elementToMove.offsetLeft - directiveTarget.offsetWidth, 
+      y: pageXY.y - directiveTarget.offsetTop - this.elementToMove.offsetTop - directiveTarget.offsetHeight}
   }
 
 calculatedSize(data:{pageX: number, pageY:number}){
     let parentOffset = {x: this.elementToMove.offsetLeft, y: this.elementToMove.offsetTop}
     let width = data.pageX - parentOffset.x - this.resizeDotOffset.x; 
     let height = data.pageY - parentOffset.y - this.resizeDotOffset.y;
+
     return {
       width: width < this.minWidth ? this.minWidth : width, 
       height: height < this.minHeight ? this.minHeight : height
@@ -70,8 +76,6 @@ calculatedSize(data:{pageX: number, pageY:number}){
       let cs = this.calculatedSize({pageX: pageXY.x, pageY: pageXY.y});
       this.elementToMove.style.width = cs.width + 'px';
       this.elementToMove.style.height = cs.height + 'px';
-      // debugger
-      console.log(cs)
     }
   }
 
@@ -86,7 +90,6 @@ calculatedSize(data:{pageX: number, pageY:number}){
   @HostListener('document:touchend', ['$event'])
   disacitvateMoveMode(event: MouseEvent){
     if (this.isInMoveState){
-      console.log(event)
       let pageXY = {pageX: this.getPageXY(event).x, pageY: this.getPageXY(event).y}
       
       let calculatedWidthAndHeight = this.calculatedSize(pageXY)
@@ -96,14 +99,8 @@ calculatedSize(data:{pageX: number, pageY:number}){
   }
 
   ngOnInit(){
-    
-    // this.doNotInformAboutChanges = true;
     this.elementToMove = this.getElementToMove();
     this.setInitialSize({width: this.initialWidth, height: this.initialHeight})
-    // this.isInMoveState = true;
-    // this.doMouseMove({pageX:this.initialWidth, pageY: this.initialHeight})
-    // this.isInMoveState = false;
-    // this.doNotInformAboutChanges = false;
   }
 
   dispatchEventOnMovedElement(data: {pageX: number, pageY: number}){

@@ -84,10 +84,14 @@ export class PageComponent implements OnInit {
         // if (key == 'content') copy[indexOfElementToUpdate].content = newState[key]
 
         if (key == 'newWidth') this.notes[indexOfElementToUpdate].initialWidth = newState[key];
-        if (key == 'newHeight') this.notes[indexOfElementToUpdate].initialHeight = newState[key];
+        if (key == 'newHeight') {
+          this.notes[indexOfElementToUpdate].initialHeight = newState[key];
+          console.log('NEW height')
+        }
         if (key == 'pageX') this.notes[indexOfElementToUpdate].initialLeft = newState[key];
         if (key == 'pageY') this.notes[indexOfElementToUpdate].initialTop = newState[key];
         if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
+        console.log(key)
       }
       // this.notes = this.notes.slice();
       // this.notes = JSON.parse(JSON.stringify(this.notes))

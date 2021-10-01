@@ -11,12 +11,12 @@
     >
     </movable-point>
     <kill-me [style.visibility]="isActive?'visible':'hidden'" (click)="killMe($event)"></kill-me>
-        <div class="note-content-wrapper"
+        <div class="note-content-wrapper content-holder"
             setColors [dBgColor]="bgColor" 
             [shouldSetBgColor]="false"
             [ngClass] = "dynamicClass"
         >
-            <span #contentHolder class = "content-holder" contenteditable="true" [innerHTML] = "content"></span>
+            <div #contentHolder class = "content-holder" contenteditable="true" [innerHTML] = "content"></div>
         </div>
     <resize-point  
                     data-role="resize" 
@@ -25,6 +25,7 @@
                     [initialHeight] = "initialHeight"
                     [movableElementId] = "'resizeId'"
                     (elementResized) = "informAboutResize($event)"
-                    [style.visibility]="isActive?'visible':'hidden'"
+                    [style.visibility]="isActive?'visible':'hidden'"                    
     ></resize-point>
 </div>
+

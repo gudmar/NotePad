@@ -5,6 +5,7 @@ import { EventManagerService } from '../services/event-manager.service';
 import { ConcatSource } from 'webpack-sources';
 import { StorageManagerService } from '../../services/storage-manager.service';
 import { ValidatorService } from '../services/validator.service';
+import { resolve } from 'dns';
 @Component({
   selector: 'month-view',
   templateUrl: './month-view.component.html',
@@ -41,11 +42,17 @@ export class MonthViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['refreshAllComponents', 'loadDocument'])
+    this.communicator.subscribe(
+      this.uniqueId, this.handleMessages.bind(this), ['refreshAllComponents', 'loadDocument', 'jumpToDate']
+    )
     // if (this.months.length == 0) this.initializeWithPresentYear()
-    this.initializeWithPresentYear()
-    // debugger
+    this.initializeWithPresentYear();
     
+    
+  }
+  ngAfterViewChecked(): void {
+    console.log('inited')
+    this.communicator.inform('yearReloaded', true)
   }
   handleMessages(eventType: string, data: any){
     if(eventType == 'refreshAllComponents') {
@@ -58,12 +65,34 @@ export class MonthViewComponent implements OnInit {
       this.events = newDocument.calendarInputs
       this.refreshYear();
     }
+    if (eventType == 'jumpToDate') {
+      this.year = data.year;
+      console.log(this.year)
+      // debugger
+      this.communicator.infromAfter('switchTaskViewerToNextDay', data, this.reloaded.call(this))
+    }
+  }
+  jumpToDate(){
+    let date = {year: 2020, month: 3, day: 10};
+    this.communicator.infromAfter('switchTaskViewerToNextDay', date, this.reloaded.call(this))
+  }
+  async reloaded(){
+    return new Promise((resolve)=>{
+      let that = this;
+      function isResolved(eventType: string, data:any){
+        if (eventType == 'yearReloaded'){
+          that.communicator.unsubscribe(id)
+          resolve(true);
+        }
+      }
+      let id = 'jumpToDateId'
+      this.communicator.subscribe(id, isResolved, ['yearReloaded']);
+    })
   }
 
   refreshYear(){
     this.months = this.calendarProvider.getYearAsObject(this.year).months
     console.dir(this.months)
-    // debugger
   }  
 
   getMonthEvents(year: number, month: number){
@@ -103,6 +132,7 @@ export class MonthViewComponent implements OnInit {
     let currentDate = Date.now();
     let dateObj = new Date(currentDate);
     this.year = dateObj.getFullYear();
+    console.log(this.year)
     // this.months = this.calendarProvider.getYearAsObject(this.year).months;
   }
 

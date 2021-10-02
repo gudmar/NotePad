@@ -24,7 +24,6 @@ export class MonthComponent implements OnInit {
     for(let week of this.weeks){
       cwIndexes.push(week.cwIndex)
     }
-    // debugger
     return cwIndexes;
   }
   getDays(indexOfCw: number) { 
@@ -50,7 +49,6 @@ export class MonthComponent implements OnInit {
     let month = this.monthDescriptor.monthIndex;
     if (this.monthDescriptor.monthIndex == 11 && data == 1) {year++; month = 0}
     if (this.monthDescriptor.monthIndex == 0 && data >51) {year--; month = 11}
-    // debugger;
     this.communicator.inform('displayWeekView', {
       cwIndex: data,
       monthIndex: month,

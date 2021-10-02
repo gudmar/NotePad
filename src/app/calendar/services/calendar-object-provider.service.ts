@@ -105,13 +105,18 @@ export class CalendarObjectProviderService {
     let prevDay = date.day - 1;
     if (prevDay > 0) {
       prevDate.day = prevDay; return prevDate;
+    } else {
+      let prevMonth = date.month - 1;
+      let prevYear = date.year;
+      if (prevMonth < 0) {
+        prevMonth = 11;
+        prevYear--;
+      }
+      prevDate.year = prevYear;
+      prevDate.month = prevMonth;
+      prevDate.day = this.getMonthDescriptor(prevYear, prevMonth).duration;
     }
-    let prevMonth = date.month - 1;
-    if (prevMonth < 0) {
-      prevMonth = 11;
-      prevDate.year = prevDate.year - 1;
-    }
-    prevDate.day = this.getMonthDescriptor(date.year, date.month).duration;
+    // prevDate.day = this.getMonthDescriptor(date.year, date.month).duration;
     return prevDate;
   }
 

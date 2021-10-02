@@ -51,7 +51,6 @@ export class EventManagerService {
     calendarEvents:  any[] // [{year: number, entries: [{month: number, entries: any[]}]}]
   ){
     if (calendarEvents.length == 0) return [];
-    // debugger
     let desiredMonthDescriptor = this.fetchMonthEvents(year, month, calendarEvents);
     if (desiredMonthDescriptor == undefined) return []
     return this.fetchFromCallendarArray('day', desiredMonthDescriptor.entries, day)
@@ -134,7 +133,6 @@ export class EventManagerService {
 
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }
-    // debugger
     return array.findIndex(singleMatch);
   }
 

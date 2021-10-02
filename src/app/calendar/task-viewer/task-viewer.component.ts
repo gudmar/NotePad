@@ -102,7 +102,11 @@ export class TaskViewerComponent implements OnInit {
     let nextDate:any;
     if (offset == 1) nextDate = this.calendarProvider.getNextDay({year: this.year, month: this.month, day: this.day});
     if (offset == -1) nextDate = this.calendarProvider.getPreviousDay({year: this.year, month: this.month, day: this.day});
-    this.communicator.inform('switchTaskViewerToNextDay', nextDate);
+    if (this.year == nextDate.year){
+      this.communicator.inform('switchTaskViewerToNextDayOfTheSameYear', nextDate);
+    } else {
+      this.communicator.inform('switchTaskViewerToNextDayDifferentYear', nextDate);
+    }
     this.shouldMoveWindowBeVisible = false;
   }
 

@@ -22,7 +22,13 @@ export class DayComponent implements OnInit {
     events?: any[]
   } = {dayMonthIndex: 0, dayWeekIndex: 0, dayName: '', month: 0, year: 0}
 
-  
+  informObjectCreated(){
+    this.communicator.inform(
+      'dayComponentCreated', 
+      {day: this.dayDescriptor.dayMonthIndex, month: this.month, year: this.year}
+    )
+  }
+
   get events() { 
     if (this.dayDescriptor.events == undefined) return []
     if (typeof(this.dayDescriptor.events.entries) == 'function') return []
@@ -60,22 +66,23 @@ export class DayComponent implements OnInit {
 
   ngOnInit(): void {
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this),
-     ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay', 'switchTaskViewerToNextDay'])
+     ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay', 'switchTaskViewerToNextDayOfTheSameYear'])
+  }
+  ngAfterViewInit(): void{
+    this.informObjectCreated();
   }
   handleMessages(eventType: string, data: any){
     if (eventType == 'eventWasMovedAndDayWasCreated'){
       if (data.day == this.day && data.month == this.month) this.getNewEvents();
     }
-    if (eventType == 'switchTaskViewerToNextDay'){
+    if (eventType == 'switchTaskViewerToNextDayOfTheSameYear'){
       if (data.day == this.day && data.month == this.month && data.year == this.year){
+        // console.log(this.year + ' ' + this.month + ' ' + this.year)
         this.onClick();
         // console.log(this.dayDescriptor)
+        // console.log('!=')
         // debugger
       } 
-      if (data.day == this.day && data.month == this.month && data.year != this.year){
-        this.communicator.inform('jumpToDate', data)
-        // debugger
-      }
     }
     if (eventType == 'calendarEventsForDay'){
       if (data != null){

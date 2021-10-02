@@ -1,8 +1,21 @@
-
+:host{
+    position: sticky;
+    top: 0;
+    z-index: 1500;
+    background-color: red;
+}
 .message-box{
     position: absolute;
     right: 5px;
     bottom: 5px;
+    right: 0;
+    bottom: 0;
+    transform: translate(-100%, -100%);
+}
+.positioning-wrapper{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }
 .shutter{
     position: absolute;

@@ -21,6 +21,8 @@
 .message-wrapper{
     position: relative;
     width: 50%;
+    max-width: 500px;
+    width: 500px;
     background-color: rgb(230, 230, 230);
     color: black;
     font-family: Arial, Helvetica, sans-serif;
@@ -48,7 +50,7 @@
     /* display: inline-block; */
     width: 95%;
     min-height: 5rem;
-    max-height: 7rem;
+    max-height: 10rem;
     overflow: auto;
     margin-top: auto;
     margin-bottom: auto;
@@ -114,10 +116,11 @@
 .key{
     position: relative;
     display: inline-block;
-    width: 25%;
+    width: 33.33%;
     text-overflow: ellipsis;
     overflow: hidden;
-
+    /* perspective-origin: 50% 50%;
+    perspective: 200px; */
 }
 .key:hover{
 
@@ -132,12 +135,18 @@
     background-color: rgb(200, 200, 100);
     color: black;
     content: attr(data-content);
-    height: 1rem;
+    /* height: 1rem; */
     visibility: visible;
+    overflow: visible;
+    display: inline-block;
+    opacity: 0.99;
     width: 100%;
-    top: -3px;
+    /* top: -3px; */
+    
     left: 0;
     z-index: 2000;
+    word-wrap: break-word;
+    /* transform: translateZ(10px); */
 }
 .key:active{
     text-overflow: clip;
@@ -158,4 +167,25 @@
 kill-me{
     right: 10px;
     top: 3px;
+}
+
+@media only screen and (max-width: 700px){
+    .message-wrapper{
+        width: 90%;
+        /* height: 100%; */
+    }
+    .key{
+        width: 50%;
+    }
+}
+@media only screen and (max-width: 400px){
+    .key{
+        width: 100%;
+    }
+    .key:hover:after{
+        width: 99%;
+    }
+    .content-window{
+        min-height: 20rem;
+    }
 }

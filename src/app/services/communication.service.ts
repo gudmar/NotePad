@@ -27,6 +27,16 @@ export class CommunicationService {
     }
   }
 
+  async infromAfter(eventType: string, data: any, promiseToResolve: any){
+    
+    promiseToResolve.then(()=>{ 
+      // debugger
+      this.inform(eventType, data);console.log(data);
+    })
+    // let isResolved = await promiseToResolve;
+    // this.inform(eventType, data);
+  }
+
   informWithFeedback(eventType: string, data: any, senderId?: string){
     let wasInformationPassed = false;
     for(let subscriber of this.subscribeFunctions){

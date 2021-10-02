@@ -51,13 +51,11 @@ export class CalendarComponent implements OnInit {
     if (eventType == "LoadFromFile"){
       this.calendarProvider.injectEvents(data.calendarInputs);
       this.events = data.calendarInputs;
-      debugger
     }
     if (eventType =='loadFreshDocument'){
       let newDocument = this.storageManager.getNewDocumentAndClearLastUsed();
       this.calendarProvider.injectEvents(newDocument.calendarInputs)
       this.events = newDocument.calendarInputs;      
-      debugger;
     }
 
     if (eventType == 'provideCalendarEventsForSingleDay'){

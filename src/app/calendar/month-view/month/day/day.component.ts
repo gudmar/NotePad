@@ -67,7 +67,15 @@ export class DayComponent implements OnInit {
       if (data.day == this.day && data.month == this.month) this.getNewEvents();
     }
     if (eventType == 'switchTaskViewerToNextDay'){
-      if (data.day == this.day && data.month == this.month) this.onClick();
+      if (data.day == this.day && data.month == this.month && data.year == this.year){
+        this.onClick();
+        // console.log(this.dayDescriptor)
+        // debugger
+      } 
+      if (data.day == this.day && data.month == this.month && data.year != this.year){
+        this.communicator.inform('jumpToDate', data)
+        // debugger
+      }
     }
     if (eventType == 'calendarEventsForDay'){
       if (data != null){

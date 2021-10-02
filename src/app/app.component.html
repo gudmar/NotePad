@@ -2,16 +2,21 @@
 <div class="wrapper">
     <!-- <note></note>
     <movable-point movableElement></movable-point> -->
-    <work-book></work-book>
-    <help [entries]="helper.getHelpContent()"></help>
-    <confirmation-window
-        [uniqueId] = "'confirmationWindowId'"
-    >
-    </confirmation-window>
     <user-message></user-message>
     <inform-user-not-disturb></inform-user-not-disturb>
     <save-to-file></save-to-file>
     <save-load-window [shouldBeDisplayed] = "false"> </save-load-window>
     <task-viewer></task-viewer>
+    <help [entries]="helper.getHelpContent()"></help>
+    <confirmation-window
+        [uniqueId] = "'confirmationWindowId'"
+    >
+    </confirmation-window>
+    <work-book></work-book>
+    <!-- <user-message></user-message>
+    <inform-user-not-disturb></inform-user-not-disturb>
+    <save-to-file></save-to-file>
+    <save-load-window [shouldBeDisplayed] = "false"> </save-load-window> -->
+    <!-- <task-viewer></task-viewer> -->
     <waiting-spinner *ngIf="shouldDisplayWaitingSpinner"></waiting-spinner>
 </div>

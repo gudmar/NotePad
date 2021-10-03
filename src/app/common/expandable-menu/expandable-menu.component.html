@@ -9,6 +9,10 @@
     <div class="button" (click) = "menu.saveToLastUsedKey(); display('Saved...')">Save</div>
     <div class="button" (click) = "menu.openMemoryManager('save')">Save as</div>
     <div class="button" (click) = "menu.saveToAFile()">Save to file</div>
+    <div class="button" (click) = "clickLoadFromFile()">
+        <input type="file" accept=".txt, .ntp" #loadFromFileId class = "vanish" (change)="readDataFromFile($event)">
+        Load from file
+    </div>
     <div class="button" (click) = "menu.openMemoryManager('load')">Load from key</div>
     <div class="button" *ngIf="whatAppAmIIn==='note'" (click) = "menu.switchToCalendar()">Calendar app</div>
     <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.switchToNotepad()">Notes app</div>

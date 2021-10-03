@@ -27,6 +27,7 @@ export class WorkBookComponent implements OnInit {
   @Input() shouldBeHidden: boolean = false;
   set document(val: any) {
     this._document = val
+    // console.dir(JSON.parse(val))
     this.calendarInputs = val.calendarInputs
   };
   get document() {return this._document}
@@ -34,7 +35,7 @@ export class WorkBookComponent implements OnInit {
   _activeSheetId: string = this.document.activeSheetId;
   uniqueId: string = "workBookId"
   // application: string = 'notes' //'calendar'
-  application: string = 'calendar'
+  application: string = 'notes'
   set activeSheetId(val: string){
     this._activeSheetId = val;
   }

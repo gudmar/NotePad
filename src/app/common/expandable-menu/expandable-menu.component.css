@@ -68,3 +68,8 @@
     background-color: rgba(240, 250, 170, 0.8);
     color: balck;
 }
+.vanish{
+    opacity: 0;
+    position: absolute;
+    top: -1000;
+}

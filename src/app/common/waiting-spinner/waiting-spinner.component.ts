@@ -8,7 +8,7 @@ import { CommunicationService } from '../../services/communication.service'
 })
 export class WaitingSpinnerComponent implements OnInit {
   uniqueId = "spinnerId"
-  shouldBeDisplayed: boolean = true;
+  shouldBeDisplayed: boolean = false;
   constructor(
     private communicator: CommunicationService,
   ) { }

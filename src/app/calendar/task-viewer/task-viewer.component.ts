@@ -6,6 +6,7 @@ import { CalendarObjectProviderService } from '../services/calendar-object-provi
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
 import { EventManagerService } from '../services/event-manager.service';
 import { WindowSizeEvaluatorService } from '../../services/window-size-evaluator.service'
+import { ValidatorService } from '../services/validator.service';
 // import { ConstantPool } from '@angular/compiler';
 
 @Component({
@@ -59,39 +60,57 @@ export class TaskViewerComponent implements OnInit {
     private eventManager: EventManagerService,
     private calendarProvider: CalendarObjectProviderService,
     private uuidProvider: UniqueIdProviderService,
-    private windowSizeEvaluator: WindowSizeEvaluatorService
+    private windowSizeEvaluator: WindowSizeEvaluatorService,
+    private validator: ValidatorService,
   ) { 
     communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), 
     ['eventViewerShouldBeDisplayed', 'calendarEvents', 'taskEditFormShouldBeClosed'])
   }
 
 
+  setTaskMinutes(event:any, uniqueId: string){
+    this.modifyIfValid(uniqueId, 'minutes', event.target.innerText, this.validator.isMinutesValid.bind(this,event.target.innerText))
+  }
+  setTaskHours(event:any, uniqueId: string){
+    this.modifyIfValid(uniqueId, 'hours', event.target.innerText, this.validator.isHoursValid.bind(this,event.target.innerText))
+  }
+  setTaskDuration(event:any, uniqueId: string){
+    this.modifyIfValid(uniqueId, 'duration', event.target.innerText, this.validator.isDurationValid.bind(this,event.target.innerText))
+  }
+  setTaskSummary(event:any, uniqueId: string){
+    this.modifyIfValid(uniqueId, 'summary', event.target.innerText, this.validator.isSummaryValid.bind(this,event.target.innerText))
+  }
+  setTaskDescription(event: any, uniqueId: string){
+    this.modifyIfValid(uniqueId, 'description', event.target.innerText, ()=>{return true;})
+  }
 
-  hourValidationClass = {'valid': false,'notValid': false}
-  validateHours(event: any){
-    setTimeout(()=>{
-      let isValid = this.hoursMinutesValidationFunctionFactory(24)(event.target.innerText)
-      event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-    })
-  }
-  validateMinutes(event: any){
-    setTimeout(()=>{
-      let isValid = this.hoursMinutesValidationFunctionFactory(59)(event.target.innerText)
-      event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-    })
-  }
-  validateDuration(event: any){
-    setTimeout(()=>{
-      let isValid = this.durationValidationFunction(event.target.innerText)
-      event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-    })
-  }
-  validateSummary(event: any){
-    setTimeout(()=>{
-      let isValid = this.summaryValidationFunction(event.target.innerText)
-      event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-    })
-  }
+
+
+  // hourValidationClass = {'valid': false,'notValid': false}
+  // validateHours(event: any){
+  //   setTimeout(()=>{
+  //     let isValid = this.hoursMinutesValidationFunctionFactory(24)(event.target.innerText)
+  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
+  //   })
+  // }
+  // validateMinutes(event: any){
+  //   setTimeout(()=>{
+  //     let isValid = this.hoursMinutesValidationFunctionFactory(59)(event.target.innerText)
+  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
+  //   })
+  // }
+  // validateDuration(event: any){
+  //   setTimeout(()=>{
+  //     let isValid = this.durationValidationFunction(event.target.innerText)
+  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
+  //   })
+  // }
+  // validateSummary(event: any){
+  //   setTimeout(()=>{
+  //     let isValid = this.summaryValidationFunction(event.target.innerText)
+  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
+  //   })
+  // }
 
   add0prefix(n: number){
     return parseInt(n.toString()) < 10 ? `0${parseInt(n.toString())}` : n;
@@ -149,66 +168,66 @@ export class TaskViewerComponent implements OnInit {
     this.events.splice(eventToBeRemovedIndex, 1);
   }
 
-  onFocusOut(event: any, modificationTarget: string, uniqueId: string){
-    event.target.style.backgroundColor = ''
-    this.modifyNote(event, modificationTarget, uniqueId)
-  }
+  // onFocusOut(event: any, modificationTarget: string, uniqueId: string){
+  //   event.target.style.backgroundColor = ''
+  //   this.modifyNote(event, modificationTarget, uniqueId)
+  // }
 
-  modifyNote(event: any, modificationTarget: string, uniqueId: string){
-    event.stopPropagation();
-    let valueFromField = event.target.innerText;
+  // modifyNote(event: any, modificationTarget: string, uniqueId: string){
+  //   event.stopPropagation();
+  //   let valueFromField = event.target.innerText;
 
-    let isValid: boolean = false;
-    if (modificationTarget == 'hours') { 
-      isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
-        this.hoursMinutesValidationFunctionFactory(24))
-    } else if (modificationTarget == 'minutes') {
-      isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
-        this.hoursMinutesValidationFunctionFactory(59))
-    } else if (modificationTarget == 'summary') { 
-      isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.summaryValidationFunction)
-    } else if (modificationTarget == 'duration') { 
-      isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.durationValidationFunction)
-    } else if (modificationTarget == 'description') { 
-      isValid = true;
-      this.modifyEvent(uniqueId, modificationTarget, valueFromField);
-    }
-    if (modificationTarget == "hours" || modificationTarget == "minutes"){
-      let a = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget));
+  //   let isValid: boolean = false;
+  //   if (modificationTarget == 'hours') { 
+  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
+  //       this.hoursMinutesValidationFunctionFactory(24))
+  //   } else if (modificationTarget == 'minutes') {
+  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
+  //       this.hoursMinutesValidationFunctionFactory(59))
+  //   } else if (modificationTarget == 'summary') { 
+  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.summaryValidationFunction)
+  //   } else if (modificationTarget == 'duration') { 
+  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.durationValidationFunction)
+  //   } else if (modificationTarget == 'description') { 
+  //     isValid = true;
+  //     this.modifyEvent(uniqueId, modificationTarget, valueFromField);
+  //   }
+  //   if (modificationTarget == "hours" || modificationTarget == "minutes"){
+  //     let a = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget));
     
-      if (!isValid) event.target.innerText = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget))
-      event.target.innerText = this.add0prefix(event.target.innerText)
-    } else {
-      if (!isValid) event.target.innerText = this.getOriginalValue(uniqueId, modificationTarget)
-      if (modificationTarget == 'duration') event.target.innerText = parseInt(event.target.innerText)
-    }
+  //     if (!isValid) event.target.innerText = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget))
+  //     event.target.innerText = this.add0prefix(event.target.innerText)
+  //   } else {
+  //     if (!isValid) event.target.innerText = this.getOriginalValue(uniqueId, modificationTarget)
+  //     if (modificationTarget == 'duration') event.target.innerText = parseInt(event.target.innerText)
+  //   }
     
-  }
-  summaryValidationFunction(toValidate: any){
-    return toValidate.toString().length <= 50;
-  }
+  // }
+  // summaryValidationFunction(toValidate: any){
+  //   return toValidate.toString().length <= 50;
+  // }
 
-  hoursMinutesValidationFunctionFactory(maxVal: number){
-    let max = maxVal;
-    return (toValidate:string | number) => {
-      let digitRe = new RegExp('\\d{1,2}');
-      let nonDigitRe = new RegExp('\\D')
-      let a = nonDigitRe.test(toValidate.toString())
-      let b  = digitRe.test(toValidate.toString())
-      if (nonDigitRe.test(toValidate.toString())) return false;
-      if (!digitRe.test(toValidate.toString())) return false;
-      if (parseInt(toValidate.toString()) < 0 || parseInt(toValidate.toString()) >= maxVal) return false;
+  // hoursMinutesValidationFunctionFactory(maxVal: number){
+  //   let max = maxVal;
+  //   return (toValidate:string | number) => {
+  //     let digitRe = new RegExp('\\d{1,2}');
+  //     let nonDigitRe = new RegExp('\\D')
+  //     let a = nonDigitRe.test(toValidate.toString())
+  //     let b  = digitRe.test(toValidate.toString())
+  //     if (nonDigitRe.test(toValidate.toString())) return false;
+  //     if (!digitRe.test(toValidate.toString())) return false;
+  //     if (parseInt(toValidate.toString()) < 0 || parseInt(toValidate.toString()) >= maxVal) return false;
 
-      return true;  
-    }
-  }
-  durationValidationFunction(toValidate: string | number){
-    let nonDigitRe = new RegExp('\\D')
-    if (toValidate == '') return false;
-    if (nonDigitRe.test(toValidate.toString())) return false;
-    if (parseInt(toValidate.toString()) > 999) return false
-    return true;
-  }
+  //     return true;  
+  //   }
+  // }
+  // durationValidationFunction(toValidate: string | number){
+  //   let nonDigitRe = new RegExp('\\D')
+  //   if (toValidate == '') return false;
+  //   if (nonDigitRe.test(toValidate.toString())) return false;
+  //   if (parseInt(toValidate.toString()) > 999) return false
+  //   return true;
+  // }
   
   modifyIfValid(uniqueId: string, key: string, newValue: any, conditionFunction: Function){
     let isValid = conditionFunction(newValue);
@@ -220,9 +239,9 @@ export class TaskViewerComponent implements OnInit {
     objectToModify[key] = newValue;
   }
 
-  getOriginalValue(uniqueId: string, key: string){
-    return this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)][key]
-  }
+  // getOriginalValue(uniqueId: string, key: string){
+  //   return this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)][key]
+  // }
 
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }
@@ -235,11 +254,8 @@ export class TaskViewerComponent implements OnInit {
       this.allCalendarEvents, 
       this.uuidProvider.getUniqueId()
   )
-    console.log(this.events)
     this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries
     this.infromComponentsAboutChange(executionStatus)
-    console.log(executionStatus)
-    console.log(this.events)
   }
 
   infromComponentsAboutChange(whatObjecsWereAdded: any){

@@ -17,6 +17,7 @@
     padding-left: 5px;
     padding-right: 5px;
     font-size: 20px;
+    border: none;
 }
 .arrow:hover{
     transition: 0.3s;

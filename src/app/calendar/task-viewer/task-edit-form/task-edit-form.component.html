@@ -1,9 +1,9 @@
 <!-- hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId() -->
 
 <div class="wrapper">
-    <div class="title">{{day}}/{{month}}/{{year}}</div>
+    <div class="title">{{add0prefix(day)}}/{{add0prefix(month)}}/{{year}}</div>
     <div class="row">
-        <div class="field">
+        <div class="field row">
             <div class="label">Start time</div>
             <div class="row">
                 <div 
@@ -39,7 +39,7 @@
         <div class="label" >Summary</div>
         <div 
             ValidateSummary [ifNotValid]="task.summary"
-            class="input" contenteditable="true"
+            class="input input-full-length" contenteditable="true"
             (focusout) = "setTaskSummary($event)"
         >
             {{task.summary}}
@@ -47,7 +47,7 @@
     </div>
     <div class="field">
         <div class="label">Description</div>
-        <div class="input" contenteditable="true">{{task.description}}</div>
+        <div class="input input-full-length" contenteditable="true">{{task.description}}</div>
     </div>
     <div class="button" (click)="closeTaskEditFrom()">Done</div>
 </div>

@@ -31,7 +31,7 @@
     margin-bottom: auto;
 }
             
-.button-wrapper{
+/* .button-wrapper{
     display: flex;
     align-content: center;
     justify-content: center;
@@ -54,4 +54,4 @@
     transition: 0.3s;
     transform: scale(0.7);
     cursor: pointer;
-}
+} */

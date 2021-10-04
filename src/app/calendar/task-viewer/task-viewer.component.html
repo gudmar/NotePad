@@ -21,7 +21,7 @@
                 <div class="arrow" (click)="switchToAnotherDay(1)">&gt;&gt;</div>
 
                 <!-- <div class="arrow button">Save</div> -->
-                <div class="button close" (click)="close()">&times;</div>
+                <div class="close arrow center" (click)="close()">&times;</div>
             </div>
             <div class="tasks">
                 <table  *ngIf="!shouldDisplayMobileVersion">
@@ -106,23 +106,23 @@
                         <th>Summary</th>
                         <th>Opt</th>
                     </tr>
-                    <tr *ngFor="let entry of entries; let i = index" (click)="showEditForm(i)">
-                        <td> 
+                    <tr *ngFor="let entry of entries; let i = index" class="hoverable-row">
+                        <td (click)="showEditForm(i)"> 
                             <div class="center hours">
                                 {{add0prefix(entry.hours)}}
                             </div>
                         </td>
-                        <td>
+                        <td (click)="showEditForm(i)">
                             <div class="center minutes">
                                 {{add0prefix(entry.minutes)}}
                             </div>
                         </td>
-                        <td>
+                        <td (click)="showEditForm(i)">
                             <div class="center duration">
                                 {{entry.duration}}
                             </div>
                         </td>
-                        <td>
+                        <td (click)="showEditForm(i)">
                             <div class="center summary">
                                 {{entry.summary}}
                             </div>

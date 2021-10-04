@@ -1,4 +1,10 @@
+:host{
+    position: absolute;
+    z-index: 5000;
+    
+}
 .wrapper{
+    box-sizing: border-box;
     position: sticky;
     top: 0;
     width: 100vw;
@@ -6,6 +12,7 @@
     display: flex;
     flex-direction: column;
     background-color: rgb(230, 230, 230);
+    padding: 2rem;
     
 }
 .title{
@@ -16,25 +23,40 @@
     z-index: 1500;
     position: sticky;
 }
-.row{
-    display: flex;
-    flex-direction: row;
-}
+
 .field{
     display: flex;
     flex-direction: column;
     align-content: flex-start;
 }
+.row{
+    display: flex;
+    flex-direction: row;
+}
 .label{
     font-weight: bold;
     display: inline-block;
+    font-size: 1.3rem;
 }
+.label:hover{cursor: default;}
 .input{
     background-color: white;
     color: black;
     outline: none;
     display: inline-block;
+    font-size: 1.5rem;
+    padding: 5px;
+    border-radius: 5px;
 }
+.input:hover{
+    background-color: hsla(77, 100%, 68%, 1);
+    transition: 0.3s;
+    transform: scale(1.1);
+}
+/* .input-full-length{
+    margin-left: 1rem;
+    margin-right: 1rem;
+} */
 @media only screen and (min-width: 610px){
     .date{
         font-size: 1.2;

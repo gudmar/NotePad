@@ -81,7 +81,7 @@
     position: relative;
     flex-wrap: wrap;
 }
-.button {
+/* .button {
     width: 5rem;
     height: 2rem;
     line-height: 2rem;
@@ -112,7 +112,7 @@
     transition: 0.3s;
     transform: scale(0.7);
     cursor: pointer;
-}
+} */
 .key{
     position: relative;
     display: inline-block;

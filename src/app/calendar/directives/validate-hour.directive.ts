@@ -19,5 +19,4 @@ export class ValidateHourDirective {
   onFocusOut(event: any){
     this.validator.setEndHour(event, this.ifNotValid);
   }
-
 }

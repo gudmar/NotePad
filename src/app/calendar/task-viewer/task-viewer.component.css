@@ -68,6 +68,19 @@
     width: auto;
     min-width: 300px;
 }
+.hoverable-row{
+    transition: 0.3s;
+}
+.hoverable-row:hover{
+    background-color: hsla(77, 100%, 68%, 1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+.hoverable-row:active{
+    background-color: hsla(53, 100%, 68%, 1);
+    transition: 0.3s;
+    cursor: move;
+}
 table{
     border-collapse: collapse;
     width: 100%;
@@ -112,7 +125,7 @@ th{
     background-color: rgba(200, 200, 200, 0.5);
     transition: 0.3s;
 }
-.button {
+/* .button {
     border-radius: 35% 65% 34% 66% / 64% 34% 66% 36%;
     width: auto;
     padding-left: 5px;
@@ -129,12 +142,12 @@ th{
 .button:active{
     transition: 0.3s;
     transform: scale(0.8);
-}
+} */
 .move-lighted{
     color: rgb(150, 150, 0);
     background-color: yellow;
 }
-.arrow:hover{
+/* .arrow:hover{
     transition: 0.3s;
     background-color: rgba(200, 200, 200, 1);
     cursor: pointer;
@@ -149,7 +162,7 @@ th{
 }
 .arrow:active{
     background-color: rgb(230, 230, 120);
-}
+} */
 
 .huge-button{
     position: absolute;
@@ -267,6 +280,7 @@ th{
     .icon-button{
         width: 30px;
         height: 30px;
+        font-size: 2rem;
     }
     .summary{}
 

@@ -34,43 +34,38 @@
                         </tr>
                         <tr *ngFor="let entry of entries">
                             <td>
-                                <div class="center hours editable" 
+                                <div ValidateHour [ifNotValid] ="entry.hours"  
+                                    class="center hours editable" 
                                     contenteditable="true" 
-                                    [ngClass] = "hourValidationClass"
-                                    (focusout)="onFocusOut($event, 'hours', entry.uniqueId)"
-                                    (keydown)="validateHours($event)"
-                                    (mousedown) = "validateHours($event)"
+                                    (focusout)="setTaskHours($event, entry.uniqueId)"
                                 >
                                 {{add0prefix(entry.hours)}}
                                     
                                 </div>
                             </td>
                             <td>
-                                <div class="center minutes editable" 
+                                <div ValidateMinutes [ifNotValid] ="entry.minutes" 
+                                    class="center minutes editable" 
                                     contenteditable="true" 
-                                    (focusout)="onFocusOut($event, 'minutes', entry.uniqueId)"
-                                    (keydown)="validateMinutes($event)"
-                                    (mousedown) = "validateMinutes($event)"
+                                    (focusout)="setTaskMinutes($event, entry.uniqueId)"
                                 >
                                     {{add0prefix(entry.minutes)}}
                                 </div>
                             </td>
                             <td>
-                                <div class="center duration editable" 
+                                <div ValidateDuration [ifNotValid] ="entry.duration"
+                                    class="center duration editable" 
                                     contenteditable="true" 
-                                    (focusout)="onFocusOut($event, 'duration', entry.uniqueId)"
-                                    (keydown)="validateDuration($event)"
-                                    (mousedown) = "validateDuration($event)"
+                                    (focusout)="setTaskDuration($event, entry.uniqueId)"
                                 >
                                     {{entry.duration}}
                                 </div>
                             </td>
                             <td>
-                                <div class="center summary editable" 
+                                <div ValidateSummary [ifNotValid] ="entry.summary" 
+                                    class="center summary editable" 
                                     contenteditable="true" 
-                                    (focusout)="onFocusOut($event, 'summary', entry.uniqueId)"
-                                    (keydown)="validateSummary($event)"
-                                    (mousedown) = "validateSummary($event)"
+                                    (focusout)="setTaskSummary($event, entry.uniqueId)"
                                 >
                                     {{entry.summary}}
                                 </div>
@@ -78,7 +73,7 @@
                             <td>
                                 <div class="center description editable" 
                                     contenteditable="true" 
-                                    (focusout)="modifyNote($event, 'description', entry.uniqueId)"
+                                    (focusout)="setTaskDescription($event, entry.uniqueId)"
                                 >
                                     {{entry.description}}
                                 </div>

@@ -1,5 +1,13 @@
 <ng-container *ngIf = "shouldBeDisplayed">
     <div class="shutter center">
+    <task-edit-form
+        *ngIf="shouldShowEditFrom"
+        [task] = "formTask"
+        [day] = 'day'
+        [month] = "month"
+        [year] = "year"
+    >
+    </task-edit-form>
         <div class="viewer-window center">
             <div class="nav-bar center">
                 <div class="arrow" (click)="switchToAnotherDay(-1)">&lt;&lt;</div>
@@ -16,7 +24,7 @@
                 <div class="button close" (click)="close()">&times;</div>
             </div>
             <div class="tasks">
-                <table>
+                <table  *ngIf="!shouldDisplayMobileVersion">
                         <tr>
                             <th colspan="2">Time</th>
                             <th>Duration</th>
@@ -95,6 +103,58 @@
                             </td>
                         </tr>
                 </table>
+
+                <table *ngIf="shouldDisplayMobileVersion">
+                    <tr>
+                        <th colspan="2">Time</th>
+                        <th>Duration</th>
+                        <th>Summary</th>
+                        <th>Opt</th>
+                    </tr>
+                    <tr *ngFor="let entry of entries; let i = index" (click)="showEditForm(i)">
+                        <td> 
+                            <div class="center hours">
+                                {{add0prefix(entry.hours)}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="center minutes">
+                                {{add0prefix(entry.minutes)}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="center duration">
+                                {{entry.duration}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="center summary">
+                                {{entry.summary}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="options center">
+                                    <div 
+                                        class="arrow center icon-button icon-button-fixed icon-button-green" 
+                                        (click) = "addEventAfter($event, entry.uniqueId)"
+                                        >+</div>
+                                    <!-- <div 
+                                        class="arrow center icon-button icon-button-fixed icon-button-red"
+                                        (click) = "removeEvent($event, entry.uniqueId)"
+                                        >&times;</div>
+                                    <div class="arrow center icon-button" 
+                                        (click)="openMoveWindow(entry.uniqueId)"
+                                        [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
+                                    >
+                                        move
+                                    </div> -->
+                                </div>
+    
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- *ngIf="shouldDisplayMobileVersion" -->
 
                 <div *ngIf="entries.length==0" 
                     class="huge-button center arrow" 

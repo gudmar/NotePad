@@ -38,9 +38,9 @@ export class WindowSizeEvaluatorService {
     return false;
   }
 
-  isWindowTooNarrow():boolean {
+  isWindowTooNarrow(widthThreshold = 700):boolean {
     this.displayWidth = window.innerWidth;
-    if (this.displayWidth < 700) return true;
+    if (this.displayWidth < widthThreshold) return true;
     return false;
   }
 

@@ -1,0 +1,42 @@
+.wrapper{
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(230, 230, 230);
+    
+}
+.title{
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-align: center;
+    
+    z-index: 1500;
+    position: sticky;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.field{
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+.label{
+    font-weight: bold;
+    display: inline-block;
+}
+.input{
+    background-color: white;
+    color: black;
+    outline: none;
+    display: inline-block;
+}
+@media only screen and (min-width: 610px){
+    .date{
+        font-size: 1.2;
+    }
+}

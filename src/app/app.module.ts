@@ -52,6 +52,11 @@ import { ExpandableMenuComponent } from './common/expandable-menu/expandable-men
 import { HelpComponent } from './common/help/help.component';
 import { HelpEntryComponent } from './common/help/help-entry/help-entry.component';
 import { WindowSizeEvaluatorService } from './services/window-size-evaluator.service';
+import { TaskEditFormComponent } from './calendar/task-viewer/task-edit-form/task-edit-form.component';
+import { ValidateHourDirective } from './calendar/directives/validate-hour.directive';
+import { ValidateMinutesDirective } from './calendar/directives/validate-minutes.directive';
+import { ValidateDurationDirective } from './calendar/directives/validate-duration.directive';
+import { ValidateSummaryDirective } from './calendar/directives/validate-summary.directive';
 
 
 
@@ -98,6 +103,11 @@ import { WindowSizeEvaluatorService } from './services/window-size-evaluator.ser
     ExpandableMenuComponent,
     HelpComponent,
     HelpEntryComponent,
+    TaskEditFormComponent,
+    ValidateHourDirective,
+    ValidateMinutesDirective,
+    ValidateDurationDirective,
+    ValidateSummaryDirective,
     
   ],
   imports: [

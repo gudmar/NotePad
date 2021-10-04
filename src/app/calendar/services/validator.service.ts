@@ -11,6 +11,39 @@ export class ValidatorService {
   calendar: CalendarObjectProviderService = new CalendarObjectProviderService(new EventManagerService());
   constructor() { }
 
+  setColorsToDuration(event: any){
+    setTimeout(()=>{
+      let isValid = this.isDurationValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+  setColorsToMinutes(event: any){
+    setTimeout(()=>{
+      console.dir(event.target)
+      let isValid = this.isMinutesValid(event.target.innerText);
+      
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
+  setColorsToSummary(event: any){
+    setTimeout(()=>{
+      let isValid = this.isSummaryValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
+  setColorsToHour(event: any){
+    setTimeout(()=>{
+      let isValid = this.isHoursValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
   setColorsToYear(event: any){
     setTimeout(()=>{
       let isValid = this.isYearValid(event.target.innerText);
@@ -48,6 +81,37 @@ export class ValidatorService {
       event.target.style.backgroundColor = '';
     })
   }
+
+  setEndHour(event: any, valueIfNotValid: any){
+    let isValid = this.isHoursValid(event.target.innerText);
+    if (!isValid){
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  }
+  setEndMinutes(event: any, valueIfNotValid: any){
+    let isValid = this.isMinutesValid(event.target.innerText);
+    if (!isValid){
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  }
+  setEndDuration(event: any, valueIfNotValid: any){
+    let isValid = this.isDurationValid(event.target.innerText);
+    if (!isValid){
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  }
+  setEndSummary(event: any, valueIfNotValid: any){
+    let isValid = this.isSummaryValid(event.target.innerText);
+    if (!isValid){
+      event.target.innerText = valueIfNotValid;
+    }
+    event.target.style.backgroundColor = '';
+  }
+
+
 
   setEndMonth(event: any, valueIfNotValid: any){
     let isValid = this.isMonthValid(event.target.innerText);
@@ -93,6 +157,21 @@ export class ValidatorService {
     if (valueToTest.toString().length > 2) return false;
     return true;
   }
+
+  isHoursValid(hoursAsNumber: number){
+    return this.hoursMinutesValidationFunctionFactory(25)(hoursAsNumber)
+  }
+  isMinutesValid(minutesAsNumber: number){
+    return this.hoursMinutesValidationFunctionFactory(60)(minutesAsNumber)
+  }
+  isDurationValid(durationAsNumberInMinutes: number){
+    return this.durationValidationFunction(durationAsNumberInMinutes)
+  }
+  isSummaryValid(text: string){
+    return this.summaryValidationFunction(text)
+  }
+
+
 
   summaryValidationFunction(toValidate: any){
     return toValidate.toString().length <= 50;

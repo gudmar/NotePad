@@ -1,0 +1,53 @@
+<!-- hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId() -->
+
+<div class="wrapper">
+    <div class="title">{{day}}/{{month}}/{{year}}</div>
+    <div class="row">
+        <div class="field">
+            <div class="label">Start time</div>
+            <div class="row">
+                <div 
+                    ValidateHour [ifNotValid]="task.hours"
+                    class="input" contenteditable="true"
+                    (focusout)="setTaskHours($event)"
+                >
+                    {{add0prefix(task.hours)}}
+                </div>
+                :
+                <div
+                    ValidateMinutes [ifNotValid] ="task.minutes"
+                    class="input" contenteditable="true"
+                    (focusout)="setTaskMinutes($event)"
+                >
+                    {{add0prefix(task.minutes)}}
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="row">
+                <div class="label">Duration</div>
+                <div ValidateDuration [ifNotValid] ="task.duration" 
+                     class="input" contenteditable="true"
+                     (focusout) = "setTaskDuration($event)"
+                >
+                    {{task.duration}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <div class="label" >Summary</div>
+        <div 
+            ValidateSummary [ifNotValid]="task.summary"
+            class="input" contenteditable="true"
+            (focusout) = "setTaskSummary($event)"
+        >
+            {{task.summary}}
+        </div>
+    </div>
+    <div class="field">
+        <div class="label">Description</div>
+        <div class="input" contenteditable="true">{{task.description}}</div>
+    </div>
+    <div class="button" (click)="closeTaskEditFrom()">Done</div>
+</div>

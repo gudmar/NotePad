@@ -5,6 +5,7 @@ import { CalendarObjectProviderService } from '../services/calendar-object-provi
 // import { ConcatSource } from 'webpack-sources';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
 import { EventManagerService } from '../services/event-manager.service';
+import { WindowSizeEvaluatorService } from '../../services/window-size-evaluator.service'
 // import { ConstantPool } from '@angular/compiler';
 
 @Component({
@@ -17,6 +18,7 @@ export class TaskViewerComponent implements OnInit {
   dayWeekIndex: number = 0;
   uniqueId: string = 'taskViewerId'
   allCalendarEvents: any;
+  get shouldDisplayMobileVersion() {return this.windowSizeEvaluator.isWindowTooNarrow(700)}
   @Input() day: number = 0;
   @Input() month: number = 0;
   @Input() year: number = 0;
@@ -29,11 +31,22 @@ export class TaskViewerComponent implements OnInit {
   }
   get shouldMoveWindowBeVisible() {return this._shouldMoveWindowBeVisible}
   eventToMoveId: string = '';
+  private indexOfTaskToShowInForm: number = 0;
+  shouldShowEditFrom: boolean = false;
+  get formTask() {return this.events[this.indexOfTaskToShowInForm]}
+  // get formHour(){return this.events[this.indexOfTaskToShowInForm].hours}
+  // get formDuration(){return this.events[this.indexOfTaskToShowInForm].duration}
+  // get formSummary(){return this.events[this.indexOfTaskToShowInForm].summary}
+  // get formDescription(){return this.events[this.indexOfTaskToShowInForm].description}
 
 
   openMoveWindow(uniqueId: string) {
     this.eventToMoveId = uniqueId;
     this.shouldMoveWindowBeVisible = true;
+  }
+  showEditForm(index: number){
+    this.shouldShowEditFrom = true;
+    this.indexOfTaskToShowInForm = index;
   }
 
   get entries() {return this.events}
@@ -45,10 +58,11 @@ export class TaskViewerComponent implements OnInit {
     private communicator: CommunicationService,
     private eventManager: EventManagerService,
     private calendarProvider: CalendarObjectProviderService,
-    private uuidProvider: UniqueIdProviderService
+    private uuidProvider: UniqueIdProviderService,
+    private windowSizeEvaluator: WindowSizeEvaluatorService
   ) { 
     communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), 
-    ['eventViewerShouldBeDisplayed', 'calendarEvents'])
+    ['eventViewerShouldBeDisplayed', 'calendarEvents', 'taskEditFormShouldBeClosed'])
   }
 
 
@@ -95,6 +109,9 @@ export class TaskViewerComponent implements OnInit {
       this.dayWeekIndex = data.dayWeekIndex,
       this.events = data.events;
       this.shouldBeDisplayed = true;
+    }
+    if (eventType == 'taskEditFormShouldBeClosed'){
+      this.shouldShowEditFrom = false;
     }
   }
 

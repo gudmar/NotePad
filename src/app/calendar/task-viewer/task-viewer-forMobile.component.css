@@ -105,6 +105,33 @@
         padding: 0;
     }
 }
+@media only screen and (max-width: 1000px) {
+    .viewer-window{
+        width: 100vw;
+        height: 100vh;
+    }
+  }
+  @media only screen and (max-width: 750px) {
+    .wrapper{
+        background-color: white;
+    }
+    .shutter {
+      justify-content: flex-start;
+      align-content: flex-start;
+    }
+  }
+  @media only screen and (max-width: 725px) {
+      .arrow{
+          width: 45px;
+          height: 45px;
+          font-size: 40px;
+      }
+      .date{
+          display: flex;
+          flex-direction: column;
+      }
+
+  }
 @media only screen and (max-width: 350px){
     .align-horizontal{
         margin-bottom: 2.5rem;

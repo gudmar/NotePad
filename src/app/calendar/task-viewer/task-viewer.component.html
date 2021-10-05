@@ -1,22 +1,24 @@
 <ng-container *ngIf = "shouldBeDisplayed">
     <div class="shutter center">
-    <task-edit-form
+    <!-- <task-edit-form
         *ngIf="shouldShowEditFrom"
         [task] = "formTask"
         [day] = 'day'
         [month] = "month"
         [year] = "year"
     >
-    </task-edit-form>
+    </task-edit-form> -->
         <div class="viewer-window center">
             <div class="nav-bar center">
                 <div class="arrow" (click)="switchToAnotherDay(-1)">&lt;&lt;</div>
-                <div class="date">
+                <div class="date center">
                     <span class="conditional-display">{{dayAsString}}</span>
                     &nbsp;
-                    <span>{{add0prefix(day)}}</span> / 
-                    <span>{{add0prefix(month + 1)}}</span> / 
-                    <span class="conditional-display">{{year}}</span>
+                    <div class="row">
+                        <span>{{add0prefix(day)}}</span> / 
+                        <span>{{add0prefix(month + 1)}}</span> / 
+                        <span class="conditional-display">{{year}}</span>
+                    </div>
                 </div>
                 <div class="arrow" (click)="switchToAnotherDay(1)">&gt;&gt;</div>
 
@@ -81,14 +83,14 @@
                             <td>
                                 <div class="options center">
                                     <div 
-                                        class="arrow center icon-button icon-button-fixed icon-button-green" 
+                                        class="center icon-button icon-button-fixed icon-button-green" 
                                         (click) = "addEventAfter($event, entry.uniqueId)"
                                         >+</div>
                                     <div 
-                                        class="arrow center icon-button icon-button-fixed icon-button-red"
+                                        class="center icon-button icon-button-fixed icon-button-red"
                                         (click) = "removeEvent($event, entry.uniqueId)"
                                         >&times;</div>
-                                    <div class="arrow center icon-button" 
+                                    <div class="center icon-button" 
                                         (click)="openMoveWindow(entry.uniqueId)"
                                         [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
                                     >
@@ -107,14 +109,14 @@
                 <div class="task-wrapper" *ngFor="let entry of entries" >
                         <div class="row task-header">
                                 <div 
-                                    class="arrow center icon-button icon-button-fixed icon-button-green" 
+                                    class="center icon-button icon-button-fixed icon-button-green" 
                                     (click) = "addEventAfter($event, entry.uniqueId)"
                                 >+</div>
                                 <div 
-                                    class="arrow center icon-button icon-button-fixed icon-button-red"
+                                    class="center icon-button icon-button-fixed icon-button-red"
                                     (click) = "removeEvent($event, entry.uniqueId)"
                                     >&times;</div>
-                                <div class="arrow center icon-button" 
+                                <div class="center icon-button" 
                                     (click)="openMoveWindow(entry.uniqueId)"
                                     [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
                                 >

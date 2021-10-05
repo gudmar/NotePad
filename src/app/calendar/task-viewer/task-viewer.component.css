@@ -42,7 +42,7 @@
     justify-content: space-around;
     position: relative;
     width: 90%;
-    height: 4rem;
+    min-height: 4rem;
 }
 .tasks{
     position: relative;
@@ -198,7 +198,7 @@ th{
     outline: none;
     /* background-color: rgb(230, 230, 120); */
 }
-.icon-button{
+/* .icon-button{
     height: 15px;
     font-size: 0.8rem;
     border-radius: 5px;
@@ -207,8 +207,7 @@ th{
 }
 .icon-button:hover{
     transition: 0.3s;
-    /* transform: scale(1.1);
-    color: yellow; */
+
 }
 .icon-button-fixed{
     width: 15px;
@@ -221,7 +220,7 @@ th{
 .icon-button-green{
     background-color: green;
     color: white;
-}
+} */
 .options{
     display: flex;
     flex-wrap: wrap;
@@ -269,31 +268,6 @@ th{
     height: 2px;
 }
 
-@media only screen and (max-width: 750px) {
-    .wrapper{
-        background-color: white;
-    }
-    .shutter {
-      justify-content: flex-start;
-      align-content: flex-start;
-    }
-  }
-/* @media only screen and (max-width: 700px){
-    .minutes{
-        width: auto;
-    }
-    .duration{
-        width: auto;
-    }
-    .viewer-window{
-        min-width: auto;
-    }
-    .icon-button{
-        width: 30px;
-        height: 30px;
-        font-size: 2rem;
-    }
-    .summary{}
 
-} */
+
 

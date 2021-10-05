@@ -99,7 +99,84 @@
                         </tr>
                 </table>
 
-                <table *ngIf="shouldDisplayMobileVersion">
+
+
+                 
+            <div *ngIf="shouldDisplayMobileVersion" class="wrapper">
+                    <div class="title">{{add0prefix(day)}}/{{add0prefix(month)}}/{{year}}</div>
+                <div class="task-wrapper" *ngFor="let entry of entries" >
+                        <div class="row task-header">
+                                <div 
+                                    class="arrow center icon-button icon-button-fixed icon-button-green" 
+                                    (click) = "addEventAfter($event, entry.uniqueId)"
+                                >+</div>
+                                <div 
+                                    class="arrow center icon-button icon-button-fixed icon-button-red"
+                                    (click) = "removeEvent($event, entry.uniqueId)"
+                                    >&times;</div>
+                                <div class="arrow center icon-button" 
+                                    (click)="openMoveWindow(entry.uniqueId)"
+                                    [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
+                                >
+                                    move
+                                </div>
+                            </div>
+
+
+                    <div class="row">
+                        <div class="field row align-horizontal">
+                            <span class="label">Start time</span>
+                            <div class="row">
+                                <div 
+                                    ValidateHour [ifNotValid]="entry.hours"
+                                    class="input" contenteditable="true"
+                                    (focusout)="setTaskHours($event, entry.uniqueId)"
+                                >
+                                    {{add0prefix(entry.hours)}}
+                                </div>
+                                <div class="label">:</div>
+                                <div
+                                    ValidateMinutes [ifNotValid] ="entry.minutes"
+                                    class="input" contenteditable="true"
+                                    (focusout)="setTaskMinutes($event, entry.uniqueId)"
+                                >
+                                    {{add0prefix(entry.minutes)}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="row align-horizontal">
+                                <div class="label">Duration</div>
+                                <div ValidateDuration [ifNotValid] ="entry.duration" 
+                                     class="input" contenteditable="true"
+                                     (focusout) = "setTaskDuration($event, entry.uniqueId)"
+                                >
+                                    {{entry.duration}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="label" >Summary</div>
+                        <div 
+                            ValidateSummary [ifNotValid]="entry.summary"
+                            class="input input-full-length" contenteditable="true"
+                            (focusout) = "setTaskSummary($event, entry.uniqueId)"
+                        >
+                            {{entry.summary}}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Description</div>
+                        <div class="input input-full-length" contenteditable="true">{{entry.description}}</div>
+                    </div>
+
+
+                </div>
+                    <!-- <div class="button" (click)="closeTaskEditFrom()">Done</div> -->
+                </div>
+
+                <!-- <table *ngIf="shouldDisplayMobileVersion">
                     <tr>
                         <th colspan="2">Time</th>
                         <th>Duration</th>
@@ -133,21 +210,11 @@
                                         class="arrow center icon-button icon-button-fixed icon-button-green" 
                                         (click) = "addEventAfter($event, entry.uniqueId)"
                                         >+</div>
-                                    <!-- <div 
-                                        class="arrow center icon-button icon-button-fixed icon-button-red"
-                                        (click) = "removeEvent($event, entry.uniqueId)"
-                                        >&times;</div>
-                                    <div class="arrow center icon-button" 
-                                        (click)="openMoveWindow(entry.uniqueId)"
-                                        [ngClass] = "{'move-lighted': eventToMoveId == entry.uniqueId}"
-                                    >
-                                        move
-                                    </div> -->
                                 </div>
     
                         </td>
                     </tr>
-                </table>
+                </table> -->
 
                 <!-- *ngIf="shouldDisplayMobileVersion" -->
 
@@ -175,3 +242,4 @@
         </div>
     </div>
 </ng-container>
+

@@ -12,7 +12,7 @@ import { ValidatorService } from '../services/validator.service';
 @Component({
   selector: 'task-viewer',
   templateUrl: './task-viewer.component.html',
-  styleUrls: ['./task-viewer.component.css']
+  styleUrls: ['./task-viewer.component.css', './task-viewer-forMobile.component.css']
 })
 export class TaskViewerComponent implements OnInit {
   private _shouldMoveWindowBeVisible: boolean = false;
@@ -69,17 +69,21 @@ export class TaskViewerComponent implements OnInit {
 
 
   setTaskMinutes(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'minutes', event.target.innerText, this.validator.isMinutesValid.bind(this,event.target.innerText))
-  }
+    this.modifyIfValid(uniqueId, 'minutes', event.target.innerText, 
+    this.validator.isMinutesValid.bind(this.validator,event.target.innerText)
+  )}
   setTaskHours(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'hours', event.target.innerText, this.validator.isHoursValid.bind(this,event.target.innerText))
-  }
+    this.modifyIfValid(uniqueId, 'hours', event.target.innerText, 
+    this.validator.isHoursValid.bind(this.validator,event.target.innerText)
+  )}
   setTaskDuration(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'duration', event.target.innerText, this.validator.isDurationValid.bind(this,event.target.innerText))
-  }
+    this.modifyIfValid(uniqueId, 'duration', event.target.innerText, 
+    this.validator.isDurationValid.bind(this.validator,event.target.innerText)
+  )}
   setTaskSummary(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'summary', event.target.innerText, this.validator.isSummaryValid.bind(this,event.target.innerText))
-  }
+    this.modifyIfValid(uniqueId, 'summary', event.target.innerText, 
+    this.validator.isSummaryValid.bind(this.validator,event.target.innerText)
+  )}
   setTaskDescription(event: any, uniqueId: string){
     this.modifyIfValid(uniqueId, 'description', event.target.innerText, ()=>{return true;})
   }

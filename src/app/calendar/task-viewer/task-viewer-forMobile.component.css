@@ -8,9 +8,10 @@
     position: sticky;
     top: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
     /* background-color: rgb(230, 230, 230); */
     /* padding: 2rem; */
 }
@@ -109,8 +110,13 @@
     .viewer-window{
         width: 100vw;
         height: 100vh;
+        min-width: 0;
     }
-  }
+  
+}
+@media only screen and (max-width: 750px) {
+    .tasks{overflow: hidden;}
+}
   @media only screen and (max-width: 750px) {
     .wrapper{
         background-color: white;
@@ -130,8 +136,17 @@
           display: flex;
           flex-direction: column;
       }
+      .date>span{
+        margin-right: 0;
+    }
 
   }
+
+@media only screen and (max-width: 500px) {
+    .date{
+        font-size: 1.4rem;
+    }
+}
 @media only screen and (max-width: 350px){
     .align-horizontal{
         margin-bottom: 2.5rem;

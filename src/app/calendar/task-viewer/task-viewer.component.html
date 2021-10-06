@@ -11,9 +11,8 @@
         <div class="viewer-window center">
             <div class="nav-bar center">
                 <div class="arrow" (click)="switchToAnotherDay(-1)">&lt;&lt;</div>
-                <div class="date center">
+                <div class="date">
                     <span class="conditional-display">{{dayAsString}}</span>
-                    &nbsp;
                     <div class="row">
                         <span>{{add0prefix(day)}}</span> / 
                         <span>{{add0prefix(month + 1)}}</span> / 
@@ -105,7 +104,7 @@
 
                  
             <div *ngIf="shouldDisplayMobileVersion" class="wrapper">
-                    <div class="title">{{add0prefix(day)}}/{{add0prefix(month)}}/{{year}}</div>
+                    <!-- <div class="title">{{add0prefix(day)}}/{{add0prefix(month)}}/{{year}}</div> -->
                 <div class="task-wrapper" *ngFor="let entry of entries" >
                         <div class="row task-header">
                                 <div 

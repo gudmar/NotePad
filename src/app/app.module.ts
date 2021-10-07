@@ -57,6 +57,7 @@ import { ValidateHourDirective } from './calendar/directives/validate-hour.direc
 import { ValidateMinutesDirective } from './calendar/directives/validate-minutes.directive';
 import { ValidateDurationDirective } from './calendar/directives/validate-duration.directive';
 import { ValidateSummaryDirective } from './calendar/directives/validate-summary.directive';
+import { LinkComponent } from './common/link/link.component';
 
 
 
@@ -108,6 +109,7 @@ import { ValidateSummaryDirective } from './calendar/directives/validate-summary
     ValidateMinutesDirective,
     ValidateDurationDirective,
     ValidateSummaryDirective,
+    LinkComponent,
     
   ],
   imports: [

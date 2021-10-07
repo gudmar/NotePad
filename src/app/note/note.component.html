@@ -16,7 +16,7 @@
             [shouldSetBgColor]="false"
             [ngClass] = "dynamicClass"
         >
-            <div #contentHolder class = "content-holder" contenteditable="true" [innerHTML] = "content"></div>
+            <div #contentHolder class = "content-holder" [attr.contenteditable]="isEditable" [innerHTML] = "content"></div>
         </div>
     <resize-point  
                     data-role="resize" 

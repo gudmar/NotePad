@@ -12,6 +12,7 @@ import {
 
 import { CommunicationService } from '../services/communication.service'
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
+import { connect } from 'http2';
 
 @Component({
   selector: 'note',
@@ -38,6 +39,11 @@ export class NoteComponent implements OnInit {
     })
   }
   get initialHeight() {return this._initialHeight}
+  private _isEditable: boolean = true;
+  @Input() set isEditable(val:boolean){
+    let t = setTimeout(()=>{this._isEditable = val; clearTimeout(t)})
+  }
+  get isEditable() {return this._isEditable}
   @Input() initialTop: number = 30;
   @Input() initialLeft: number = 30;
   @Input() content: string = '';
@@ -117,14 +123,115 @@ export class NoteComponent implements OnInit {
   }
 
   @HostListener('keyup', ['$event'])
-  changeNoteHeight(){
-    let newHeight = this.recalculatedNoteSize();
-    console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
-    if (newHeight > this.initialHeight) {
-      this.messenger.inform('noteContentChanged', {
-        objectId: this.uniqueId,
-        newHeight: newHeight
-      })
+  changeNoteHeight(event:any){
+    if (event.keyCode != 17){
+      let newHeight = this.recalculatedNoteSize();
+      console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
+      if (newHeight > this.initialHeight) {
+        this.messenger.inform('noteContentChanged', {
+          objectId: this.uniqueId,
+          newHeight: newHeight
+        })
+      }  
+    }
+    // if (event.keyCode == 17){
+    //   let t = setTimeout(()=>{this.isEditable = true; clearTimeout(t)});
+    //   console.log('isEditable' + this.isEditable)
+    // }
+    console.log(event)
+  }
+
+  @HostListener('keydown.control.d', ['$event'])
+  deleteHighlitedText(event:any){
+    event.stopPropagation();
+    event.preventDefault();
+    console.dir(event)
+    this.replaceSelectedText('');
+  }
+
+  @HostListener('keydown', ['$event'])
+  replaceWithLink(event:any){
+    if (event.ctrlKey && event.key == 'l'){
+      event.stopPropagation();
+      event.preventDefault();
+      let content = this.getSelectedText();
+      console.log(event)
+      if (content != ''){
+        // document.execCommand('createLink', true, `${content}`)
+        // `)
+        let linkElement = this.createLinkElement(<string>content, <string>content);
+        this.replaceSelectedTextWithElement(linkElement);
+      }
+      let noteContent = this.contentHolder.nativeElement.innerHTML;
+      console.log(noteContent)
+      this.content = noteContent;
+    }
+  }
+
+  // @HostListener('keydown', ['$event'])
+  // // NIE MOŻE BYĆ, bo ctrl + b nie zadziala
+  // activateEditable(event: any){
+  //   console.log(event.ctrlKey);
+  //   if (event.ctrlKey){
+  //     let t = setTimeout(()=>{this.isEditable = false; });
+  //     // this.isEditable = false;
+  //   }
+  //   console.log('isEditable' + this.isEditable)
+  // }
+
+
+  // @HostListener('keyup', ['$event'])
+  // disactivateEditable(event: any){
+  //   console.log(event.ctrlKey);
+  //   if (event.ctrlKey){
+  //     // let t = setTimeout(()=>{this.isEditable = true; clearTimeout(t)});
+  //   }
+  //   console.log('isEditable' + this.isEditable)
+  // }
+
+  getSelectedText(){
+    if (window.getSelection){
+      return window.getSelection();
+    }
+    return '';
+  }
+
+  replaceSelectedText(replacementText:string){
+    let sel, range;
+    if (window.getSelection){
+      sel = window.getSelection();
+      if (sel!.rangeCount) {
+        range = sel!.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(replacementText));
+      }
+    }
+    // } else if (document.selection && document.createRange ) {
+    //   range = document.selection.createRange();
+    //   range.text = replacementText;
+    // }
+  }
+  createLinkElement(linkName:string, link:string){
+    // let element = document.createElement('button');
+    // element.onclick=function(){window.open(link, "_blank")}
+    // element.innerText=linkName;
+    
+    let element = document.createElement('a');
+    element.href = '//'+link;
+    element.setAttribute('contentEditable','true');
+    element.innerText = linkName;
+    element.target='_blank'
+    return element;
+  }
+  replaceSelectedTextWithElement(replacementElement:HTMLElement){
+    let sel, range;
+    if (window.getSelection){
+      sel = window.getSelection();
+      if (sel!.rangeCount) {
+        range = sel!.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(replacementElement);
+      }
     }
   }
 

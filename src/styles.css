@@ -137,3 +137,44 @@ center{
 }
 
 
+.copyable{
+    display: inline-block;
+    /* background-color: rgb(220, 220, 220); */
+    /* background-color: black; */
+    border: solid white thin;
+    /* mix-blend-mode: difference; */
+    border-radius: 5px;
+    padding: 4px;
+    cursor: copy;
+    animation: copyableBorder 5s linear infinite;
+}
+/* .copyable::before{
+    position: relative;
+    content: "&#128428;"
+} */
+.copyable:after{
+    content: 'to clipboard';
+    position: absolute;
+    top: -2rem;
+    left:0;
+    background-color: rgb(220, 220, 220);
+    border: solid black thin;
+    color: black;
+    transition: 0.3;
+    padding: 4px;
+    border-radius: 5px;
+    opacity: 0;
+}
+
+.copyable:hover::after{
+    opacity: 1;
+    mix-blend-mode: normal;
+    transition-delay: 1s;
+}
+@keyframes copyableBorder{
+    0%{border-color: black;}
+    33%{border-color: red;}
+    66%{border-color: white;}
+    100%{border-color: black;}
+}
+

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, HostListener, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-link',
+  selector: 'link',
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.css']
 })
@@ -34,8 +34,6 @@ export class LinkComponent implements OnInit {
 
   @HostListener('click', ['$event'])
   goToLink(event:any){
-    if (!this.isEditable){
-      
-    }
+    console.dir(event.target)
   }
 }

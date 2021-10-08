@@ -13,6 +13,7 @@ import {
 import { CommunicationService } from '../services/communication.service'
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 import { connect } from 'http2';
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'note',
@@ -79,6 +80,16 @@ export class NoteComponent implements OnInit {
   thisNoteWasClicked($event: any){
     this.messenger.inform('noteWasClicked', this.uniqueId)
     $event.stopPropagation();
+    console.dir($event.target)
+    let targetClassList = $event.target.classList;
+    if (targetClassList.contains('copyable')){
+      console.log('Hurrraaaa');
+      (navigator as any).clipboard.writeText($event.target.innerText);
+      this.messenger.inform('displayMessageAndDoNotDisturb', {message:'Copied to clipboard'})
+    }
+
+
+    // onclick="function(e){navigator.clipboard.writeText(e.target.innerText)}
   }
 
 
@@ -148,6 +159,10 @@ export class NoteComponent implements OnInit {
     console.dir(event)
     this.replaceSelectedText('');
   }
+  @HostListener('keydown.control.m', ['$event'])
+  addCopyContentElement(event:any){
+    this.replaceSelectedWithCopyTextElement();
+  }
 
   @HostListener('keydown', ['$event'])
   replaceWithLink(event:any){
@@ -194,6 +209,32 @@ export class NoteComponent implements OnInit {
       return window.getSelection();
     }
     return '';
+  }
+
+  replaceSelectedWithCopyTextElement(){
+    let sel = window.getSelection();
+    if (sel != null){
+      console.log(sel);
+      let copyableElement = this.htmlToElement(this.getCopyTextElement(sel.toString()));
+      console.log(copyableElement)
+      let copyableElement1 = sel.getRangeAt(0).createContextualFragment(this.getCopyTextElement(sel.toString()))
+      this.replaceSelectedTextWithElement(<HTMLElement>copyableElement)
+    } else {
+      console.warn('No text selected, cannot add copyable element')
+    }
+  }
+
+  getCopyTextElement(textToCopy:string){
+    return `
+      <div class="copyable">${textToCopy}</div>
+    `
+  }
+
+  htmlToElement(htmlString: string){
+    let template = document.createElement('template');
+    htmlString = htmlString.trim();
+    template.innerHTML = htmlString;
+    return template.content.firstChild;
   }
 
   replaceSelectedText(replacementText:string){

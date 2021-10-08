@@ -24,6 +24,14 @@ align-content: center;
 align-items: center; */
 
 }
+.copyable{
+    display: inline-block;
+    background-color: black;
+    mix-blend-mode: difference;
+    color: white;
+    border-radius: 3px;
+    padding: 4px;
+}
 
 .note-content-wrapper>span{
     outline: none;

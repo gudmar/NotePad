@@ -215,9 +215,9 @@ export class NoteComponent implements OnInit {
     // let element = document.createElement('button');
     // element.onclick=function(){window.open(link, "_blank")}
     // element.innerText=linkName;
-    
+    // debugger;
     let element = document.createElement('a');
-    element.href = '//'+link;
+    element.href = link.toString().startsWith('http')?link:'//'+link;
     element.setAttribute('contentEditable','true');
     element.innerText = linkName;
     element.target='_blank'

@@ -1,3 +1,7 @@
+*{
+    --light-border: #d0d7de;
+    --light-input-background-color: #f6f8fa;
+}
 body, html{
     height: 100%;
     width: 100%;

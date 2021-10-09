@@ -41,7 +41,8 @@ export class WorkBookComponent implements OnInit {
     this._activeSheetId = val;
   }
   set document(val: any) {
-    this._document = val
+    this._document = val;
+    if (this._document.links == undefined) this.document.links = [];
     // console.dir(JSON.parse(val))
     this.calendarInputs = val.calendarInputs
   };
@@ -89,7 +90,7 @@ export class WorkBookComponent implements OnInit {
     )
   }
 
-  loadLastDocument(){
+  getDocument(){
     let lastUsedDocument = this.storageManager.getLastUsedNoteDocument();
     if (lastUsedDocument != null){
       this.document = this.storageManager.loadContent(lastUsedDocument)
@@ -209,7 +210,7 @@ export class WorkBookComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadLastDocument();
+    this.getDocument();
     this.listOfSheets = this.document.sheets;
     this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;

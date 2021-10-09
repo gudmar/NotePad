@@ -1,0 +1,17 @@
+<ng-container *ngIf = "shouldBeDisplayed">
+    <div class="wrapper">
+        <div class="navigation-section">
+            <div class="button arrow" (click)="openAddLinkForm()">+</div>
+            <div class="serachBox" (change)="getFilter($event)"></div>
+            <div class="button arrow" (click)="close()">&times;</div>
+        </div>
+        <div class="link-section">
+            <custom-link 
+                *ngFor="let link of linkDescriptorArray.sort(strCompare)" 
+                [ngClass] = "{hidden: shouldLinkBeDisplayed(link)}"
+                [linkDescriptor] = "link"
+            >
+            </custom-link>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,21 @@
+<div class="shutter center">
+    <div class="wrapper">
+        <div class="title-bar">
+            <span>Add link</span>
+            <div class="button close-button" (click)="close()">&times;</div>
+        </div>
+        <div class="field column">
+            <div class="label">Title</div>
+            <div class="input" placeholder="title" contenteditable="true" (change)="updateTopic($event)"></div>
+        </div>
+        <div class="field column">
+            <div class="label">Description</div>
+            <div class="input input-big" placeholder="description" contenteditable="true" (change)="updateDescription($event)"></div>
+        </div>
+        <div class="field column">
+            <div class="label">Link</div>
+            <div class="input" placeholder="link" contenteditable="true" (change)="updateLink($event)"></div>
+        </div>
+        <div class="button submit-button" (click)="onSubmit()">Submit</div>
+    </div>
+</div>

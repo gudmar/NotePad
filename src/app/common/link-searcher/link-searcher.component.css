@@ -1,0 +1,33 @@
+.wrapper{
+    position: relative;
+    width: 500px;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    right: 100%;
+}
+.navigation-section{
+    width :100%;
+    height: 3rem;
+    background-color: rgb(220, 220, 220);
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+}
+.button{} 
+.arrow{}
+.serachBox{
+    position: relative;
+    height: 1rem;
+    width: 300px;
+    border: var(--light-border);
+    background-color: var(--light-input-background-color);
+    outline: none;
+}
+.hidden{display: none}
+.link-section{
+    position: relative;
+    width: 100%;
+    height: calc(100% - 3rem);
+}

@@ -190,6 +190,21 @@ export class HelpContentService {
         content: `Click day in calendar year view. Click <i>move</i> label in right part of task row. 
         Widow will pop out and there new date might be chosen.`
       },          
+      {
+        title: 'Add link to notes',
+        content: `Note component in notes supports links. In edit mode press Ctrl + l to create link out of highlited
+        text. Link can be activated by click in not editable mode. Link description may be modified in editable mode,
+        however link itself cannot. Pasted link will be clicable in not editable mode, but hold Ctrl while clicking on it,
+        or else current tab will be redirected`
+      },          
+      {
+        title: 'Adding copyable object, copy on click',
+        content: `There can be added an onclick copy to clipboard object to notes component. Highlight a range in
+        notes component and press Ctrl + m, and new click-copy-to-clipboard object will be added. It will be clicable 
+        after exiting editable mode.`
+      },          
+
+
 
     ]
   }

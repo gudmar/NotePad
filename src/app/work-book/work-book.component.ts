@@ -23,33 +23,34 @@ import { WindowSizeEvaluatorService } from '../services/window-size-evaluator.se
 })
 export class WorkBookComponent implements OnInit {
   _document: any = this.mockDataProvider.getDocumentFromMemory();
+  _activeSheetId: string = this.document.activeSheetId;
+  private _calendarInputs:any;
+  currentSheetBgColor: string = '';
+  currentSheetPages: any[] = [];
+  currentSheetStartPageId: string = '';
+  application: string = 'notes'
+  // application: string = 'notes' //'calendar'
+  listOfSheets:any[] = this.document.sheets;
+  uniqueId: string = "workBookId"
   @Input() isHiddable: boolean = false;
   @Input() shouldBeHidden: boolean = false;
+  @Input() documentContent: any;
+  
+
+  set activeSheetId(val: string){
+    this._activeSheetId = val;
+  }
   set document(val: any) {
     this._document = val
     // console.dir(JSON.parse(val))
     this.calendarInputs = val.calendarInputs
   };
-  get document() {return this._document}
-  listOfSheets:any[] = this.document.sheets;
-  _activeSheetId: string = this.document.activeSheetId;
-  uniqueId: string = "workBookId"
-  // application: string = 'notes' //'calendar'
-  application: string = 'notes'
-  set activeSheetId(val: string){
-    this._activeSheetId = val;
-  }
-
-  get activeSheetId() {return this._activeSheetId; }
-  @Input() documentContent: any;
-  currentSheetBgColor: string = '';
-  currentSheetPages: any[] = [];
-  currentSheetStartPageId: string = '';
-  private _calendarInputs:any;
-  // calendarInputs: any = [];
   set calendarInputs(val: any){
     this._calendarInputs = val;
   }
+
+  get activeSheetId() {return this._activeSheetId; }
+  get document() {return this._document}
   get calendarInputs() {
     return this._calendarInputs;
   }
@@ -95,6 +96,7 @@ export class WorkBookComponent implements OnInit {
     } else {
       this.document = this.storageManager.getFreshDocument();
     }
+    console.dir(this.document)
   }
 
   handleMessages(eventType: string, data: any){
@@ -218,12 +220,10 @@ export class WorkBookComponent implements OnInit {
   }
 
   initializeNewSheet(newSheetId: string){
-  
     let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
     this.currentSheetBgColor = currentSheetDescriptor.bgColor;
     this.currentSheetPages = currentSheetDescriptor.pages;
     this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
-  
   }
 
   extractSheetDescriptor(sheetId: string): any{

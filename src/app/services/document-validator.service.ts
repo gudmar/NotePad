@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConstantPool } from '@angular/compiler';
 import { ConcatSource } from 'webpack-sources';
+import { link } from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,22 @@ export class DocumentValidatorService {
     let parsedDocument = this.tryToParseContent(stringifiedDocumnet);
     if (parsedDocument == null) return false;
     
-    let a = !this.objectShouldContainKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets']);
+    let a = !this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets']);
     let b = !this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string');
     let c = !this.isValueOfKeyArray(parsedDocument, 'calendarInputs');
     let d = !this.isCalendarValid(parsedDocument.calendarInputs);
     // debugger;
-    if (!this.objectShouldContainKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
+    if (!this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
+    if (!this.objectShouldContainKeysAndMightContainKeys(
+      parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'],
+      ['links']
+    )) return false;
     if (!this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'calendarInputs')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'sheets')) return false;
-    if (this.isCalendarValid(parsedDocument.calendarInputs)) return false;
+    if (!this.isCalendarValid(parsedDocument.calendarInputs)) return false;
+    // !!! No ! was here !!
+    if (!this.isLinksValid(parsedDocument.links)) return false
     if (!this.isNotepadValid(parsedDocument)) return false;
     return true;
   }
@@ -39,7 +46,7 @@ export class DocumentValidatorService {
 
     for (let sheet of sheetsSubobject){
       sheet = Object.values(sheet)[0]
-      if(!this.objectShouldContainKeys(sheet, ['bgColor', 'originalColor', 'pages','startPageId','title'])) return false;
+      if(!this.objectShouldContainOnlyKeys(sheet, ['bgColor', 'originalColor', 'pages','startPageId','title'])) return false;
       if (this.propsShouldNotBeEmpty(sheetsSubobject, ['bgColor','originalColor','pages','startPageId','title'])) return false;
       if (!this.arePageDescriptorsValid(sheet.pages)) return false;
     }
@@ -84,7 +91,7 @@ export class DocumentValidatorService {
 
   isSinglePageDescriptorValid(pageDescriptor: any){
     pageDescriptor = Object.values(pageDescriptor)[0];
-    if(!this.objectShouldContainKeys(pageDescriptor, ['bgColor', 'notes', 'originalColor', 'title'])) return false;
+    if(!this.objectShouldContainOnlyKeys(pageDescriptor, ['bgColor', 'notes', 'originalColor', 'title'])) return false;
     if(!this.propsShouldNotBeEmpty(pageDescriptor, ['bgColor', 'originalColor'])) return false;
     if(!this.validateNoteDescriptors(pageDescriptor.notes)) return false;
     return true;
@@ -92,7 +99,7 @@ export class DocumentValidatorService {
 
   validateNoteDescriptors(noteDescriptorArray: any[]){
     for(let note of noteDescriptorArray){
-      if (!this.objectShouldContainKeys(note, 
+      if (!this.objectShouldContainOnlyKeys(note, 
         ['uniqueId','initialWidth','initialHeight','initialTop','initialLeft','content'])) return false;
       if (!this.propsShouldNotBeEmpty(note, 
         ['uniqueId','initialWidth','initialHeight','initialTop','initialLeft'])) return false;
@@ -129,15 +136,33 @@ export class DocumentValidatorService {
     return true;
   }
 
+  isLinksValid(links: any[]){
+    if (links == undefined) return true;
+    if (!Array.isArray(links)) return false;
+    if (links.length == 0) return true;
+    for (let link of links){
+      let keys = Object.keys(link);
+      if (!this.objectShouldContainOnlyKeys(link, ['title', 'description','url'])) return false
+    }
+    return true;
+  }
+
   isCalendarValid(calendar: any[]){
     if (calendar.length == 0) return true;
     for (let input of calendar){
-      this.objectShouldContainKeys(input, ['entries'])
+      this.objectShouldContainOnlyKeys(input, ['entries'])
+      let a = this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])
+      // let b = this.objectShouldContainOnlyKeys(input, ['year'])
+      // let c = this.objectShouldContainOnlyKeys(input, ['entries'])
+      let c = this.objectShouldContainOnlyKeys(input, ['entries', 'year'])
+      let d = this.validateCalendarYearEntry(input.entries)
+      // debugger
       if (!this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])) return false;
-      if (!this.objectShouldContainKeys(input, ['year'])) return false;
-      if (this.objectShouldContainKeys(input, ['entries'])) {
+      if (!this.objectShouldContainOnlyKeys(input, ['entries', 'year'])) return false;
+      // if (!this.objectShouldContainOnlyKeys(input, ['year'])) return false;
+      // if (this.objectShouldContainOnlyKeys(input, ['entries'])) {
         if (!this.validateCalendarYearEntry(input.entries)) return false;
-      }
+      // }
 
     }
     let uniqueIdArray = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(calendar, 'uniqueId');
@@ -149,12 +174,22 @@ export class DocumentValidatorService {
   validateCalendarYearEntry(arrayOfEntries: any){
     if (arrayOfEntries.length == 0) return true;
     for (let input of arrayOfEntries){
-      input = Object.values(input)[0]
-      if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
-      if (!this.objectShouldContainKeys(input, ['month'])) return false;
-      if (this.objectShouldContainKeys(input, ['entries'])) {
-        if (!this.validateCalendarMonthEntry(input.entries)) return false;
+      // input = Object.values(input)[0]
+      let a = this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries']);
+      let b = this.objectShouldContainOnlyKeys(input, ['month']);
+      let c = this.objectShouldContainOnlyKeys(input, ['entries'])
+      let e = this.objectShouldContainOnlyKeys(input, ['month', 'entries'])
+      let d:boolean;
+      if (c) {
+        d = this.validateCalendarMonthEntry(input.entries)
       }
+      // debugger;
+      if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
+      // if (!this.objectShouldContainOnlyKeys(input, ['month'])) return false;
+      if (!this.objectShouldContainOnlyKeys(input, ['month', 'entries'])) return false;
+      // if (this.objectShouldContainOnlyKeys(input, ['entries'])) {
+        if (!this.validateCalendarMonthEntry(input.entries)) return false;
+      // }
     }
     return true;
   }
@@ -162,18 +197,44 @@ export class DocumentValidatorService {
   validateCalendarMonthEntry(object: any){
     if (object.length == 0) return true;
     for (let input of object){
-      if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
-      if (!this.objectShouldContainKeys(input, ['day'])) return false;
-      if (this.objectShouldContainKeys(input, ['entries'])) {
-        if (!this.validateCalendarDayEntries(input.entries)) return false;
+      let a = this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])
+      let b = this.objectShouldContainOnlyKeys(input, ['day', 'entries'])
+      let c: boolean;
+      if (b) {
+        c = this.validateCalendarDayEntries(input.entries)
       }
+      // debugger
+      if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
+      if (!this.objectShouldContainOnlyKeys(input, ['day', 'entries'])) return false;
+      // if (!this.objectShouldContainOnlyKeys(input, ['day'])) return false;
+      // if (this.objectShouldContainOnlyKeys(input, ['entries'])) {
+        if (!this.validateCalendarDayEntries(input.entries)) return false;
+      // }
     }
     return true;
   }
 
   validateCalendarDayEntries(dayEntries: any[]){
     for(let entry of dayEntries){
-      if (!this.objectShouldContainKeys(entry, 
+      let a = this.objectShouldContainOnlyKeys(entry, 
+        ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description']);
+      let b = this.objectShouldNotContainKeysOtherThen(entry, 
+        ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description']);
+      let c = this.keyValueShouldBeTypeOf(entry, 'hours', 'number');
+      let d = this.keyValueShouldBeTypeOf(entry, 'minutes', 'number');
+      let e = this.keyValueShouldBeTypeOf(entry, 'duration', 'number');
+      let f = this.keyValueShouldBeTypeOf(entry, 'summary', 'string');
+      let g = this.keyValueShouldBeTypeOf(entry, 'description', 'string');
+      let h = this.keyValueShouldBeTypeOf(entry, 'uniqueId', 'string');
+      let i = (entry.hours > 24 || entry.hours < 0);
+      let j = (entry.minutes < 0 || entry.minutes > 59);
+      let k = (entry.summary.length > 50);
+      // debugger;
+  
+
+
+
+      if (!this.objectShouldContainOnlyKeys(entry, 
         ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description'])) return false;
       if (!this.objectShouldNotContainKeysOtherThen(entry, 
         ['hours', 'minutes', 'duration', 'summary','uniqueId', 'description'])) return false  
@@ -205,7 +266,7 @@ export class DocumentValidatorService {
 
   eachArrayElementShouldContainKeys(arr: any[], listOfKeys: string[]){
     for (let arrElement of arr) {
-      if (!this.objectShouldContainKeys(arrElement, listOfKeys)) return false;
+      if (!this.objectShouldContainOnlyKeys(arrElement, listOfKeys)) return false;
     }
     return true;
   }
@@ -230,7 +291,22 @@ export class DocumentValidatorService {
     return output;
   }
 
-  objectShouldContainKeys(dataAsObject: any, keys: string[]){
+  objectShouldContainKeysAndMightContainKeys(dataAsObject:any, mandatoryKeys:string[], optionalKeys:string[]){
+    let objectKeys  = Object.keys(dataAsObject);
+    let nrOfMandatoryMatches = 0;
+    let nrOfOptionalMatches = 0;
+    let allKeys = [...mandatoryKeys, ...optionalKeys];
+    for (let key of mandatoryKeys){
+      if (this.arrayShouldContainStringElement(objectKeys, key)) nrOfMandatoryMatches++;
+    }
+    if (nrOfMandatoryMatches != mandatoryKeys.length) return false;
+    for (let key of objectKeys){
+      if (!this.arrayShouldContainStringElement(allKeys, key)) return false;
+    }
+    return true;
+  }
+
+  objectShouldContainOnlyKeys(dataAsObject: any, keys: string[]){
     let objectKeys = Object.keys(dataAsObject);
     let nrOfMatches = 0;
     for (let key of keys){

@@ -180,6 +180,7 @@ export class ValidatorService {
   hoursMinutesValidationFunctionFactory(maxVal: number){
     let max = maxVal;
     return (toValidate:string | number) => {
+      if (toValidate.toString().length > 2) return false;
       let digitRe = new RegExp('\\d{1,2}');
       let nonDigitRe = new RegExp('\\D')
       let a = nonDigitRe.test(toValidate.toString())
@@ -193,6 +194,7 @@ export class ValidatorService {
   }
   durationValidationFunction(toValidate: string | number){
     let nonDigitRe = new RegExp('\\D')
+    if (toValidate.toString()[0] == '0' && toValidate.toString().length>1) return false;
     if (nonDigitRe.test(toValidate.toString())) return false;
     if (parseInt(toValidate.toString()) > 999) return false
     return true;

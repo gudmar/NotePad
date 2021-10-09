@@ -16,7 +16,7 @@ class mockUniqueIdProvider{
   getUniqueId(){return this.uuidsGeneratedSoFar()}
 }
 
-describe('StorageManagerService', () => {
+xdescribe('StorageManagerService', () => {
   let service: StorageManagerService;
 
   beforeEach(() => {

@@ -14,7 +14,7 @@ describe('DocumentValidatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  xit('should execute [objectShouldContainKeys] properly',()=>{
+  it('should execute [objectShouldContainOnlyKeys] properly',()=>{
     let service = new DocumentValidatorService();
     let testCases = [
       {
@@ -49,8 +49,56 @@ describe('DocumentValidatorService', () => {
       },
     ]
     for (let tc of testCases){
-      let calculated = service.objectShouldContainKeys(tc.object, tc.keyList);
+      let calculated = service.objectShouldContainOnlyKeys(tc.object, tc.keyList);
       expect(calculated).toBe(tc.expectedResult);
+    }
+  })
+
+  it('should execute [objectShouldContainKeysAndMightContainKeys] properly', ()=>{
+    // objectShouldContainKeysAndMightContainKeys(dataAsObject:any, mandatoryKeys:string[], optionalKeys:string[])
+    let service = new DocumentValidatorService();
+    let testCases = [
+      {
+        object:{k1:0, k2:0, k3:0},
+        mandatory:['k1', 'k2', 'k3'],
+        optional:[],
+        output: true
+      },
+      {
+        object:{k1:0, k2:0, k3:0},
+        mandatory:['k1', 'k2', 'k3'],
+        optional:['k4','k5'],
+        output: true
+      },
+      {
+        object:{k1:0, k2:0, k3:0},
+        mandatory:['k1', 'k2', 'k4'],
+        optional:[],
+        output: false
+      },
+      {
+        object:{k1:0, k2:0, k3:0, k4:0, k5:0},
+        mandatory:['k1', 'k2', 'k3'],
+        optional:['k4','k5'],
+        output: true
+      },
+      {
+        object:{k1:0, k2:0, k3:0, k4:0, k5:0, k6:0},
+        mandatory:['k1', 'k2', 'k3'],
+        optional:['k4','k5'],
+        output: false
+      },
+      {
+        object:{k1:0, k2:0, k3:0, k4:0, k5:0, k6:0},
+        mandatory:['k1', 'k2', 'k3'],
+        optional:['k4','k5', 'k6','k7', 'k8'],
+        output: true
+      }
+
+    ]
+    for (let tc of testCases){
+      let result = service.objectShouldContainKeysAndMightContainKeys(tc.object, tc.mandatory, tc.optional)
+      expect(result).toBe(tc.output)
     }
   })
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
@@ -11,11 +11,18 @@ export class LinkComponent implements OnInit {
   // @Input() uniqueId: string = '';
   constructor(private communicator: CommunicationService) { }
 
-  openModificationWindow(){
-    this.communicator.inform('openEditLinkFrom', this.linkDescriptor);
-  }
+  // openModificationWindow(){
+  //   this.communicator.inform('openEditLinkFrom', this.linkDescriptor);
+  // }
 
   ngOnInit(): void {
+  }
+  @Output() pleaseDisplayEditWindow: EventEmitter<any> = new EventEmitter();
+
+  displayEditWindow(){
+    // console.log(this.linkDescriptor)
+    this.pleaseDisplayEditWindow.emit(this.linkDescriptor)
+    // this.communicator.inform('openEditLinkFrom', this.linkDescriptor);
   }
 
 }

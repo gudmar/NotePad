@@ -137,6 +137,7 @@ export class WorkBookComponent implements OnInit {
         this.changeNoteContent(copyOfDocument, activeNoteData.content, activeNoteData.uniqueId)
       }
       this.storageManager.saveContentAs(data, this.document)
+      console.dir(this.document)
     }
     if (eventType === 'saveToLastUsedKey'){
       let activeNoteData = this.activeNoteGetter.getActiveNoteData(this.messenger);

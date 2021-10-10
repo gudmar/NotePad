@@ -1,18 +1,34 @@
 .wrapper{
     position: relative;
-    width: 100px;
+    width: 100%;
     height: 100px;
     border-radius: 5px;
-    border: soid thin black;
+    border: solid thin var(--light-border);
     display: flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
 }
+a:link {
+    text-decoration: none;
+  }
+  
+  a:visited {
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  a:active {
+    text-decoration: underline;
+  }
 .topic{
     font-weight: bold;
 }
 description{
-
+    text-decoration: none;
 }
 .edit-button{
     position: absolute;
@@ -22,6 +38,6 @@ description{
     width: 1rem;
     height: 1rem;
     text-align: center;
-    border: solid thin black;
+    border: solid thin var(--light-border);
     cursor: pointer;
 }

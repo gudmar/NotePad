@@ -37,6 +37,7 @@ export class LinkSearcherComponent implements OnInit {
   }
   getFilter(event:any){
     this.filter = event.target.innerText;
+    console.log(this.filter)
   }
   close(){
     this.shouldBeDisplayed = false;
@@ -51,6 +52,9 @@ export class LinkSearcherComponent implements OnInit {
   shouldLinkBeDisplayed(linkDescriptor:any){
     let stringToFindIn = linkDescriptor.topic + ' ' + linkDescriptor.description;
     let valueToFind = this.filter;
+    // console.log(linkDescriptor)
+    console.log(this.filter)
+    // console.log(this.doesStringContain(stringToFindIn, valueToFind))
     return this.doesStringContain(stringToFindIn, valueToFind)
   }
 

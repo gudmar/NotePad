@@ -3,7 +3,7 @@
         <div class="wrapper">
             <div class="navigation-section">
                 <div class="arrow" (click)="openAddLinkForm()">+</div>
-                <div class="serachBox" (keydown)="getFilter($event)" contenteditable="true"></div>
+                <div class="serachBox" (keyup)="getFilter($event)" contenteditable="true"></div>
                 <div class="arrow" (click)="close()">&times;</div>
             </div>
             <div class="link-section">

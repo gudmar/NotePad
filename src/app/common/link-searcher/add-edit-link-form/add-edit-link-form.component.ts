@@ -83,6 +83,12 @@ export class AddEditLinkFormComponent implements OnInit {
       }
     }
   }
+  remove(){
+    let indexOfElementToChange = this.findLinkIndex(this.topic, this.description,this.link);
+    this.data.splice(indexOfElementToChange, 1);
+    this.shouldBeDisplayed = false;
+  }
+
   close(){this.shouldBeDisplayed = false;}
   ngOnInit(): void {
     // this.topic = this.data.topic;

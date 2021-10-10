@@ -32,7 +32,9 @@ export class ExpandableMenuComponent implements OnInit {
     }
 
   }
-
+  openLinker(){
+    this.messenger.inform('openLinkSearcher', null);
+  }
 
   clickLoadFromFile(){
 

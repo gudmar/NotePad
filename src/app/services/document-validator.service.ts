@@ -18,6 +18,7 @@ export class DocumentValidatorService {
     let b = !this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string');
     let c = !this.isValueOfKeyArray(parsedDocument, 'calendarInputs');
     let d = !this.isCalendarValid(parsedDocument.calendarInputs);
+    let e = !this.isLinksValid(parsedDocument.links);
     // debugger;
     if (!this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
     if (!this.objectShouldContainKeysAndMightContainKeys(
@@ -142,7 +143,9 @@ export class DocumentValidatorService {
     if (links.length == 0) return true;
     for (let link of links){
       let keys = Object.keys(link);
-      if (!this.objectShouldContainOnlyKeys(link, ['title', 'description','url'])) return false
+      let a = this.objectShouldContainOnlyKeys(link, ['title', 'description','url']);
+      // debugger;
+      if (!this.objectShouldContainOnlyKeys(link, ['topic', 'description','link'])) return false
     }
     return true;
   }
@@ -326,7 +329,7 @@ hasStringArrayRepetingValues(arr: string[]){
   let countElements = function(element: string, array: string[]){
     let counter = 0;
     for (let item of array){
-      if (item === element) counter++;
+      if (item === element) {counter++; console.log(item);}
     }
     return counter;
   }

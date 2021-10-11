@@ -16,6 +16,7 @@
     <div class="button" (click) = "menu.openMemoryManager('load')">Load from key</div>
     <div class="button" *ngIf="whatAppAmIIn==='note'" (click) = "menu.switchToCalendar()">Calendar app</div>
     <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.switchToNotepad()">Notes app</div>
+    <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.clearCalendar()">Celar calendar</div>
     <div class="button" (click) = "openLinker()">Linker</div>
     <div class="button" (click) = "menu.displayHelp()">Help</div>
 </div>

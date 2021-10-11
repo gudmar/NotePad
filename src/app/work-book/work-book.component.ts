@@ -83,7 +83,8 @@ export class WorkBookComponent implements OnInit {
        'saveToFile',
        'gotFileWithDataToLoad',
        'saveToLastUsedKey',
-       'pageWasClicked'
+       'pageWasClicked',
+       'clearAllCalendarInputs'
       ]
 
 
@@ -123,6 +124,10 @@ export class WorkBookComponent implements OnInit {
     }
     if (eventType == 'pageWasClicked'){
       if(this.isHiddable) this.shouldBeHidden = true;
+    }
+    if (eventType == 'clearAllCalendarInputs'){
+      this.document.calendarInputs = [];
+      this.calendarInputs = this.document.calendarInputs;
     }
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){

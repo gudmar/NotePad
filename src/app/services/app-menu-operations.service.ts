@@ -20,6 +20,10 @@ export class AppMenuOperationsService {
     if (mode == "load") this.messenger.inform('displayLoadWindow', '')
   }
 
+  clearCalendar(){
+    this.messenger.inform('clearAllCalendarInputs', '');
+  }
+
   saveToLastUsedKey(){
     this.messenger.inform('saveToLastUsedKey', '')
   }

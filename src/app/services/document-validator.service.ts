@@ -19,6 +19,31 @@ export class DocumentValidatorService {
     let c = !this.isValueOfKeyArray(parsedDocument, 'calendarInputs');
     let d = !this.isCalendarValid(parsedDocument.calendarInputs);
     let e = !this.isLinksValid(parsedDocument.links);
+    let f = !this.objectShouldContainKeysAndMightContainKeys(
+      parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'],
+      ['links']);
+    let g = !this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string');
+    let h = !this.isValueOfKeyArray(parsedDocument, 'calendarInputs');
+    let i = !this.isValueOfKeyArray(parsedDocument, 'sheets');
+    let j = !this.isCalendarValid(parsedDocument.calendarInputs);
+    let k = !this.isLinksValid(parsedDocument.links);
+    let l = !this.isNotepadValid(parsedDocument);
+    let m = !this.isValueOfKeyArray(parsedDocument, 'links');
+
+    if (f) this.logError(`
+      DocumentValidator: ${Object.keys(parsedDocument)} has keys other than 'activeSheedId', 'calendarInputs', 'sheets' or 'links`
+    )
+    if (b) this.logError(`DocumentValidator: ${parsedDocument.activeSheedId} is not a string`);
+    if (c) this.logError(`DocumentValidator: calendarInputs is not an array:`); console.dir(parsedDocument);
+    if (d) this.logError(`DocumentValidator: calendar is not valid`); console.dir(parsedDocument);
+    if (e) this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);
+    if (g) this.logError(`DocumentValidator: activeSheetId: ${parsedDocument.activeSheedId} is not a string`);
+    if (i) this.logError(`DocumentValidator: sheets is not an array:`); console.dir(parsedDocument);
+    if (j) this.logError(`DocumentValidator: calendarInputs are not valid:`); console.dir(parsedDocument.calendarInputs);
+    if (k) this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);
+    if (l) this.logError(`DocumentValidator: notepad is not valid:`); console.dir(parsedDocument);
+    if (m) this.logError(`DocumentValidator: links is not an array:`); console.dir(parsedDocument);
+
     // debugger;
     if (!this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
     if (!this.objectShouldContainKeysAndMightContainKeys(
@@ -28,6 +53,7 @@ export class DocumentValidatorService {
     if (!this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'calendarInputs')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'sheets')) return false;
+    if (!this.isValueOfKeyArray(parsedDocument, 'links')) return false;
     if (!this.isCalendarValid(parsedDocument.calendarInputs)) return false;
     // !!! No ! was here !!
     if (!this.isLinksValid(parsedDocument.links)) return false
@@ -59,6 +85,7 @@ export class DocumentValidatorService {
 
     let uniqueIdArray = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(sheetsSubobject, 'uniqueId');
     let doIdsRepete = this.hasStringArrayRepetingValues(uniqueIdArray);
+    if (doIdsRepete) this.logError('SheetValidator: uniqueIds repete')
     if (doIdsRepete) return false;
     return true;
   }
@@ -150,16 +177,21 @@ export class DocumentValidatorService {
     return true;
   }
 
+  logError(message:string){
+    console.log(`%c${this.constructor.name}: ${message}`, 'background-color: red; color:white; padding:5px;border-radius:5px');
+  }
+
   isCalendarValid(calendar: any[]){
     if (calendar.length == 0) return true;
     for (let input of calendar){
       this.objectShouldContainOnlyKeys(input, ['entries'])
       let a = this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])
-      // let b = this.objectShouldContainOnlyKeys(input, ['year'])
-      // let c = this.objectShouldContainOnlyKeys(input, ['entries'])
       let c = this.objectShouldContainOnlyKeys(input, ['entries', 'year'])
       let d = this.validateCalendarYearEntry(input.entries)
-      // debugger
+      if (!a) this.logError(`CalendarValidator:  ${input} contains keys other than 'year' and 'entries'`);
+      if (!c) this.logError(`CalendarValidator: ${input} contains keys other than 'year' and 'entries'`)
+      if (!d) this.logError(`CalendarValidator: year entry not valid: `);
+      console.dir(input.entries)
       if (!this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['entries', 'year'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['year'])) return false;
@@ -170,6 +202,7 @@ export class DocumentValidatorService {
     }
     let uniqueIdArray = this.getArrayOfAllPropertyOccurenceInGetericObject_nested(calendar, 'uniqueId');
     let doIdsRepete = this.hasStringArrayRepetingValues(uniqueIdArray);
+    if (doIdsRepete) this.logError('CalendarValidator: uniqeKeys repete')
     if (doIdsRepete) return false;
     return true;
   }
@@ -179,13 +212,16 @@ export class DocumentValidatorService {
     for (let input of arrayOfEntries){
       // input = Object.values(input)[0]
       let a = this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries']);
-      let b = this.objectShouldContainOnlyKeys(input, ['month']);
-      let c = this.objectShouldContainOnlyKeys(input, ['entries'])
+      // let b = this.objectShouldContainOnlyKeys(input, ['month']);
+      // let c = this.objectShouldContainOnlyKeys(input, ['entries'])
       let e = this.objectShouldContainOnlyKeys(input, ['month', 'entries'])
-      let d:boolean;
-      if (c) {
+      let d:boolean = true;
+      if (e) {
         d = this.validateCalendarMonthEntry(input.entries)
       }
+      if (!e) this.logError(`YearValidator: ${input} has keys other than 'month', 'entries'`)
+      if (!d) this.logError(`YearValidator: Month entries not valid:`)
+      console.dir(input.entries)
       // debugger;
       if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['month'])) return false;
@@ -202,10 +238,13 @@ export class DocumentValidatorService {
     for (let input of object){
       let a = this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])
       let b = this.objectShouldContainOnlyKeys(input, ['day', 'entries'])
-      let c: boolean;
+      let c: boolean = true;
       if (b) {
         c = this.validateCalendarDayEntries(input.entries)
       }
+      if (!b) this.logError(`MonthEntryValidator: ${input} contains keys other than 'day', 'entries'`);
+      if (!c) this.logError(`MonthEntryValidator: Day entries is not valid:`);
+      console.dir(input.entries);
       // debugger
       if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['day', 'entries'])) return false;
@@ -234,7 +273,18 @@ export class DocumentValidatorService {
       let k = (entry.summary.length > 50);
       // debugger;
   
-
+      if (!b) this.logError(`
+        DayEntryValidator: ${entry} contains keys other than 'hours', 'minutes', 'duration', 'summary', 'uniqueId', 'description'`
+      );
+      if (!c) {this.logError(`DayEntryValidator: hours: ${entry.hours} is not a number`);console.dir(entry);}
+      if (!d) {this.logError(`DayEntryValidator: minutes: ${entry.minutes} is not a number`);console.dir(entry);}
+      if (!e) {this.logError(`DayEntryValidator: duration: ${entry.duration} is not a number`);console.dir(entry);}
+      if (!f) {this.logError(`DayEntryValidator: summary: ${entry.summary} is not a string`);console.dir(entry);}
+      if (!g) {this.logError(`DayEntryValidator: description: ${entry.description} is not a stirng`);console.dir(entry);}
+      if (!h) {this.logError(`DayEntryValidator: uniqueId: ${entry.uniqueId} is not a stirng`);console.dir(entry);}
+      if (i)  {this.logError(`DayEntryValidator: hours:  ${entry.hours} is > 24 or < 0`);console.dir(entry);}
+      if (j)  {this.logError(`DayEntryValidator: minutes: ${entry.minutes} is > 59 or < 0`);console.dir(entry);}
+      if (k)  {this.logError(`DayEntryValidator: summary: ${entry.summary} length of summary is > 50`);console.dir(entry);}
 
 
       if (!this.objectShouldContainOnlyKeys(entry, 
@@ -326,10 +376,14 @@ export class DocumentValidatorService {
   }
 
 hasStringArrayRepetingValues(arr: string[]){
+  let that = this;
   let countElements = function(element: string, array: string[]){
     let counter = 0;
     for (let item of array){
-      if (item === element) {counter++; console.log(item);}
+      if (item === element) {
+        counter++; 
+        if (counter > 1) that.logError(`Ids repete: ${item}`)
+      }
     }
     return counter;
   }

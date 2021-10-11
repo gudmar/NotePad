@@ -51,6 +51,10 @@ align-items: center; */
 .content-holder{
     font-family: Arial, Helvetica, sans-serif;
     display: inline-block;
+    position: relative;
+    width: 100%;
+    min-height: calc(100% - 30px);
+    
 }
 movable-point:nth-child(1){
     /* position: relative; */

@@ -14,6 +14,7 @@ import { CommunicationService } from '../services/communication.service'
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 import { connect } from 'http2';
 import { ConcatSource } from 'webpack-sources';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 @Component({
   selector: 'note',
@@ -24,12 +25,10 @@ import { ConcatSource } from 'webpack-sources';
 export class NoteComponent implements OnInit {
   private _isActive: boolean = false;
   @Input() initialWidth: number = 100;
-  // @Input() initialHeight: number = 100;
   _initialHeight = 100;
   @Input() set initialHeight(val: number){
     this._initialHeight  = val;
     this.resizeNote();
-    console.log(val)
   }
   noteToggler = true;
   resizeNote() {
@@ -80,16 +79,11 @@ export class NoteComponent implements OnInit {
   thisNoteWasClicked($event: any){
     this.messenger.inform('noteWasClicked', this.uniqueId)
     $event.stopPropagation();
-    console.dir($event.target)
     let targetClassList = $event.target.classList;
     if (targetClassList.contains('copyable')){
-      console.log('Hurrraaaa');
       (navigator as any).clipboard.writeText($event.target.innerText);
       this.messenger.inform('displayMessageAndDoNotDisturb', {message:'Copied to clipboard'})
     }
-
-
-    // onclick="function(e){navigator.clipboard.writeText(e.target.innerText)}
   }
 
 
@@ -137,7 +131,7 @@ export class NoteComponent implements OnInit {
   changeNoteHeight(event:any){
     if (event.keyCode != 17){
       let newHeight = this.recalculatedNoteSize();
-      console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
+      // console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
       if (newHeight > this.initialHeight) {
         this.messenger.inform('noteContentChanged', {
           objectId: this.uniqueId,
@@ -145,18 +139,12 @@ export class NoteComponent implements OnInit {
         })
       }  
     }
-    // if (event.keyCode == 17){
-    //   let t = setTimeout(()=>{this.isEditable = true; clearTimeout(t)});
-    //   console.log('isEditable' + this.isEditable)
-    // }
-    console.log(event)
   }
 
   @HostListener('keydown.control.d', ['$event'])
   deleteHighlitedText(event:any){
     event.stopPropagation();
     event.preventDefault();
-    console.dir(event)
     this.replaceSelectedText('');
   }
   @HostListener('keydown.control.m', ['$event'])
@@ -170,39 +158,14 @@ export class NoteComponent implements OnInit {
       event.stopPropagation();
       event.preventDefault();
       let content = this.getSelectedText();
-      console.log(event)
       if (content != ''){
-        // document.execCommand('createLink', true, `${content}`)
-        // `)
         let linkElement = this.createLinkElement(<string>content, <string>content);
         this.replaceSelectedTextWithElement(linkElement);
       }
       let noteContent = this.contentHolder.nativeElement.innerHTML;
-      console.log(noteContent)
       this.content = noteContent;
     }
   }
-
-  // @HostListener('keydown', ['$event'])
-  // // NIE MOŻE BYĆ, bo ctrl + b nie zadziala
-  // activateEditable(event: any){
-  //   console.log(event.ctrlKey);
-  //   if (event.ctrlKey){
-  //     let t = setTimeout(()=>{this.isEditable = false; });
-  //     // this.isEditable = false;
-  //   }
-  //   console.log('isEditable' + this.isEditable)
-  // }
-
-
-  // @HostListener('keyup', ['$event'])
-  // disactivateEditable(event: any){
-  //   console.log(event.ctrlKey);
-  //   if (event.ctrlKey){
-  //     // let t = setTimeout(()=>{this.isEditable = true; clearTimeout(t)});
-  //   }
-  //   console.log('isEditable' + this.isEditable)
-  // }
 
   getSelectedText(){
     if (window.getSelection){
@@ -214,10 +177,7 @@ export class NoteComponent implements OnInit {
   replaceSelectedWithCopyTextElement(){
     let sel = window.getSelection();
     if (sel != null){
-      console.log(sel);
       let copyableElement = this.htmlToElement(this.getCopyTextElement(sel.toString()));
-      console.log(copyableElement)
-      let copyableElement1 = sel.getRangeAt(0).createContextualFragment(this.getCopyTextElement(sel.toString()))
       this.replaceSelectedTextWithElement(<HTMLElement>copyableElement)
     } else {
       console.warn('No text selected, cannot add copyable element')
@@ -226,7 +186,7 @@ export class NoteComponent implements OnInit {
 
   getCopyTextElement(textToCopy:string){
     return `
-      <div class="copyable">${textToCopy}</div>
+      <div class="copyable">${textToCopy}</div><span>&nbsp;</span>
     `
   }
 
@@ -234,7 +194,7 @@ export class NoteComponent implements OnInit {
     let template = document.createElement('template');
     htmlString = htmlString.trim();
     template.innerHTML = htmlString;
-    return template.content.firstChild;
+    return template.content.cloneNode(true);
   }
 
   replaceSelectedText(replacementText:string){
@@ -247,16 +207,8 @@ export class NoteComponent implements OnInit {
         range.insertNode(document.createTextNode(replacementText));
       }
     }
-    // } else if (document.selection && document.createRange ) {
-    //   range = document.selection.createRange();
-    //   range.text = replacementText;
-    // }
   }
   createLinkElement(linkName:string, link:string){
-    // let element = document.createElement('button');
-    // element.onclick=function(){window.open(link, "_blank")}
-    // element.innerText=linkName;
-    // debugger;
     let element = document.createElement('a');
     element.href = link.toString().startsWith('http')?link:'//'+link;
     element.setAttribute('contentEditable','true');

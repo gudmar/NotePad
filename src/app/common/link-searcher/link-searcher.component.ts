@@ -53,7 +53,7 @@ export class LinkSearcherComponent implements OnInit {
     let stringToFindIn = linkDescriptor.topic + ' ' + linkDescriptor.description;
     let valueToFind = this.filter;
     // console.log(linkDescriptor)
-    console.log(this.filter)
+    // console.log(this.filter)
     // console.log(this.doesStringContain(stringToFindIn, valueToFind))
     return this.doesStringContain(stringToFindIn, valueToFind)
   }

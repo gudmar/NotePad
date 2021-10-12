@@ -15,7 +15,8 @@ import { resolve } from 'dns';
 export class MonthViewComponent implements OnInit {
   private _year: number = 0;
   uniqueId: string = 'month-view-id'
-  @Input() events: any[] = [];
+  private _events: any[] = [];
+  // @Input() events: any[] = [];
   @Input() set year(val: number) {
     if (val != this._year && this.validator.isYearValid(val)){
       // this.communicator.inform('showHideWaitingSpinner', 'show')
@@ -35,11 +36,16 @@ export class MonthViewComponent implements OnInit {
   // } = {monthIndex: 0, monthName: '', weeks: []}
 
   @Input() months: any[] = []
+  @Input() set events(val: any[]) {
+    this._events = val; 
+    if (this.year > 999 && this.year < 3001) this.refreshYear();
+  }
+  get events() {return this._events}
 
   constructor(
     private calendarProvider: CalendarObjectProviderService,
     private communicator: CommunicationService,
-    private eventManater: EventManagerService,
+    private eventManager: EventManagerService,
     private storageManager: StorageManagerService,
     private validator: ValidatorService
   ) { }
@@ -65,14 +71,12 @@ export class MonthViewComponent implements OnInit {
     if (eventType == 'loadDocument') { 
       let newDocument = this.storageManager.loadContent(data);
 
-      // this.events = this.eventManater.fetchYearEvents(this.year, newDocument.calendarInputs).entries
+      // this.events = this.eventManager.fetchYearEvents(this.year, newDocument.calendarInputs).entries
       this.events = newDocument.calendarInputs
       this.refreshYear();
     }
     if (eventType == 'switchTaskViewerToNextDayDifferentYear') {
       this.year = data.year;
-      // console.log(this.year)
-      // console.log(data)
       this.communicator.infromAfter(
         'switchTaskViewerToNextDayOfTheSameYear', 
         data, this.reloaded.call(this, data.day, data.month, data.year)
@@ -84,8 +88,6 @@ export class MonthViewComponent implements OnInit {
     let to = new Promise((resolve, reject) => {setTimeout(reject, 5000)})
     let isResolved = new Promise((resolve, reject)=>{
       let that = this;
-      // let eT = 'yearReloaded';
-      // console.log(newYear)
       let et = 'dayComponentCreated';
       function isResolved(eventType: string, data:any){
         if (eventType == et){
@@ -93,8 +95,6 @@ export class MonthViewComponent implements OnInit {
           if (data.day == newDay, data.month == newMonth, data.year == newYear)
           {
             that.communicator.unsubscribe(id);
-            // clearTimeout(to);
-            // console.log('RESOLVED')
             resolve('');  
           }
         }
@@ -107,48 +107,23 @@ export class MonthViewComponent implements OnInit {
 
   refreshYear(){
     this.months = this.calendarProvider.getYearAsObject(this.year).months
-    // console.dir(this.months)
   }  
 
   getMonthEvents(year: number, month: number){
-    
-    return this.eventManater.fetchMonthEvents(year, month, this.events)
+    return this.eventManager.fetchMonthEvents(year, month, this.events)
   }
-
-  // async refreshYear(){
-
-  //   this.turnOnSpinner()
-  //     .then((v: any)=>{
-  //       return this.calendarProvider.getYearAsObjectAsync(this.year)
-  //     })
-  //     .then((v: any[])=>{
-  //       this.months = v; 
-  //       this.turnOffSpinner()
-  //     })
-  //   // let resolved = await this.calendarProvider.getYearAsObjectAsync(this.year);
-  //   // this.months = resolved.months
-  //   // setTimeout(()=>{this.communicator.inform('show/hideSpinner', false)})
-  // }
-
-  // async turnOnSpinner(){
-  //   return new Promise((resolve, reject) => {
-  //     // setTimeout(()=>{this.communicator.inform('show/hideSpinner', true)})
-  //     resolve(setTimeout(()=>{this.communicator.inform('show/hideSpinner', true)}))
-  //   })
-  // }
-  // async turnOffSpinner(){
-  //   return new Promise((resolve, reject) => {
-  //     // setTimeout(()=>{this.communicator.inform('show/hideSpinner', false)})
-  //     resolve(setTimeout(()=>{this.communicator.inform('show/hideSpinner', false)}))
-  //   })
-  // }
+  get arrayOfEventsByMonth(){
+    let arrayOfEvents = [];
+    for(let month = 0; month < 12; month++){
+      arrayOfEvents.push(this.getMonthEvents(this.year, month))
+    }
+    return arrayOfEvents;
+  }
 
   initializeWithPresentYear(){
     let currentDate = Date.now();
     let dateObj = new Date(currentDate);
     this.year = dateObj.getFullYear();
-    console.log(this.year)
-    // this.months = this.calendarProvider.getYearAsObject(this.year).months;
   }
 
   incrementYear(step: number){
@@ -157,19 +132,8 @@ export class MonthViewComponent implements OnInit {
 
   changeYear(data: any){
     this.year = parseInt(data.target.innerText);
-    // if (this.year.toString() != data.target.innerText) data.target.innerText = this.year;
   }
 
-  // isYearValid(valueToTest: number ){
-  //   let digitTestPattern = new RegExp("\\d{4}")
-  //   let otherTestPattern = new RegExp('\\D')
-  //   let s = digitTestPattern.test(valueToTest.toString())
-  //   let w = otherTestPattern.test(valueToTest.toString())
-  //   if (!digitTestPattern.test(valueToTest.toString())) return false
-  //   if (otherTestPattern.test(valueToTest.toString())) return false
-  //   if (valueToTest > 3000) return false
-  //   return true;
-  // }
   switchToNotes(){
     this.communicator.inform('switchToNotes', '')
   }
@@ -181,17 +145,7 @@ export class MonthViewComponent implements OnInit {
 
   }
 
-  test(){
-    console.dir(this.events)
-  }
+  // test(){
+  //   console.dir(this.events)
+  // }
 }
-
-
-// <div class="year center">{{year}}</div>
-// <div class="arrow ceter">&gt;&gt;</div>
-// </div>
-// <div class="calendar-content">
-// <month *ngFor="month of months"
-//     [year] = "year"
-//     [monthDescriptor] = "getMonthDescriptor(month)"
-// >

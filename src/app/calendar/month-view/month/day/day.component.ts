@@ -77,11 +77,7 @@ export class DayComponent implements OnInit {
     }
     if (eventType == 'switchTaskViewerToNextDayOfTheSameYear'){
       if (data.day == this.day && data.month == this.month && data.year == this.year){
-        // console.log(this.year + ' ' + this.month + ' ' + this.year)
         this.onClick();
-        // console.log(this.dayDescriptor)
-        // console.log('!=')
-        // debugger
       } 
     }
     if (eventType == 'calendarEventsForDay'){
@@ -110,11 +106,3 @@ export class DayComponent implements OnInit {
   }
 
 }
-
-
-    // [dBgColor]="getBgColorDependOnEventsNumber()" 
-    //     <div *ngIf="events.length > 0" 
-                        
-    //         {{events.length>9?'9+':events.length}}
-    // <div class="day-number">{{monthDayIndex}}</div>
-

@@ -1,8 +1,6 @@
 <div class="month-view-wrapper center">
     <div class="year-switch">
         <expandable-menu [whatAppAmIIn]="'calendar'"></expandable-menu>
-        <!-- <div class="arrow button center" (click)="displaySaveWindow()"><div>Save</div></div> -->
-        <!-- <div class="arrow center" (click)="jumpToDate()"><div>jump</div></div> -->
         <div class="arrow center" (click)="incrementYear(-1)"><div>&lt;&lt;</div></div>
         <div class="year center" 
             contenteditable="true" 
@@ -12,14 +10,12 @@
         >
         </div>
         <div class="arrow center" (click)="incrementYear(1)"><div>&gt;&gt;</div></div>
-        <!-- <div class="arrow button center" (click)="switchToNotes()"><div>Notes</div></div>
-        <div class="arrow button center" (click)="test()"><div>Test</div></div> -->
     </div>
     <div class="calendar-content">
-        <month *ngFor="let month of months"
+        <month *ngFor="let month of months; index as i"
             [year] = "year"
             [monthDescriptor] = "month"
-            [events] = "getMonthEvents(year, month)"
+            [events] = "arrayOfEventsByMonth[i]"
             [currentYear] = "year"
         >
         </month>

@@ -29,20 +29,21 @@ export class DocumentValidatorService {
     let k = !this.isLinksValid(parsedDocument.links);
     let l = !this.isNotepadValid(parsedDocument);
     let m = !this.isValueOfKeyArray(parsedDocument, 'links');
+    let n = !this.keyValueShouldBeTypeOf(parsedDocument, 'links', 'undefined');
 
     if (f) this.logError(`
       DocumentValidator: ${Object.keys(parsedDocument)} has keys other than 'activeSheedId', 'calendarInputs', 'sheets' or 'links`
     )
     if (b) this.logError(`DocumentValidator: ${parsedDocument.activeSheedId} is not a string`);
-    if (c) this.logError(`DocumentValidator: calendarInputs is not an array:`); console.dir(parsedDocument);
-    if (d) this.logError(`DocumentValidator: calendar is not valid`); console.dir(parsedDocument);
-    if (e) this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);
-    if (g) this.logError(`DocumentValidator: activeSheetId: ${parsedDocument.activeSheedId} is not a string`);
-    if (i) this.logError(`DocumentValidator: sheets is not an array:`); console.dir(parsedDocument);
-    if (j) this.logError(`DocumentValidator: calendarInputs are not valid:`); console.dir(parsedDocument.calendarInputs);
-    if (k) this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);
-    if (l) this.logError(`DocumentValidator: notepad is not valid:`); console.dir(parsedDocument);
-    if (m) this.logError(`DocumentValidator: links is not an array:`); console.dir(parsedDocument);
+    if (c) {this.logError(`DocumentValidator: calendarInputs is not an array:`); console.dir(parsedDocument);}
+    if (d) {this.logError(`DocumentValidator: calendar is not valid`); console.dir(parsedDocument);}
+    if (e) {this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);}
+    if (g) {this.logError(`DocumentValidator: activeSheetId: ${parsedDocument.activeSheedId} is not a string`);}
+    if (i) {this.logError(`DocumentValidator: sheets is not an array:`); console.dir(parsedDocument);}
+    if (j) {this.logError(`DocumentValidator: calendarInputs are not valid:`); console.dir(parsedDocument.calendarInputs);}
+    if (k) {this.logError(`DocumentValidator: links is not valid:`); console.dir(parsedDocument);}
+    if (l) {this.logError(`DocumentValidator: notepad is not valid:`); console.dir(parsedDocument);}
+    if (m && n) {this.logError(`DocumentValidator: links is not an array, it is ${typeof(parsedDocument.links)}`); console.dir(parsedDocument);}
 
     // debugger;
     if (!this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
@@ -53,7 +54,8 @@ export class DocumentValidatorService {
     if (!this.keyValueShouldBeTypeOf(parsedDocument, 'activeSheetId', 'string')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'calendarInputs')) return false;
     if (!this.isValueOfKeyArray(parsedDocument, 'sheets')) return false;
-    if (!this.isValueOfKeyArray(parsedDocument, 'links')) return false;
+    // if (!this.isValueOfKeyArray(parsedDocument, 'links')) return false;
+    if (m && n) return false;
     if (!this.isCalendarValid(parsedDocument.calendarInputs)) return false;
     // !!! No ! was here !!
     if (!this.isLinksValid(parsedDocument.links)) return false
@@ -190,8 +192,7 @@ export class DocumentValidatorService {
       let d = this.validateCalendarYearEntry(input.entries)
       if (!a) this.logError(`CalendarValidator:  ${input} contains keys other than 'year' and 'entries'`);
       if (!c) this.logError(`CalendarValidator: ${input} contains keys other than 'year' and 'entries'`)
-      if (!d) this.logError(`CalendarValidator: year entry not valid: `);
-      console.dir(input.entries)
+      if (!d) {this.logError(`CalendarValidator: year entry not valid: `);console.dir(input.entries);}
       if (!this.objectShouldNotContainKeysOtherThen(input, ['year', 'entries'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['entries', 'year'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['year'])) return false;
@@ -220,8 +221,7 @@ export class DocumentValidatorService {
         d = this.validateCalendarMonthEntry(input.entries)
       }
       if (!e) this.logError(`YearValidator: ${input} has keys other than 'month', 'entries'`)
-      if (!d) this.logError(`YearValidator: Month entries not valid:`)
-      console.dir(input.entries)
+      if (!d) {this.logError(`YearValidator: Month entries not valid:`); console.dir(input.entries)}
       // debugger;
       if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['month'])) return false;
@@ -243,8 +243,7 @@ export class DocumentValidatorService {
         c = this.validateCalendarDayEntries(input.entries)
       }
       if (!b) this.logError(`MonthEntryValidator: ${input} contains keys other than 'day', 'entries'`);
-      if (!c) this.logError(`MonthEntryValidator: Day entries is not valid:`);
-      console.dir(input.entries);
+      if (!c) {this.logError(`MonthEntryValidator: Day entries is not valid:`);console.dir(input.entries);}
       // debugger
       if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['day', 'entries'])) return false;

@@ -28,7 +28,7 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
-  application: string = 'notes'
+  application: string = 'calendar'
   // application: string = 'notes' //'calendar'
   listOfSheets:any[] = this.document.sheets;
   uniqueId: string = "workBookId"
@@ -142,7 +142,7 @@ export class WorkBookComponent implements OnInit {
         this.changeNoteContent(copyOfDocument, activeNoteData.content, activeNoteData.uniqueId)
       }
       this.storageManager.saveContentAs(data, this.document)
-      console.dir(this.document)
+      // console.dir(this.document)
     }
     if (eventType === 'saveToLastUsedKey'){
       let activeNoteData = this.activeNoteGetter.getActiveNoteData(this.messenger);
@@ -155,11 +155,6 @@ export class WorkBookComponent implements OnInit {
     if (eventType == 'LoadFromFile'){
       this.reloadDocument(data)
     }
-    // if (eventType == 'gotFileWithDataToLoad'){
-    //   let validatedData = this.documentValidator.validateAsString(data);
-    //   if (validatedData == null) this.messenger.inform('informUser', 'Passed file is not valid')
-    //   else (console.log(validatedData))
-    // }
     if (eventType == 'switchToCalendar'){
       this.application = 'calendar'
     }
@@ -221,7 +216,6 @@ export class WorkBookComponent implements OnInit {
     this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;
     this.initializeNewSheet(this.activeSheetId);
-    // console.dir(this.document)
     this.checkIfmenuNeedsToBeHidden();
 
   }
@@ -254,8 +248,6 @@ export class WorkBookComponent implements OnInit {
   checkIfmenuNeedsToBeHidden(){
     this.isHiddable = this.windowSize.isWindowTooNarrow();
     this.shouldBeHidden = this.isHiddable;
-    console.log(this.isHiddable)
-    if (this.isHiddable) console.log('isHiddable')
   }
 
   showMenu(){

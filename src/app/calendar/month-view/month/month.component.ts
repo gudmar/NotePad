@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Z_PARTIAL_FLUSH } from 'zlib';
 import { CommunicationService } from '../../../services/communication.service';
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'month',
@@ -8,7 +8,12 @@ import { CommunicationService } from '../../../services/communication.service';
   styleUrls: ['./month.component.css']
 })
 export class MonthComponent implements OnInit {
+  // private _events: any[]=[];
   @Input() events: any[] = []
+  // @Input() set events(val: any[]){
+  //   this._events = val;
+  // }
+  // get events() {return this._events}
   @Input() currentYear: number = 0;
   @Input() monthDescriptor: {
     monthIndex: number,
@@ -33,6 +38,20 @@ export class MonthComponent implements OnInit {
       return that.weeks.findIndex(singleMatch)
     }
     return this.weeks[getDays(indexOfCw)].days
+  }
+
+  get dayDescriptors(){
+    const maxNrOfCwInYear = 53;
+    let output = [];
+    function doesCwBelongToThinMonth(cwIndex: number, cwIndexes: number[]){
+      return cwIndexes.findIndex((item:any)=>{return item == cwIndex}) > -1;
+    }
+    for (let cw = 0; cw <= maxNrOfCwInYear; cw++){
+      if (doesCwBelongToThinMonth(cw, this.cwIndexes))
+        output.push(this.getDays(cw));
+      else output.push(null);
+    }
+    return output;
   }
 
   doesDayBelongToCurrentMonth(dayMonthIndex: number, currentMonthIndex: number){

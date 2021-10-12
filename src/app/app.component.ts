@@ -23,19 +23,19 @@ export class AppComponent {
       if (eventType == 'showHideWaitingSpinner'){
         let on = ()=>{this.shouldDisplayWaitingSpinner = true;}
         let off = ()=>{this.shouldDisplayWaitingSpinner = false;}
-        if (data == 'show') this.callAsAsync(on.bind(this))
-        if (data == 'hide') this.callAsAsync(off.bind(this))
+        // if (data == 'show') this.callAsAsync(on.bind(this))
+        // if (data == 'hide') this.callAsAsync(off.bind(this))
       }
     }
 
-    callAsAsync(cb: Function){
-      let that = this;
-      let to = setTimeout(()=>{
-        cb();
-        clearTimeout(to)
-        console.log(that.shouldDisplayWaitingSpinner)
-      })
-    }
+    // callAsAsync(cb: Function){
+    //   let that = this;
+    //   let to = setTimeout(()=>{
+    //     cb();
+    //     clearTimeout(to)
+    //     console.log(that.shouldDisplayWaitingSpinner)
+    //   })
+    // }
 
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent){

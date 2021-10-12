@@ -35,7 +35,6 @@ export class CalendarComponent implements OnInit {
       this.messageHandler.bind(this), 
       ['provideCalendarEvents', 'provideCalendarEventsForSingleDay','loadDocument','loadFreshDocument','LoadFromFile']);
     this.calendarProvider.injectEvents(this.events)
-    console.dir(this.events)
   }
 
 
@@ -68,10 +67,6 @@ export class CalendarComponent implements OnInit {
       }
       
     }
-  }
-
-  ngAfterInit(){
-    console.log(this.events)
   }
 
 }

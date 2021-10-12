@@ -10,7 +10,7 @@
                 <tbody>
                     <tr *ngFor = "let cw of cwIndexes">
                         <td class = "clicable center" (click) = "displayWeekView(cw)">{{cw}}</td>
-                        <td *ngFor = "let day of getDays(cw)">
+                        <td *ngFor = "let day of dayDescriptors[cw]">
                             <day [dayDescriptor]="day" 
                 [isItCueentMonthDay] = 'doesDayBelongToCurrentMonth(day.month, monthDescriptor.monthIndex) '>
                             </day>

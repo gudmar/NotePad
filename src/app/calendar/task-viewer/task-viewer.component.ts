@@ -19,7 +19,7 @@ export class TaskViewerComponent implements OnInit {
   dayWeekIndex: number = 0;
   uniqueId: string = 'taskViewerId'
   allCalendarEvents: any;
-  get shouldDisplayMobileVersion() {return this.windowSizeEvaluator.isWindowTooNarrow(700)}
+  get shouldDisplayMobileVersion() {return this.windowSizeEvaluator.isWindowTooNarrow(750)}
   @Input() day: number = 0;
   @Input() month: number = 0;
   @Input() year: number = 0;

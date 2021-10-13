@@ -3,6 +3,7 @@
     --light-input-background-color: #f6f8fa;
     --input-light-color: #50575e;
     --input-light-background-color-active: #f0fff0;
+    --button-border-radius: 63% 37% 67% 33% / 34% 54% 46% 66%;
 }
 body, html{
     height: 100%;
@@ -15,6 +16,29 @@ center{
     align-items: center;
     justify-content: center;
 }
+.explain:after{
+    position: absolute;
+    bottom: -120%;
+    left: 0;
+    content: attr(data-explain);
+    padding: 10px;
+    background-color: var(--light-input-background-color);
+    border-radius: 5px;
+    border: solid thin var(--light-border);
+    display: none;
+    /* opacity: 0; */
+    color: black;
+    font-size: 1rem;
+    font-weight: normal;
+    z-index: 10;
+    transition: 0s opacity;
+}
+.explain:hover::after{
+    display: block;
+    transition-delay: 1s;
+    transition: 1s opacity;
+    opacity: 1;
+} 
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
@@ -48,7 +72,7 @@ center{
     line-height: 2rem;
     text-align: center;
     transition: 0.3s;
-    border-radius: 63% 37% 67% 33% / 34% 54% 46% 66%;
+    border-radius: var(--button-border-radius);
     border: solid black thin;
 }
 .button.disabled{

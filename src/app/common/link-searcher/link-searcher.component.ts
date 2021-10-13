@@ -13,7 +13,7 @@ import { ConcatSource } from 'webpack-sources';
 export class LinkSearcherComponent implements OnInit {
   @Input() linkDescriptorArray: any[] = [];
   filter: string = '';
-  shouldBeDisplayed: boolean = true;
+  shouldBeDisplayed: boolean = false;
   currentlyVisibleLinks: any[] = [];
   searchFilter: string = '';
   uniqueId: string = 'linkSeracherId'

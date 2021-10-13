@@ -7,7 +7,9 @@
             </div>
             <div class="field column">
                 <div class="label">Title</div>
-                <div #topicBox class="input" placeholder="title" contenteditable="true" 
+                <div ValidateSummary [ifNotValid] ="lastTopic" [maxValue] = "20"
+                    #topicBox class="input" placeholder="title" contenteditable="true" 
+                    (keyup) = "updateLastValidTopic($event)"
                     [innerHtml] = "topic"
                 >
                 </div>

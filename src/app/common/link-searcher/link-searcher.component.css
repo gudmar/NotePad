@@ -22,6 +22,7 @@
     padding: 7px;
     border-radius: 7px;
     border: thin solid var(--light-border);
+    overflow: auto;
 }
 .navigation-section{
     width :100%;

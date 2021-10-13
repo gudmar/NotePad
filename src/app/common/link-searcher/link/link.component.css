@@ -1,6 +1,11 @@
+:host{
+    position: relative;
+    width: 48%;
+}
 .wrapper{
     box-sizing: border-box;
     position: relative;
+    width: 45%;
     width: 100%;
     max-height: 100px;
     border-radius: 5px;
@@ -10,25 +15,62 @@
     font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 20px;
 }
+a{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    height: 2rem;
+
+}
 a:link {
     text-decoration: none;
+    color: var(--input-light-color);
   }
   
   a:visited {
     text-decoration: none;
+    color: var(--input-light-color);
   }
   
   a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    color: var(--input-light-color);
   }
   
   a:active {
-    text-decoration: underline;
+    text-decoration: none;
+    color: var(--input-light-color);
+  }
+  a:before{
+      position: absolute;
+      top:0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      transform: scaleX(0);
+      color: white;
+      background-color: rgb(220,220,220);
+      transition-duration: 0.3s;
+      transform-origin: 0%;
+      content: "";
+      z-index: -1;
+  }
+  a:hover::before{
+    transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+    transform: scaleX(1);
   }
 .topic{
+    box-sizing: border-box;
     font-weight: bold;
     position: relative;
-    height: 1.2rem;
+    line-height: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: calc(100% - 4.7rem);
 }
 .description{
     text-decoration: none;
@@ -47,4 +89,94 @@ a:link {
     text-align: center;
     border: solid thin var(--light-border);
     cursor: pointer;
+    background-color: white;
+}
+.edit-button>span{
+    position: relative;
+    bottom: 0.3rem;
+}
+.rewind-button{
+    position: relative;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    top: 0;
+    margin-right: 1rem;
+    background-color: rgb(220,220,220);
+    mix-blend-mode: normal;
+    color: rgb(180,180,180);
+}
+.rewind-button>span{
+    /* color: rgb(180,180,180); */
+    mix-blend-mode: normal;
+}
+a:hover>.rewind-button{
+    background-color: white;
+}
+
+
+a:hover>.rewind-button>span{
+    color: transparent;
+    transition: 0.2s;
+}
+a:hover>.rewind-button>span::before{
+    animation: animateButtonBefore 1s linear infinite;
+    color: white;
+    color: rgb(220,220,220);
+}
+a:hover>.rewind-button>span::after{
+    animation: animateButtonAfter 1s linear infinite;
+    animation-delay: 0.5s;
+    color: white;
+    color: rgb(220,220,220);
+}
+
+@media only screen and (max-width: 1500px){
+    :host{
+        position: relative;
+        width: 100%;
+    }
+    .wrapper{
+
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .wrapper{
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .wrapper{
+        width: 95%;
+        height: auto;
+        min-height: 75px;
+        max-height: 200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .topic{
+        font-size: 1rem;
+    }
+    .topic:hover{
+        background-color: white;
+        animation-delay: 0.5s;
+        text-overflow: clip;
+        white-space: normal;
+        height: auto;
+        padding: 10px;
+        z-index: 10;
+        border-radius: 5px;
+    }
+    .description{
+        height: auto;
+        min-height: calc(75px - 1.2rem);
+        max-height: calc(200px - 1.2rem);
+    }
 }

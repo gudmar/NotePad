@@ -74,3 +74,37 @@
     height: 5rem;
     overflow: auto;
 }
+
+
+@media only screen and (max-width: 500px){
+    .wrapper{
+        width: 100%;
+        height: 100%;
+    }
+    .input{
+        height: 3rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: 95%;
+    }
+    .input-big{
+        height: 8rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .label{
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+    .close-button{
+        position: relative;
+        width: 2rem;
+        height: 2rem;
+        top: 10px;
+        right: 10px;
+        line-height: 2rem;
+    }
+    .row{
+        margin-left: 1rem;
+    }
+}

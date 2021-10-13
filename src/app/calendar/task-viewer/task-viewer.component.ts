@@ -80,10 +80,22 @@ export class TaskViewerComponent implements OnInit {
     this.modifyIfValid(uniqueId, 'duration', event.target.innerText, 
     this.validator.isDurationValid.bind(this.validator,event.target.innerText)
   )}
+
+  lastSummary: string = '';
+
+  setLastTaskSummary(event:any){
+    let isValid = this.validator.isSummaryValid(event.target.innerText);
+    if (isValid) this.lastSummary = event.target.innerText;
+  }
   setTaskSummary(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'summary', event.target.innerText, 
+    this.modifyIfValid(uniqueId, 'summary', event.target.innerText,
     this.validator.isSummaryValid.bind(this.validator,event.target.innerText)
-  )}
+  )
+  }
+  // updateLastValidTopic(event:any){
+  //   let isValid = this.validator.isSummaryValid(event.target.innerText, this.topicLength);
+  //   if (isValid) this.lastTopic = event.target.innerText;
+  // }
   setTaskDescription(event: any, uniqueId: string){
     this.modifyIfValid(uniqueId, 'description', event.target.innerText, ()=>{return true;})
   }

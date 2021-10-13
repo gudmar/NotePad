@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef, Input } from '@angular/core';
 import { CommunicationService } from '../../../services/communication.service';
+import { ValidatorService } from '../../../calendar/services/validator.service';
 
 @Component({
   selector: 'add-edit-link-form',
@@ -9,7 +10,7 @@ import { CommunicationService } from '../../../services/communication.service';
 export class AddEditLinkFormComponent implements OnInit {
   
 
-  constructor(private communicator: CommunicationService) { 
+  constructor(private communicator: CommunicationService,private validator: ValidatorService) { 
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['openAddLinkForm', 'openEditLinkForm'])
   }
   
@@ -17,6 +18,7 @@ export class AddEditLinkFormComponent implements OnInit {
   get boxTitle() { return this.type == 'Add'?'Add link component':"Edit link component"}
   uniqueId = 'addEditLinkFromId';
   private _data: any[]=[];
+  topicLength: number = 20;
   @Input() set data(val:any[]){
     this._data=val;
     // this.topic = val.topic;
@@ -30,8 +32,18 @@ export class AddEditLinkFormComponent implements OnInit {
   descriptionBox: any;
   @ViewChild('linkBox')
   linkBox: any;
-  shouldBeDisplayed: boolean = false;
+  private _shouldBeDisplayed: boolean = false;
+  set shouldBeDisplayed(val: boolean){
+    this._shouldBeDisplayed = val;
+    if (val == false) {
+      this.description = '';
+      this.topic = '';
+      this.link = '';
+    }
+  }
+  get shouldBeDisplayed() {return this._shouldBeDisplayed}
   topic: string = '';
+  lastTopic: string = this.topic;
   description: string = '';
   link: string = '';
   handleMessages(eventType:string, data:any){
@@ -50,12 +62,26 @@ export class AddEditLinkFormComponent implements OnInit {
     }
 
   }
+  @HostListener('keyup', ['$event'])
+    setContentIfValid(event:any){
+      let currentContent
+    }
   // getUpdatedTopic(event:any){this.topic = event.target.innerText}
   // getUpdatedDescription(event:any){this.description = event.target.innerText}
   // getUpdatedLink(event:any){this.link = event.target.innerText;}
   getCorrectLink(linkValue:string){
     return linkValue.toString().startsWith('http')||linkValue.toString().startsWith('file')?linkValue:'//'+linkValue
   }
+
+  updateLastValidTopic(event:any){
+    let isValid = this.validator.isSummaryValid(event.target.innerText, this.topicLength);
+    if (isValid) this.lastTopic = event.target.innerText;
+  }
+
+
+
+
+
   onSubmit() {
     if (this.type == 'Add'){
       let linkValue = this.linkBox.nativeElement.innerText;

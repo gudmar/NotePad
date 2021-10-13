@@ -28,9 +28,9 @@ export class ValidatorService {
     })
   }
 
-  setColorsToSummary(event: any){
+  setColorsToSummary(event: any, maxVal: number = 50){
     setTimeout(()=>{
-      let isValid = this.isSummaryValid(event.target.innerText);
+      let isValid = this.isSummaryValid(event.target.innerText, maxVal);
       if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
       if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
     })
@@ -103,8 +103,8 @@ export class ValidatorService {
     }
     event.target.style.backgroundColor = '';
   }
-  setEndSummary(event: any, valueIfNotValid: any){
-    let isValid = this.isSummaryValid(event.target.innerText);
+  setEndSummary(event: any, valueIfNotValid: any, maxVal= 50){
+    let isValid = this.isSummaryValid(event.target.innerText, maxVal);
     if (!isValid){
       event.target.innerText = valueIfNotValid;
     }
@@ -167,14 +167,15 @@ export class ValidatorService {
   isDurationValid(durationAsNumberInMinutes: number){
     return this.durationValidationFunction(durationAsNumberInMinutes)
   }
-  isSummaryValid(text: string){
-    return this.summaryValidationFunction(text)
+  isSummaryValid(text: string, maxVal: number = 50){
+    return this.summaryValidationFunction(text, maxVal)
   }
 
 
 
-  summaryValidationFunction(toValidate: any){
-    return toValidate.toString().length <= 50;
+  summaryValidationFunction(toValidate: any, maxVal: number = 50){
+    console.log(maxVal)
+    return toValidate.toString().length <= maxVal;
   }
 
   hoursMinutesValidationFunctionFactory(maxVal: number){

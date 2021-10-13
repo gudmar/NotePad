@@ -6,16 +6,18 @@ import { ValidatorService } from '../services/validator.service';
 })
 export class ValidateSummaryDirective {
   @Input('ifNotValid') ifNotValid: any;
+  @Input('maxValue') maxValue: number = 50;
   constructor(private validator: ValidatorService) { }
 
   @HostListener('mousedown', ['$event'])
   @HostListener('keydown', ['$event'])
   onChange(event: any){
-    this.validator.setColorsToSummary(event)
+    this.validator.setColorsToSummary(event, this.maxValue)
   }
 
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
-    this.validator.setEndSummary(event, this.ifNotValid);
+    console.log(this.ifNotValid)
+    this.validator.setEndSummary(event, this.ifNotValid, this.maxValue);
   }
 }

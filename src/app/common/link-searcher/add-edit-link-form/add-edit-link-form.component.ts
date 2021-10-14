@@ -79,19 +79,32 @@ export class AddEditLinkFormComponent implements OnInit {
   }
 
 
-
+  resetFormFields(){
+    this.topicBox.nativeElement.innerText = '';
+    this.descriptionBox.nativeElement.innerText = '';
+    this.linkBox.nativeElement.innerText = '';
+  }
 
 
   onSubmit() {
     if (this.type == 'Add'){
       let linkValue = this.linkBox.nativeElement.innerText;
-      let newLinkObject = {
-        topic: this.topicBox.nativeElement.innerText,
-        description: this.descriptionBox.nativeElement.innerText,
-        link: this.getCorrectLink(linkValue)
+      let descriptionValue = this.descriptionBox.nativeElement.innerText;
+      let topicValue = this.topicBox.nativeElement.innerText;
+      if (topicValue.trim() != '' && linkValue.trim() != ''){
+        let newLinkObject = {
+          topic: topicValue,
+          description: descriptionValue,
+          link: this.getCorrectLink(linkValue)
+        }
+        this.data.push(newLinkObject);
+        this.resetFormFields();
+        this.communicator.inform('displayMessageAndDoNotDisturb', {message:'Link added'})
+        // this.communicator.inform('userInfo', {title:'Link added', timeout:1000})
+      } else {
+        this.communicator.inform('userInfo', 
+          {title:'Link must have title and link fields not empty', type:'warning', timeout:3000})
       }
-      // debugger
-      this.data.push(newLinkObject);  
     }
     if (this.type == 'Edit'){
       let linkValue = this.linkBox.nativeElement.innerText;
@@ -104,8 +117,9 @@ export class AddEditLinkFormComponent implements OnInit {
           description: linkDescription,
           link: this.getCorrectLink(linkValue)
         }
+        this.communicator.inform('displayMessageDoNotDisturbId', {message: 'Link edited'})
       } else {
-        this.communicator.inform('userInfo', 'Link cannot be found')
+        this.communicator.inform('userInfo', {title:'Link cannot be found', type:'error', timeout:5000})
       }
     }
   }

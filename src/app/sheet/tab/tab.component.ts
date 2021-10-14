@@ -73,6 +73,12 @@ export class TabComponent implements OnInit {
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['nrOfChidrenYouHave'])
   }
+  // preventEnter(event:any){
+  //   if (event.keyCode === 13) event.preventDefault();
+  // }
+  // preventPaste(event:any){
+  //   event.preventDefault();
+  // }
 }
 //   if (eventType === 'changeCurrentPageTitle'){
 //     if (this.currentPageId == data.pageId) {

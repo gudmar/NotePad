@@ -280,6 +280,27 @@ center{
     transition: 0.3s;
 }
 
+.bounce-right:before{
+    position: absolute;
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
+    top:0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    transform: scaleX(0);
+    color: white;
+    background-color: rgb(120,120,120);
+    transition-duration: 0.3s;
+    transform-origin: 0%;
+    content: "";
+    z-index: -1;
+}
+.bounce-right:hover::before{
+  transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+  transform: scaleX(1);
+}
+
 @keyframes animateButtonBefore {
     0% { left: -3rem; transition: var(--duration);}
     50% { left: 0rem; transition: var(--duration);}

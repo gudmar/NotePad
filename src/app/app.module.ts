@@ -60,6 +60,9 @@ import { ValidateSummaryDirective } from './calendar/directives/validate-summary
 import { LinkSearcherComponent } from './common/link-searcher/link-searcher.component';
 import { LinkComponent } from './common/link-searcher/link/link.component';
 import { AddEditLinkFormComponent } from './common/link-searcher/add-edit-link-form/add-edit-link-form.component';
+import { PreventEnterDirective } from './directives/prevent-enter.directive';
+import { PreventPasteDirective } from './directives/prevent-paste.directive';
+import { ValidateMenuTabDirective } from './calendar/directives/validate-menu-tab.directive';
 
 
 
@@ -114,6 +117,9 @@ import { AddEditLinkFormComponent } from './common/link-searcher/add-edit-link-f
     LinkSearcherComponent,
     LinkComponent,
     AddEditLinkFormComponent,
+    PreventEnterDirective,
+    PreventPasteDirective,
+    ValidateMenuTabDirective,
     
   ],
   imports: [

@@ -1,7 +1,14 @@
 <div class="wb-menu-entry">
     <span class = "color-wrapper" setColors [dBgColor]="bgColor" [shouldSetBgColor]="true">
-        <span class="title"  [ngClass]="{'special': !isKillable, 'active': isActive}"  >
-            <span (dblclick)="enterChangeSheetsTitleMode()" [attr.contenteditable] = "changeSheetsTitleMode">
+        <span class="title bounce-right"  [ngClass]="{'special': !isKillable, 'active': isActive}"  >
+            <span 
+                [ngClass] = "{'content-editable':changeSheetsTitleMode}"
+                PreventEnter
+                PreventPaste
+                ValidateMenuTab
+                (dblclick)="enterChangeSheetsTitleMode($event)" 
+                [attr.contenteditable] = "changeSheetsTitleMode"
+            >
                 {{title}}
             </span>
         </span>

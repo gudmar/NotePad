@@ -38,13 +38,15 @@ export class WbMenuEntryComponent implements OnInit {
     this.messenger.inform('killSheet', this.uniqueId)
   }
 
-  enterChangeSheetsTitleMode(){
+  enterChangeSheetsTitleMode(event: any){
     this.changeSheetsTitleMode = true;
+    event.target.contentEditable = true;
+    event.target.focus();
   }
 
   @HostListener('focusout', ['$event'])
   saveSheetsTitle(event: any){
-    this.changeSheetsTitleMode = true;
+    this.changeSheetsTitleMode = false;
     let titleFromText = event.target.innerText;
     this.messenger.inform('changeSheetTitle', {
       uniqueId: this.uniqueId,

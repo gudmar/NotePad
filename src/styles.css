@@ -11,7 +11,12 @@ body, html{
     margin: 0;
     background-color: rgb(210, 210, 230);
 }
-center{
+.row{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+.center{
     display: flex;
     align-content: center;
     align-items: center;

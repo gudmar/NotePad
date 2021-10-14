@@ -1,10 +1,10 @@
 
-.center{
+/* .center{
     display: flex;
     align-content: center;
     justify-content: center;
     align-items: center;
-}
+} */
 .shutter{
     position: absolute;
     top: 0;
@@ -22,6 +22,10 @@
     display: flex; 
     flex-direction: column;
     opacity: 1;
+    padding: 1rem;
+    border-radius: 7px;
+    border: solid thin var(--light-border);
+
 }
 .message{
     position: relative;
@@ -29,6 +33,9 @@
     min-height: 5rem;
     margin-top: auto;
     margin-bottom: auto;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
 }
             
 /* .button-wrapper{

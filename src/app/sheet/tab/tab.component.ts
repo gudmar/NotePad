@@ -45,9 +45,11 @@ export class TabComponent implements OnInit {
     this.tabChosen.emit(this.uniqueId)
   }
   @HostListener('dblclick', ['$event'])
-  enterChangeTitleMode(evetn: any){
-    evetn.stopPropagation();
+  enterChangeTitleMode(event: any){
+    event.stopPropagation();
     this.inTitleEditMode = true;
+    event.target.contentEditable = true;
+    event.target.focus();
   }
   @HostListener('focusout', ['$event'])
     exitChangeTitleMode(event: any){

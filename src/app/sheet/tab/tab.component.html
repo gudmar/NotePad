@@ -6,6 +6,7 @@
         [style.border-bottom-color]="bgColor">
         <span>
             <span class = "title-holder" [attr.contenteditable]="inTitleEditMode"
+            [ngClass] = "{'content-editable':inTitleEditMode}"
             PreventEnter
             PreventPaste
             ValidateMenuTab

@@ -14,14 +14,22 @@
     z-index: 1;
     transition: 0.3s;
     text-overflow: ellipsis; 
-    /*ellipsis will not */
-    /* max-height: 1.2rem;
-    line-height: 1.1rem; */
+}
+.tab-shape>span{
+    width: 100%;
+    position: relative;
+    display: inline-block;
+}
+/* .tab-shape>span>span{ */
+.title-holder{
+    width: calc( 100% - 1rem );
+    position: relative;
+    display: inline-block;
 }
 .active{
     z-index: 100;
     font-weight: bold;
-    cursor: not-allowed;
+    cursor: cell;
 }
 
 .active-behind{
@@ -75,6 +83,8 @@
 .kill-me{
     position: relative;
     display: inline-block;
+    width: 1rem;
+    height: 1rem;
     transition: 0.3s;
     cursor: pointer;
     margin-left: 0.3rem;
@@ -83,4 +93,10 @@
 .kill-me:active{
     transition: 0.3;
     transform: scale(0.8);
+}
+.content-editable{
+    background-color: white;
+    color: black;
+    cursor: text;
+    outline: none;
 }

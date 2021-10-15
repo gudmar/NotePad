@@ -15,6 +15,7 @@ export class SheetComponent implements OnInit {
   @Input() uniqueId: string = '';
   @Input() bgColor: string = 'white';
   @Input() pages: any[] = [];
+  @Input() lastAddedPageId: any = undefined;
   // @Input() startPageId:string = '';
   private _currentPageId: string = '';//this.startPageId;
   @Input() set currentPageId(val: string) {
@@ -25,6 +26,7 @@ export class SheetComponent implements OnInit {
       newPageId: val
     })
   } 
+
   @Output() sheetStartPageChanged: EventEmitter<any> = new EventEmitter();
 
   get currentPageId() {return this._currentPageId}
@@ -39,11 +41,15 @@ export class SheetComponent implements OnInit {
     this.messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page', 'changeCurrentPageTitle']
+      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page', 
+       'changeCurrentPageTitle','addNextPageAfterUniqueId']
     )
   }
 
   handleMessages(eventType: string, data: any){
+    if (eventType == 'addNextPageAfterUniqueId'){
+      this.addNewPageAfterCertainPage(data.uniqueId)
+    }
     if (eventType == "killMe_page") {
       if (data.nrOfChidren > 0) this.ensureUserIsPositive(data)
       else {
@@ -79,6 +85,7 @@ export class SheetComponent implements OnInit {
     if(this.pages.length > 1){
       let pageIndex = this.getPageIndexById(pageId);
       this.pages.splice(pageIndex, 1);
+      this.messenger.inform('setLastAddedPageId', {lastAddedPageId: undefined})
       this.messenger.inform('pageWasDeleted', pageId)  
     } else {
       this.messenger.inform('userInfo', {
@@ -135,10 +142,35 @@ export class SheetComponent implements OnInit {
   }
 
   addNewPage(){
-    let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
+    // let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
+    // let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
+    // this.pages.push(newPage);
+    // this.messenger.inform('newPageWasAdded', Object.keys(newPage)[0])
+    let lastPageId = Object.keys(this.pages[this.pages.length - 1])[0];
+    this.addNewPageAfterCertainPage(lastPageId)
+  }
+
+  addNewPageAfterCertainPage(previousPageId:string){
+    
+    // let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
+    let lastPageDesciptor = this.getLastPageDescriptor();
+    let lastPageIndex:number = this.getPageIndexById(previousPageId) + 1;
     let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
-    this.pages.push(newPage);
+    this.messenger.inform('setLastAddedPageId', {lastAddedPageId: Object.keys(newPage)[0]});
+    console.log(newPage);
+    console.log(lastPageIndex)
+    console.log(this.pages)
+    console.log(previousPageId)
+    this.pages.splice(lastPageIndex,0,newPage);
     this.messenger.inform('newPageWasAdded', Object.keys(newPage)[0])
   }
+
+  getLastPageDescriptor():any{
+    let index = this.pages.length-1;
+    if (this.lastAddedPageId != undefined) index = this.getPageIndexById(this.lastAddedPageId);
+    return Object.values(this.pages[index])[0]
+  }
+
+
 
 }

@@ -143,7 +143,10 @@ export class PageComponent implements OnInit {
   deleteThisPage(){
     this.messenger.inform('killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.notes.length})
   }
-  addAfterThisPage() {this.addPageAfterThisPageEvent.emit();}
+  addAfterThisPage() {
+    this.messenger.inform('addNextPageAfterUniqueId', {uniqueId: this.uniqueId})
+    this.addPageAfterThisPageEvent.emit();
+  }
   toggleEditMode() {this.isInEditMode = !this.isInEditMode}
   exitEditMode() {this.isInEditMode = false;}
 

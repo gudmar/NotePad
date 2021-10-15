@@ -84,7 +84,8 @@ export class WorkBookComponent implements OnInit {
        'gotFileWithDataToLoad',
        'saveToLastUsedKey',
        'pageWasClicked',
-       'clearAllCalendarInputs'
+       'clearAllCalendarInputs',
+       'setLastAddedPageId'
       ]
 
 
@@ -172,6 +173,9 @@ export class WorkBookComponent implements OnInit {
       this.messenger.inform('displaySaveToFileWindow', this.document)
       // this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
+    if (eventType == 'setLastAddedPageId'){
+      this.setLastAddedPageId(data)
+    }
   }
 
   // ****************** MOVE TO SERVICE ******************************
@@ -242,6 +246,16 @@ export class WorkBookComponent implements OnInit {
   switchStartPage(data:any){
     this.currentSheetStartPageId = data.newPageId;
     this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
+  }
+
+  get lastAddedPageId() {
+    return this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId;
+  }
+
+  setLastAddedPageId(data:any){
+    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
+    console.log(this.listOfSheets)
+    console.log(data)
   }
 
   @HostListener('window:resize', ['$event'])

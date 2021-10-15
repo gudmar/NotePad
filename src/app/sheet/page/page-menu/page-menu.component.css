@@ -20,6 +20,7 @@
     right: 1rem;
     width: var(--width);
     height: 2rem;
+    z-index: 2000;
 }
 .page-menu-toggle-button{
     font-weight: bold;

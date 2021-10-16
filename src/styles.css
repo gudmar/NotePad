@@ -82,8 +82,8 @@ body, html{
     border: solid black thin;
 }
 .button.disabled{
-    color: gray;
-    border-color: gray;
+    color: rgb(220, 220, 220);
+    border-color: rgb(220,220,220);
 }
 .button.disabled:hover{
     transform: scale(1);

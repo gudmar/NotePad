@@ -11,7 +11,8 @@
         <page dropZone
               [notes] = "currentPageNotes" 
               [bgColor] = "getCurrentPagesColor()" 
-              [uniqueId] = "currentPageId">
+              [uniqueId] = "currentPageId"
+              (changePageColor) = "changePageColor($event)">
         </page>
     </div>
     

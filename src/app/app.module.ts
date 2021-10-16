@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+// import { ApplicationPipesModule } from './app-pipes.module'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoteComponent } from './note/note.component';
@@ -63,6 +64,7 @@ import { AddEditLinkFormComponent } from './common/link-searcher/add-edit-link-f
 import { PreventEnterDirective } from './directives/prevent-enter.directive';
 import { PreventPasteDirective } from './directives/prevent-paste.directive';
 import { ValidateMenuTabDirective } from './calendar/directives/validate-menu-tab.directive';
+import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
 
 
 
@@ -120,11 +122,12 @@ import { ValidateMenuTabDirective } from './calendar/directives/validate-menu-ta
     PreventEnterDirective,
     PreventPasteDirective,
     ValidateMenuTabDirective,
+    HslOrHexToHexPipe,
     
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
               UniqueIdProviderService,

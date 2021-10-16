@@ -22,6 +22,7 @@ export class PageComponent implements OnInit {
   @Input() notes: any[] = [];
   @Output() deleteThisPageEvent: EventEmitter<string> = new EventEmitter();
   @Output() addPageAfterThisPageEvent: EventEmitter<string> = new EventEmitter();
+  @Output() changePageColor: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private messenger: CommunicationService, 
@@ -51,6 +52,7 @@ export class PageComponent implements OnInit {
         'showAllNotes',
       ]
     );
+    console.log(this.bgColor)
   }
 
   reactToDataFromMessengar(eventType: string, data: any){
@@ -182,6 +184,10 @@ export class PageComponent implements OnInit {
       if (currentSum > biggestSoFar) biggestSoFar = currentSum;
     }
     return biggestSoFar;
+  }
+
+  changeThisPageColor(data:any){
+    this.changePageColor.emit(data);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { StorageManagerService } from '../../services/storage-manager.service';
 import { CommunicationService } from '../../services/communication.service'
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service'
@@ -13,6 +13,7 @@ export class SaveLoadWindowComponent implements OnInit {
 
   itemsFromStorage: any[] = [];
   private _currentlySelectedItem: string = '';
+  
   set currentlySelectedItem(val: string){
     this._currentlySelectedItem = val;
 
@@ -33,10 +34,18 @@ export class SaveLoadWindowComponent implements OnInit {
       ['displaySaveWindow', 'displayLoadWindow']
     )
   }
+
+  @ViewChild('inputField') inputFiled: any;
+
   isThisActive(key: string){
     return {
       active: key == this._currentlySelectedItem
     }    
+  }
+
+  get isInputFieldEmpty() {
+    if (this.inputFiled == undefined) return true;
+    return this.inputFiled.nativeElement.innerText.trim() == '' ? true : false;
   }
 
   keyChosen(data: any){
@@ -70,14 +79,17 @@ export class SaveLoadWindowComponent implements OnInit {
   }
 
   save(){
-    if (this.currentlySelectedItem == '') this.currentlySelectedItem = "Default"
-    this.communicator.inform('saveDocument', this.currentlySelectedItem);
-    this.refresh();
-    this.shouldBeDisplayed = false;
+    // if (this.currentlySelectedItem == '') this.currentlySelectedItem = "Default"
+    if (!this.isInputFieldEmpty){
+      this.communicator.inform('saveDocument', this.currentlySelectedItem);
+      this.refresh();
+      this.shouldBeDisplayed = false;
+    }
   }
 
   removeCurrent(){
     this.storageManager.deleteSingleKey(this.currentlySelectedItem);
+    this.inputFiled.nativeElement.innerText = '';
     this.refresh();
   }
 
@@ -100,10 +112,12 @@ export class SaveLoadWindowComponent implements OnInit {
   }
 
   loadKey(){
-    if (this.storageManager.hasKey(this.currentlySelectedItem)){
-      this.communicator.inform('loadDocument', this.currentlySelectedItem)
+    if (this.isCurrentlySelectedItemOnList()){
+      if (this.storageManager.hasKey(this.currentlySelectedItem)){
+        this.communicator.inform('loadDocument', this.currentlySelectedItem)
+      }
+      this.refresh();
     }
-    this.refresh();
   }
   reloadAllComponents(){
     this.communicator.inform('refreshAllComponents', '')

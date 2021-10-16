@@ -194,7 +194,7 @@ export class NoteComponent implements OnInit {
 
   getCopyTextElement(textToCopy:string){
     return `
-      <div class="copyable">${textToCopy}</div><span>&nbsp;</span>
+      <div class='copyable'>${textToCopy}</div><span>&nbsp;</span>
     `
   }
 

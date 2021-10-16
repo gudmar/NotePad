@@ -96,7 +96,8 @@ export class WorkBookComponent implements OnInit {
     if (lastUsedDocument != null){
       this.document = this.storageManager.loadContent(lastUsedDocument)
     } else {
-      this.document = this.storageManager.getFreshDocument();
+      // this.document = this.storageManager.getFreshDocument();
+      this.document = this.storageManager.getNewDocumentWithInstructions();
     }
     console.dir(this.document)
   }

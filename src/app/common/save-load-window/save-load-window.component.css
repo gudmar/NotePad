@@ -1,4 +1,7 @@
-
+/* --light-border: #d0d7de;
+--light-input-background-color: #f6f8fa;
+--input-light-color: #50575e;
+--input-light-background-color-active: #f0fff0; */
 :host{
     position:sticky;
     z-index: 1000;
@@ -23,7 +26,7 @@
     width: 50%;
     max-width: 500px;
     width: 500px;
-    background-color: rgb(230, 230, 230);
+    background-color: var(--light-input-background-color);
     color: black;
     font-family: Arial, Helvetica, sans-serif;
     display: flex; 
@@ -33,12 +36,15 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    border: thin solid var(--light-border);
+    padding: calc( 1rem * 0.5 );
 }
 .title-bar{
     width: 100%;
 }
 .title{
     cursor: default;
+    color: var(--input-light-color);
     align-self: flex-start;
     padding: 3px;
     padding-left: 1rem;
@@ -51,25 +57,36 @@
     width: 95%;
     min-height: 5rem;
     max-height: 10rem;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     margin-top: auto;
     margin-bottom: auto;
     background-color: white;
+    border: thin solid var(--light-border);
+    border-radius: 5px;
+    color: var(--input-light-color);
+    padding: 10px;
 }
 
 .edit-field{
     position: relative;
     width: 95%;
-    height: 1.1rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding: 10px;
     background-color: white;
     outline: none;
     margin-bottom: 8px;
+    border: thin solid var(--light-border);
+    border-radius: 5px;
+    color: var(--input-light-color);
 }
 .label{
     margin-top: 1rem;
     align-self: flex-start;
     margin-left: 1rem;
     cursor: default;
+    color: var(--input-light-color);
 }
             
 .button-wrapper{
@@ -131,6 +148,7 @@
     visibility: hidden;
 }
 .key:hover:after{
+    top: 0;
     position: absolute;
     background-color: rgb(200, 200, 100);
     color: black;

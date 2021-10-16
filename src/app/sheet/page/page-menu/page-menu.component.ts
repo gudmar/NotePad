@@ -15,6 +15,7 @@ export class PageMenuComponent implements OnInit {
     if (val == true)  this.editMode.emit();
     this.editButtonClassList.active = val;
   }
+  get inEditMode() {return this._inEditMode;}
   editButtonClassList = {
     active: false
   }
@@ -33,6 +34,7 @@ export class PageMenuComponent implements OnInit {
   toggleEditModeOnShortcut(event:any){
     event.preventDefault();
     this.enterEditMode(event);
+    this.messenger.inform('displayMessageAndDoNotDisturb', {message: `Edit mode ${this.inEditMode?'on':'off'}`})
   }
 
   enterEditMode(data:any){

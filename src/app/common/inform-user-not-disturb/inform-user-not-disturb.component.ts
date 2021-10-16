@@ -35,10 +35,10 @@ export class InformUserNotDisturbComponent implements OnInit {
       {fn: this.clearAfterAnimation.bind(this), delay: 2100}
     )
   }
-  displayMessage(){this.shouldDisplay = true;console.log(performance.now())}
-  animateBorder(){this.beforeAnimation = false;console.log(performance.now())}
-  stopComponent(){this.shouldDisplay = false;console.log(performance.now())}
-  clearAfterAnimation(){this.beforeAnimation = true; this.message = '';this.shouldDisplay = false;console.log(performance.now())}
+  displayMessage(){this.shouldDisplay = true;}
+  animateBorder(){this.beforeAnimation = false;}
+  stopComponent(){this.shouldDisplay = false;}
+  clearAfterAnimation(){this.beforeAnimation = true; this.message = '';this.shouldDisplay = false;}
 
   ngOnInit(): void {
   }

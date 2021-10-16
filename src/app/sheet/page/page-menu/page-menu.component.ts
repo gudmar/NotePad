@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { CommunicationService } from '../../../services/communication.service';
 import { HslOrHexToHexPipe } from '../../../pipes/hsl-or-hex-to-hex.pipe'
 
@@ -27,8 +27,12 @@ export class PageMenuComponent implements OnInit {
   isMenuActive: boolean = true;
   constructor(private messenger: CommunicationService) { }
 
-  ngOnInit(): void {
-    console.log(this.bgColor)
+  ngOnInit(): void {}
+
+  @HostListener('window:keydown.control.e', ['$event]'])
+  toggleEditModeOnShortcut(event:any){
+    event.preventDefault();
+    this.enterEditMode(event);
   }
 
   enterEditMode(data:any){

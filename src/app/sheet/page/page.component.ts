@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, Host } from '@angular/core';
 import { NoteComponent } from '../../note/note.component'
 import { CommunicationService } from '../../services/communication.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
@@ -39,6 +39,7 @@ export class PageComponent implements OnInit {
     this.newNoteIsAdded = false;
   }
 
+
   ngOnInit(): void {
     this.messenger.subscribe(this.uniqueId, 
       this.reactToDataFromMessengar.bind(this), 
@@ -52,7 +53,6 @@ export class PageComponent implements OnInit {
         'showAllNotes',
       ]
     );
-    console.log(this.bgColor)
   }
 
   reactToDataFromMessengar(eventType: string, data: any){
@@ -76,29 +76,16 @@ export class PageComponent implements OnInit {
     let singleMatch = function(element: any){return element.uniqueId === noteId}
     let indexOfElementToUpdate = this.notes.findIndex(singleMatch);
     if (indexOfElementToUpdate != -1) {
-      // let copy = this.notes.slice(0);
       let keysToUpdate = Object.keys(newState);
       for (let key of keysToUpdate) {
-        // if (key == 'newWidth') copy[indexOfElementToUpdate].initialWidth = newState[key];
-        // if (key == 'newHeight') copy[indexOfElementToUpdate].initialHeight = newState[key];
-        // if (key == 'pageX') copy[indexOfElementToUpdate].initialLeft = newState[key];
-        // if (key == 'pageY') copy[indexOfElementToUpdate].initialTop = newState[key];
-        // if (key == 'content') copy[indexOfElementToUpdate].content = newState[key]
-
         if (key == 'newWidth') this.notes[indexOfElementToUpdate].initialWidth = newState[key];
         if (key == 'newHeight') {
           this.notes[indexOfElementToUpdate].initialHeight = newState[key];
-          console.log('NEW height')
         }
         if (key == 'pageX') this.notes[indexOfElementToUpdate].initialLeft = newState[key];
         if (key == 'pageY') this.notes[indexOfElementToUpdate].initialTop = newState[key];
         if (key == 'content') this.notes[indexOfElementToUpdate].content = newState[key]
-        console.log(key)
       }
-      // this.notes = this.notes.slice();
-      // this.notes = JSON.parse(JSON.stringify(this.notes))
-      // console.log(copy)
-      // this.notes = copy.slice(0);
     } else {
       console.error(`${this.constructor.name}: element with id ${noteId} informed parent page about state change, but its id was not found in global object`)
     } 
@@ -126,15 +113,12 @@ export class PageComponent implements OnInit {
   }
 
   isAnyChildNoteInActiveState(){
-    console.log(this.notes)
     let singleMatch = function(element:any){
       let a = element.isActive;
-      // debugger
       return element.isActive == true
     };
     let a = this.notes.includes(singleMatch)
     return this.notes.findIndex(singleMatch) == -1?false:true;
-    // return this.notes.includes(singleMatch)
   }
 
   changeNoteActiveState(data: any){

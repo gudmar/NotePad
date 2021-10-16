@@ -152,6 +152,14 @@ export class NoteComponent implements OnInit {
     this.replaceSelectedWithCopyTextElement();
   }
 
+  @HostListener('keydown.control.z', ['$event]'])
+  toggleEditModeOnShortcut(event:any){
+    event.preventDefault();
+    event.stopPropagation();
+    // this.toggleEditMode();
+    console.log('Edit mode')
+  }
+
   @HostListener('keydown', ['$event'])
   replaceWithLink(event:any){
     if (event.ctrlKey && event.key == 'l'){
@@ -210,12 +218,21 @@ export class NoteComponent implements OnInit {
   }
   createLinkElement(linkName:string, link:string){
     let element = document.createElement('a');
-    element.href = link.toString().startsWith('http')?link:'//'+link;
+    element.href = this.getCorrectedLink(link);
     element.setAttribute('contentEditable','true');
     element.innerText = linkName;
     element.target='_blank'
     return element;
   }
+
+  getCorrectedLink(link:string){
+    let isLocalWindowsPath: boolean = /^[\w](\:)/.test(link);
+    let isLocalLinuxPath: boolean = /^(home\/)/.test(link);
+    if (isLocalLinuxPath || isLocalWindowsPath) return `file:///${link}`
+    return link.toString().startsWith('http')?link:'//'+link;
+  }
+
+
   replaceSelectedTextWithElement(replacementElement:HTMLElement){
     let sel, range;
     if (window.getSelection){

@@ -28,7 +28,7 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
-  application: string = 'calendar'
+  application: string = 'notes'
   // application: string = 'notes' //'calendar'
   listOfSheets:any[] = this.document.sheets;
   uniqueId: string = "workBookId"
@@ -43,7 +43,6 @@ export class WorkBookComponent implements OnInit {
   set document(val: any) {
     this._document = val;
     if (this._document.links == undefined) this.document.links = [];
-    // console.dir(JSON.parse(val))
     this.calendarInputs = val.calendarInputs
   };
   set calendarInputs(val: any){
@@ -115,7 +114,7 @@ export class WorkBookComponent implements OnInit {
       //   }
       // }
       if (feedback.information === 'keysExistingInStorage'){
-        console.log(feedback.payload)
+        
       }
       
       if (feedback.information === 'newContent'){
@@ -143,7 +142,7 @@ export class WorkBookComponent implements OnInit {
         this.changeNoteContent(copyOfDocument, activeNoteData.content, activeNoteData.uniqueId)
       }
       this.storageManager.saveContentAs(data, this.document)
-      // console.dir(this.document)
+      
     }
     if (eventType === 'saveToLastUsedKey'){
       let activeNoteData = this.activeNoteGetter.getActiveNoteData(this.messenger);
@@ -254,8 +253,6 @@ export class WorkBookComponent implements OnInit {
 
   setLastAddedPageId(data:any){
     this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
-    console.log(this.listOfSheets)
-    console.log(data)
   }
 
   @HostListener('window:resize', ['$event'])

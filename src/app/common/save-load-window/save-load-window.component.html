@@ -23,6 +23,7 @@
                     {{saveLoadMode=='save' ? 'Name to save under: ' : 'Name to load from: '}}
                 </span>
                 <div class="edit-field" 
+                    #inputField
                     [attr.contenteditable]="saveLoadMode == 'save'" 
                     [ngClass]="{'non-editable': saveLoadMode == 'load'}" 
                     (focusout) = "onChange($event)"
@@ -30,7 +31,13 @@
                     {{currentlySelectedItem}}
                 </div>
                 <div class="button-wrapper">
-                        <div *ngIf="saveLoadMode=='save'" class="button" (click) = "save()">Save</div>
+                        <div *ngIf="saveLoadMode=='save'" 
+                            class="button" 
+                            (click) = "save()"
+                            [ngClass]="{'disabled': isInputFieldEmpty}"
+                        >
+                            Save
+                        </div>
                         <div *ngIf="saveLoadMode=='load'" class="button" 
                             (click) = "loadKey()" [ngClass]="{'disabled': !isCurrentlySelectedItemOnList()}">Load
                         </div>

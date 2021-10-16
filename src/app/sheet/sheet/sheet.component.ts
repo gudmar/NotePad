@@ -114,6 +114,12 @@ export class SheetComponent implements OnInit {
     return this.pages.findIndex(singleMatch)
   }
 
+  changePageColor(data:any){
+    let pageIndex = this.getPageIndexById(this.currentPageId);
+    let currentPageDescriptor:any = Object.values(this.pages[pageIndex])[0]
+    currentPageDescriptor.bgColor = data.newColor;
+  }
+
   getPageNotesById(id: string){
     let pageDescriptor = this.getPageDescriptorById(id);
     return pageDescriptor == undefined ? undefined : pageDescriptor.notes;    

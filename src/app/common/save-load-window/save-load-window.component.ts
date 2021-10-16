@@ -104,6 +104,7 @@ export class SaveLoadWindowComponent implements OnInit {
       this.communicator.inform('loadDocument', this.currentlySelectedItem)
     }
     this.refresh();
+    this.shouldBeDisplayed = false;
   }
   reloadAllComponents(){
     this.communicator.inform('refreshAllComponents', '')

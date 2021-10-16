@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { CommunicationService } from '../../../services/communication.service';
+import { HslOrHexToHexPipe } from '../../../pipes/hsl-or-hex-to-hex.pipe'
 
 @Component({
   selector: 'page-menu',
@@ -17,15 +18,17 @@ export class PageMenuComponent implements OnInit {
   editButtonClassList = {
     active: false
   }
+  @Input() bgColor: string = 'yellow';
   @Output() editMode: EventEmitter<string> = new EventEmitter()
   @Output() deleteMe: EventEmitter<string> = new EventEmitter()
   @Output() addAfterMe: EventEmitter<string> = new EventEmitter();
   @Output() exitEditMode: EventEmitter<string> = new EventEmitter();
+  @Output() changeColorEvent: EventEmitter<any> = new EventEmitter();
   isMenuActive: boolean = true;
   constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
-    
+    console.log(this.bgColor)
   }
 
   enterEditMode(data:any){
@@ -33,8 +36,9 @@ export class PageMenuComponent implements OnInit {
     this.inEditMode = !this._inEditMode
     data.stopPropagation()
   }
-  showAllNotes(data: any){
-    this.messenger.inform('showAllNotes', '')
+  changeColor(data: any){
+    this.changeColorEvent.emit({newColor: data.srcElement.value});
+    console.log(data.srcElement.value)
     data.stopPropagation()
   }
   addNewPageAfterThis(data: any){

@@ -31,7 +31,10 @@ export class SaveToFileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  confirm(){this.fileOperations.writeToFile(this.fileName, this.document)};
+  confirm(){
+    this.fileOperations.writeToFile(this.fileName, this.document)
+    this.cancel();
+  };
   cancel(){this.shouldDisplay = false;}
 
   getProposedFileName(){

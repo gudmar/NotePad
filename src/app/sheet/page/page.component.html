@@ -20,10 +20,12 @@
         </note>
     </div>
     <page-menu 
+        [bgColor] = "bgColor"
         (deleteMe) = "deleteThisPage()"
         (addAfterMe) = "addAfterThisPage()"
         (editMode) = "toggleEditMode()"
         (exitEditMode) = "exitEditMode()"
+        (changeColorEvent) = "changeThisPageColor($event)"
     >
     </page-menu>
 </div>

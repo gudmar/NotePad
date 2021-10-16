@@ -1,0 +1,35 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'hslOrHexToHex'
+})
+export class HslOrHexToHexPipe implements PipeTransform {
+
+
+  transform(value: string): string {
+    if (value.startsWith('#')) return value;
+    let {h, s, l} = this.dicpmposeHslStirng(value);
+    console.log(this.hslToHex(h, s, l))
+    return this.hslToHex(h, s, l);
+  }
+
+  hslToHex(h:number, s: number, l: number){
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = (n:number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  dicpmposeHslStirng(value: string){
+    let noFirstBracket = value.split('(')[1];
+    let h = parseFloat(noFirstBracket.split(',')[0]);
+    let s = parseFloat(noFirstBracket.split(',')[1]);
+    let l = parseFloat(noFirstBracket.split(',')[2]);
+    return {h:h, s:s, l:l};
+  }
+
+}

@@ -3,7 +3,11 @@
     border-radius: 7px;
     margin: 4px;
     position: relative;
-    width: calc(100% / 7.1);
+    /* max-width: calc(100% / 5.1); */
+    /* align-self: stretch; */
+    /* min-width: 200px; */
+    flex-basis: 200px;
+    flex-grow: 1;    
 }
 .center{
     display: flex;
@@ -15,6 +19,12 @@
     border-radius: 5px;
     position: relative;
     width: 100%;
+    overflow: hidden;
+    
+    height: 100%;
+}
+.wrapper:hover{
+    /* overflow-y: auto; */
 }
 .title-wrapper{
     position: relative;
@@ -30,7 +40,11 @@
     background-color: hsl(240, 30%, 80%);
     color: black;    
 }
-.content-wrapper{}
+.content-wrapper{
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+}
 .event{
 
 }

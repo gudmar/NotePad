@@ -27,7 +27,7 @@
             <div class="tasks">
                 <table  *ngIf="!shouldDisplayMobileVersion">
                         <tr>
-                            <th colspan="2">Time</th>
+                            <th colspan="3">Time</th>
                             <th>Duration</th>
                             <th>Summary</th>
                             <th>Description</th>
@@ -44,6 +44,7 @@
                                     
                                 </div>
                             </td>
+                            <td><span class="separator">:</span></td>
                             <td>
                                 <div ValidateMinutes [ifNotValid] ="entry.minutes" 
                                     class="center minutes editable" 
@@ -63,11 +64,15 @@
                                 </div>
                             </td>
                             <td>
-                                <div ValidateSummary [ifNotValid] ="lastSummary" 
+                                <div 
+                                    ValidateSummary 
+                                    [ifNotValid] ="lastSummary" 
                                     class="center summary editable" 
+                                    #summary
                                     contenteditable="true" 
-                                    (focusout)="lastSummary"
+                                    (focusout)="setTaskSummary($event, entry.uniqueId)"
                                     (keyup) = "setLastTaskSummary($event)"
+                                    
                                 >
                                     {{entry.summary}}
                                 </div>
@@ -161,9 +166,14 @@
                     <div class="field">
                         <div class="label" >Summary</div>
                         <div 
-                            ValidateSummary [ifNotValid]="entry.summary"
-                            class="input input-full-length" contenteditable="true"
-                            (focusout) = "setTaskSummary($event, entry.uniqueId)"
+
+                            ValidateSummary 
+                            [ifNotValid] ="lastSummary" 
+                            class="input input-full-length" 
+                            #summary
+                            contenteditable="true" 
+                            (focusout)="setTaskSummary($event, entry.uniqueId)"
+                            (keyup) = "setLastTaskSummary($event)"
                         >
                             {{entry.summary}}
                         </div>

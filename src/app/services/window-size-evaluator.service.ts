@@ -6,8 +6,8 @@ import { flatten } from '@angular/compiler';
 export class WindowSizeEvaluatorService {
   _displayWidth: number = window.innerWidth;
   _displayHeight: number = window.innerHeight;
-  set displayWidth(val: number) {this._displayWidth = val; console.log(val)}
-  set displayHeight(val: number) {this._displayHeight = val; console.log(val)}
+  set displayWidth(val: number) {this._displayWidth = val;}
+  set displayHeight(val: number) {this._displayHeight = val;}
   get displayWidth() {return this._displayWidth}
   get displayHeight() {return this._displayHeight}
   constructor() { }

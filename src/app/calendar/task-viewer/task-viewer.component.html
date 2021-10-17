@@ -72,17 +72,17 @@
                                     contenteditable="true" 
                                     (focusout)="setTaskSummary($event, entry.uniqueId)"
                                     (keyup) = "setLastTaskSummary($event)"
-                                    
+                                    [innerHTML] = "entry.summary"
                                 >
-                                    {{entry.summary}}
                                 </div>
                             </td>
                             <td>
                                 <div class="center description editable" 
                                     contenteditable="true" 
                                     (focusout)="setTaskDescription($event, entry.uniqueId)"
+                                    [innerHTML] = "entry.description"
                                 >
-                                    {{entry.description}}
+                                    
                                 </div>
                             </td>
                             <td>
@@ -174,13 +174,17 @@
                             contenteditable="true" 
                             (focusout)="setTaskSummary($event, entry.uniqueId)"
                             (keyup) = "setLastTaskSummary($event)"
+                            [innerHTML] = "entry.summary"
                         >
-                            {{entry.summary}}
                         </div>
                     </div>
                     <div class="field">
                         <div class="label">Description</div>
-                        <div class="input input-full-length" contenteditable="true">{{entry.description}}</div>
+                        <div class="input input-full-length" 
+                            contenteditable="true"
+                            [innerHTML] = "entry.description"
+                        >
+                        </div>
                     </div>
 
 

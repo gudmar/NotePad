@@ -266,7 +266,7 @@ th{
 }
 td>.hours{
     position: relative;
-    min-width: 1.5rem;
+    width: 1.5rem;
     overflow: visible;
     /* justify-content: flex-end; */
     white-space: nowrap;
@@ -282,19 +282,20 @@ td>.hours{
 } */
 td>.minutes{
     position: relative;
-    min-width: 1.5rem;
+    width: 1.5rem;
     /* justify-content: flex-start; */
     white-space: nowrap;
     height: 2rem;
     min-height: 0;
 }
-.minutes::before{
+
+/* .minutes::before{
     position: relative;
     content:':';
     width: 5px;
     height: 1rem;
     right: 8px;
-}
+} */
 
 
 td>.duration{
@@ -307,5 +308,10 @@ td:last-child>div{
     border: none;
     background-color: transparent;
 };
-
+/* td.separator{
+    position: relative;
+    height: 1rem;
+    background: none;
+    border: none;
+} */
 

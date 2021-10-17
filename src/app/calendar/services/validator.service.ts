@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CalendarObjectProviderService } from './calendar-object-provider.service';
 import { EventManagerService } from './event-manager.service';
+import { ConstantPool } from '@angular/compiler';
 // import { ConcatSource } from 'webpack-sources';
 // import { ConstantPool } from '@angular/compiler';
 
@@ -175,6 +176,9 @@ export class ValidatorService {
 
   summaryValidationFunction(toValidate: any, maxVal: number = 50){
     console.log(maxVal)
+    console.log(toValidate.toString())
+    console.log(toValidate.toString().length)
+    console.log(toValidate.toString().length <= maxVal)
     return toValidate.toString().length <= maxVal;
   }
 

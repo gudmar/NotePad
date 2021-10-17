@@ -1,13 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { CommunicationService } from '../../services/communication.service'
 import { CalendarObjectProviderService } from '../services/calendar-object-provider.service'
-// import { EEXIST } from 'constants';
-// import { ConcatSource } from 'webpack-sources';
 import { UniqueIdProviderService } from '../../services/unique-id-provider.service';
 import { EventManagerService } from '../services/event-manager.service';
 import { WindowSizeEvaluatorService } from '../../services/window-size-evaluator.service'
 import { ValidatorService } from '../services/validator.service';
-// import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'task-viewer',
@@ -35,11 +32,6 @@ export class TaskViewerComponent implements OnInit {
   private indexOfTaskToShowInForm: number = 0;
   shouldShowEditFrom: boolean = false;
   get formTask() {return this.events[this.indexOfTaskToShowInForm]}
-  // get formHour(){return this.events[this.indexOfTaskToShowInForm].hours}
-  // get formDuration(){return this.events[this.indexOfTaskToShowInForm].duration}
-  // get formSummary(){return this.events[this.indexOfTaskToShowInForm].summary}
-  // get formDescription(){return this.events[this.indexOfTaskToShowInForm].description}
-
 
   openMoveWindow(uniqueId: string) {
     this.eventToMoveId = uniqueId;
@@ -55,6 +47,7 @@ export class TaskViewerComponent implements OnInit {
   get currentDate() {
     return `${this.day} / ${this.month} / ${this.year} CW: ${this.cw}`
   }
+  
   constructor(
     private communicator: CommunicationService,
     private eventManager: EventManagerService,
@@ -86,47 +79,21 @@ export class TaskViewerComponent implements OnInit {
   setLastTaskSummary(event:any){
     let isValid = this.validator.isSummaryValid(event.target.innerText);
     if (isValid) this.lastSummary = event.target.innerText;
+    else event.target.innerText = this.lastSummary;
+  }
+
+  keepLastSummary(event:any){
+
   }
   setTaskSummary(event:any, uniqueId: string){
-    this.modifyIfValid(uniqueId, 'summary', event.target.innerText,
-    this.validator.isSummaryValid.bind(this.validator,event.target.innerText)
+    this.modifyIfValid(uniqueId, 'summary', this.lastSummary,
+    this.validator.isSummaryValid.bind(this.validator,event.target.innerText, 50)
   )
   }
-  // updateLastValidTopic(event:any){
-  //   let isValid = this.validator.isSummaryValid(event.target.innerText, this.topicLength);
-  //   if (isValid) this.lastTopic = event.target.innerText;
-  // }
+
   setTaskDescription(event: any, uniqueId: string){
     this.modifyIfValid(uniqueId, 'description', event.target.innerText, ()=>{return true;})
   }
-
-
-
-  // hourValidationClass = {'valid': false,'notValid': false}
-  // validateHours(event: any){
-  //   setTimeout(()=>{
-  //     let isValid = this.hoursMinutesValidationFunctionFactory(24)(event.target.innerText)
-  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-  //   })
-  // }
-  // validateMinutes(event: any){
-  //   setTimeout(()=>{
-  //     let isValid = this.hoursMinutesValidationFunctionFactory(59)(event.target.innerText)
-  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-  //   })
-  // }
-  // validateDuration(event: any){
-  //   setTimeout(()=>{
-  //     let isValid = this.durationValidationFunction(event.target.innerText)
-  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-  //   })
-  // }
-  // validateSummary(event: any){
-  //   setTimeout(()=>{
-  //     let isValid = this.summaryValidationFunction(event.target.innerText)
-  //     event.target.style.backgroundColor = isValid?'rgb(180, 255, 180)':'rgb(255, 180, 180)'
-  //   })
-  // }
 
   add0prefix(n: number){
     return parseInt(n.toString()) < 10 ? `0${parseInt(n.toString())}` : n;
@@ -176,74 +143,12 @@ export class TaskViewerComponent implements OnInit {
     this.events.splice(eventToAddAfterIndex, 0, {
       hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId()
     })
-    // debugger
   }
 
   removeEvent(event:any, uniqueId: string){
     let eventToBeRemovedIndex = this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId);
     this.events.splice(eventToBeRemovedIndex, 1);
   }
-
-  // onFocusOut(event: any, modificationTarget: string, uniqueId: string){
-  //   event.target.style.backgroundColor = ''
-  //   this.modifyNote(event, modificationTarget, uniqueId)
-  // }
-
-  // modifyNote(event: any, modificationTarget: string, uniqueId: string){
-  //   event.stopPropagation();
-  //   let valueFromField = event.target.innerText;
-
-  //   let isValid: boolean = false;
-  //   if (modificationTarget == 'hours') { 
-  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
-  //       this.hoursMinutesValidationFunctionFactory(24))
-  //   } else if (modificationTarget == 'minutes') {
-  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, 
-  //       this.hoursMinutesValidationFunctionFactory(59))
-  //   } else if (modificationTarget == 'summary') { 
-  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.summaryValidationFunction)
-  //   } else if (modificationTarget == 'duration') { 
-  //     isValid = this.modifyIfValid(uniqueId, modificationTarget, valueFromField, this.durationValidationFunction)
-  //   } else if (modificationTarget == 'description') { 
-  //     isValid = true;
-  //     this.modifyEvent(uniqueId, modificationTarget, valueFromField);
-  //   }
-  //   if (modificationTarget == "hours" || modificationTarget == "minutes"){
-  //     let a = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget));
-    
-  //     if (!isValid) event.target.innerText = this.add0prefix(this.getOriginalValue(uniqueId, modificationTarget))
-  //     event.target.innerText = this.add0prefix(event.target.innerText)
-  //   } else {
-  //     if (!isValid) event.target.innerText = this.getOriginalValue(uniqueId, modificationTarget)
-  //     if (modificationTarget == 'duration') event.target.innerText = parseInt(event.target.innerText)
-  //   }
-    
-  // }
-  // summaryValidationFunction(toValidate: any){
-  //   return toValidate.toString().length <= 50;
-  // }
-
-  // hoursMinutesValidationFunctionFactory(maxVal: number){
-  //   let max = maxVal;
-  //   return (toValidate:string | number) => {
-  //     let digitRe = new RegExp('\\d{1,2}');
-  //     let nonDigitRe = new RegExp('\\D')
-  //     let a = nonDigitRe.test(toValidate.toString())
-  //     let b  = digitRe.test(toValidate.toString())
-  //     if (nonDigitRe.test(toValidate.toString())) return false;
-  //     if (!digitRe.test(toValidate.toString())) return false;
-  //     if (parseInt(toValidate.toString()) < 0 || parseInt(toValidate.toString()) >= maxVal) return false;
-
-  //     return true;  
-  //   }
-  // }
-  // durationValidationFunction(toValidate: string | number){
-  //   let nonDigitRe = new RegExp('\\D')
-  //   if (toValidate == '') return false;
-  //   if (nonDigitRe.test(toValidate.toString())) return false;
-  //   if (parseInt(toValidate.toString()) > 999) return false
-  //   return true;
-  // }
   
   modifyIfValid(uniqueId: string, key: string, newValue: any, conditionFunction: Function){
     let isValid = conditionFunction(newValue);
@@ -254,10 +159,6 @@ export class TaskViewerComponent implements OnInit {
     let objectToModify: any = this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)]
     objectToModify[key] = newValue;
   }
-
-  // getOriginalValue(uniqueId: string, key: string){
-  //   return this.events[this.getIndexOfElemetnInArray(this.events, 'uniqueId', uniqueId)][key]
-  // }
 
   getIndexOfElemetnInArray(array: any[], matchKey: string, value: any){
     let singleMatch = function(element: any) { return element[matchKey] == value; }

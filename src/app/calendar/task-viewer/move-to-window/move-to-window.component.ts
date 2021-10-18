@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef }
 import { EventManagerService } from '../../services/event-manager.service';
 import { ValidatorService } from '../../services/validator.service';
 import { CommunicationService } from '../../../services/communication.service';
+import { constants } from 'http2';
 
   function asyncFunction (target: Function, propertyKey: string, descriptor: PropertyDescriptor):any{
     let originalMethod = descriptor.value;
@@ -74,42 +75,20 @@ uniqueId: string = 'moveEventId'
   }
 
   setEndDay(event: any){
-    if (this.validator.isDayValid(event.target.innerText, this.toMonth, this.toDay)){
+    if (this.validator.isDayValid(event.target.innerText, this.toMonth - 1, this.toYear)){ // was toDay, and this seems wrong
       this.toDay = parseInt(event.target.innerText);
     }
   }
 
-  // validateDay(event: any){
-  //   let that = this;
-  //   function dayValidator(month: number, year: number){
-  //     let y = year;
-  //     let m = month - 1;
-  //     // -1 is difference between real month and js conunting from 0
-  //     return function(day: number){
-  //       return that.validator.isDayValid(day, m, y)
-  //     }
-  //   }
-  //   return this.validate(event, dayValidator(this.toMonth, this.year).bind(this))
-  // }
-
   setEndMonth(event: any){
-      if (this.validator.isMonthValid(event.target.innerText)) this.toMonth = parseInt(event.target.innerText);
+      if (this.validator.isMonthValid(event.target.innerText)) {
+        this.toMonth = parseInt(event.target.innerText);
+      }
   }
-
-  // validateMonth(event: any){ this.validate(event, this.validator.isMonthValid.bind(this.validator))}
 
   setEndYear(event: any){
     if (this.validator.isYearValid(event.target.innerText)) this.toYear = parseInt(event.target.innerText);
   }
-  
-
-  // validate(event: any, validationFunction: Function){
-  //   setTimeout(()=>{
-  //     let isValid = validationFunction(event.target.innerText);
-  //     event.target.style.backgroundColor = isValid ? 'rgb(200, 255, 200)' : 'rgb(255, 200, 200)'
-  //   })
-  // }
-  
 
   moveEvent(event:any){
     if (this.toDateDifferentCurrentDate()){
@@ -144,7 +123,7 @@ uniqueId: string = 'moveEventId'
   }
 
   informDayComponentsAboutChange(){
-    this.communicator.inform('eventWasMovedAndDayWasCreated', {day: this.toDay, month: this.toMonth - 1})
+    this.communicator.inform('eventWasMovedAndDayWasCreated', {day: this.toDay, month: this.toMonth -1})
   }
   informMonthComponentsAboutChange(){
     this.communicator.inform('eventWasMovedAndMonthWasCreated', {month: this.toMonth})

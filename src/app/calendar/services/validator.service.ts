@@ -21,7 +21,6 @@ export class ValidatorService {
   }
   setColorsToMinutes(event: any){
     setTimeout(()=>{
-      console.dir(event.target)
       let isValid = this.isMinutesValid(event.target.innerText);
       
       if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
@@ -74,7 +73,7 @@ export class ValidatorService {
   setEndDay(event: any, month: number, year: number, valueIfNotValid: any){
     setTimeout(()=>{
       let day = event.target.innerText
-      let isValid = this.isDayValid(day, month - 1, year);
+      let isValid = this.isDayValid(day, month , year);
       // -1 is difference between real month and js conunting from 0
       if (!isValid){
         event.target.innerText = valueIfNotValid;
@@ -147,6 +146,7 @@ export class ValidatorService {
   }
 
   isDayValid(day: number | string, month: number, year: number){
+    if (this.calendar.getMonthDescriptor(year, month) == undefined) debugger;
     let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month).duration;
     return this.is2digitValid(day, nrOfDaysInMonth);
   }
@@ -175,10 +175,6 @@ export class ValidatorService {
 
 
   summaryValidationFunction(toValidate: any, maxVal: number = 50){
-    console.log(maxVal)
-    console.log(toValidate.toString())
-    console.log(toValidate.toString().length)
-    console.log(toValidate.toString().length <= maxVal)
     return toValidate.toString().length <= maxVal;
   }
 

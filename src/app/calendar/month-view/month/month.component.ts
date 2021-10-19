@@ -66,8 +66,8 @@ export class MonthComponent implements OnInit {
   displayWeekView(data: any){
     let year = this.currentYear;
     let month = this.monthDescriptor.monthIndex;
-    if (this.monthDescriptor.monthIndex == 11 && data == 1) {year++; month = 0}
-    if (this.monthDescriptor.monthIndex == 0 && data >51) {year--; month = 11}
+    if (this.monthDescriptor.monthIndex == 11 && data == 1) {year=year+1; month = 0}
+    if (this.monthDescriptor.monthIndex == 0 && data >51) {year=year-1; month = 11}
     this.communicator.inform('displayWeekView', {
       cwIndex: data,
       monthIndex: month,

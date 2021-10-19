@@ -33,7 +33,7 @@ export class SaveToFileComponent implements OnInit {
 
   confirm(){
     this.fileOperations.writeToFile(this.fileName, this.document)
-    this.cancel();
+    this.shouldDisplay = false;
   };
   cancel(){this.shouldDisplay = false;}
 

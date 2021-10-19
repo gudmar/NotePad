@@ -20,20 +20,13 @@ export class MonthViewComponent implements OnInit {
   @Input() set year(val: number) {
     if (val != this._year && this.validator.isYearValid(val)){
       // this.communicator.inform('showHideWaitingSpinner', 'show')
-      console.log(performance.now())
+      console.log(`Year object generation started at : ${performance.now()}`)
       this._year = val; 
       this.refreshYear();  
-      
-      console.log(performance.now())
-      
+      console.log(`Year object generation ended at : ${performance.now()}`)
     }
   }
   get year() {return this._year}
-  // @Input() monthDescriptor: {
-  //   monthIndex: number,
-  //   monthName: string,
-  //   weeks: any[]
-  // } = {monthIndex: 0, monthName: '', weeks: []}
 
   @Input() months: any[] = []
   @Input() set events(val: any[]) {
@@ -70,8 +63,6 @@ export class MonthViewComponent implements OnInit {
     }
     if (eventType == 'loadDocument') { 
       let newDocument = this.storageManager.loadContent(data);
-
-      // this.events = this.eventManager.fetchYearEvents(this.year, newDocument.calendarInputs).entries
       this.events = newDocument.calendarInputs
       this.refreshYear();
     }
@@ -144,8 +135,4 @@ export class MonthViewComponent implements OnInit {
   validateYear(event:any){
 
   }
-
-  // test(){
-  //   console.dir(this.events)
-  // }
 }

@@ -56,8 +56,8 @@ export class WeekViewHelperService {
         if (plannedMonth < 0) {plannedMonth = 11; plannedYear--;}
       }
       if (indexOfCurrnetCW == this.cwInCurrentMonth.length - 1) {
-        plannedMonth++;
-        if (plannedMonth > 11) {plannedMonth = 0; plannedYear++; plannedCW = 1;}
+        plannedMonth+1; //++;
+        if (plannedMonth > 11) {plannedMonth = 0; plannedYear+1; plannedCW = 1;}//++
       }
     } else {
       return getObjectToReturn();

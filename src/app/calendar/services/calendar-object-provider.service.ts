@@ -44,20 +44,16 @@ export class CalendarObjectProviderService {
     for(let cw of calendarWeeks){
       let cwDescriptor: any = {
         cwIndex: cw,
-        days: month==0 && cw>51 ? this.getDaysOfCW(year-1, cw): this.getDaysOfCW(year, cw)
+        days: this.getDaysOfCwIncludingBoundryCases(year, month, cw)
       }
       descriptor.push(cwDescriptor)
     }
-    return descriptor
-
-    // weeks: {
-    //   [cwIndex: 33,
-    //     days: {
-    //       {dayIndex: 31, dayName: Saturday, month: 10},
-    //       {dayIndex: 1, dayName: Sunday, month: 11}
-    //     }
-    //   ]
-    // }
+    return descriptor;
+  }
+  private getDaysOfCwIncludingBoundryCases(year:number, month:number, cw: number){
+    if (month == 0 && cw > 51) return this.getDaysOfCW(year - 1, cw);
+    if (month == 11 && cw == 1) return this.getDaysOfCW(year + 1, cw);
+    return this.getDaysOfCW(year, cw);
   }
 
   getDaysOfCW(year: number, cw: number){
@@ -95,8 +91,8 @@ export class CalendarObjectProviderService {
     let nextDay = date.day + 1;
     let nextMonth = date.month;
     let nextYear = date.year;
-    if (nextDay > monthDescriptor.duration) {nextDay = 1; nextMonth++;}
-    if (nextMonth > 11) {nextMonth = 0; nextYear++;}
+    if (nextDay > monthDescriptor.duration) {nextDay = 1; nextMonth = nextMonth + 1;}
+    if (nextMonth > 11) {nextMonth = 0; nextYear = nextYear + 1;}
     return {year: nextYear, month: nextMonth, day: nextDay}
   }
   getPreviousDay(date: {year: number, month: number, day: number}):

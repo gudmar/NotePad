@@ -1,5 +1,6 @@
 :host{
     left: 0.6rem;
+    z-index: 2500;
 }
 .tab-menu{
     left: 0.6rem;
@@ -32,6 +33,7 @@
     visibility: visible;
 }
 .hidden-tabs{
+    z-index: 2500;
     visibility: hidden;
 }
 

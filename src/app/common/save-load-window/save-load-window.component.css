@@ -1,4 +1,7 @@
-
+/* --light-border: #d0d7de;
+--light-input-background-color: #f6f8fa;
+--input-light-color: #50575e;
+--input-light-background-color-active: #f0fff0; */
 :host{
     position:sticky;
     z-index: 1000;

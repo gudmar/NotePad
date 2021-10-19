@@ -8,15 +8,38 @@ import { ValidatorService } from '../services/validator.service';
 export class ValidateYearDirective {
   @Input('ifNotValid') ifNotValid: any;
   constructor(private validator: ValidatorService) { }
+  @Input('monthInCaseOfLeapYear') monthInCaseOfLeapYear: number = -1;
+  @Input('dayInCaseOfLeapYear')  dayInCaseOfLeapYear: number = -1;
 
   @HostListener('mousedown', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
   onChange(event: any){
-    this.validator.setColorsToYear(event)
+    if (this.dayInCaseOfLeapYear!=-1 && this.monthInCaseOfLeapYear!=-1){
+      this.validator.setColorsToYearWithLeapYear(event, this.monthInCaseOfLeapYear, this.dayInCaseOfLeapYear)
+    } else {
+      this.validator.setColorsToYear(event)
+    } 
   }
 
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
-    this.validator.setEndYear(event, this.ifNotValid);
+    if (this.dayInCaseOfLeapYear!=-1 && this.monthInCaseOfLeapYear!=-1){
+      if (this.monthInCaseOfLeapYear == 2 && this.dayInCaseOfLeapYear == 29){
+        this.validator.setEndYearWithLeapYear(
+          event, this.monthInCaseOfLeapYear, this.dayInCaseOfLeapYear, this.getNearestLeapYear(this.ifNotValid)
+        )
+      } else {
+        this.validator.setEndYearWithLeapYear(
+          event, this.monthInCaseOfLeapYear, this.dayInCaseOfLeapYear, this.ifNotValid
+        )        
+      }
+    } else {
+      this.validator.setEndYear(event, this.ifNotValid);
+    } 
+  }
+
+  getNearestLeapYear(currentYear:number){
+    let divider = Math.floor(currentYear / 4);
+    return divider * 4;
   }
 }

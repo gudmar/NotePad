@@ -9,7 +9,7 @@
         </div>
         <div class="new-date-wrapper center">
             <div 
-                validateDay [ifNotValid] = "toDay" [monthToValidate] = "toMonth-1" [yearToValidate] = "toYear"
+                validateDay [ifNotValid] = "toDay" [monthToValidate] = "toMonth" [yearToValidate] = "toYear"
                 class="new-date new-date-day" 
                 placeholder="dd"
                 contenteditable="true"
@@ -17,13 +17,18 @@
             >{{toDay}}</div>
 
             <div 
-                validateMonth [ifNotValid] = "toMonth"
+                validateMonth [ifNotValid] = "toMonth" 
+                [yearInCaseOfLeapYear] = "toYear"
+                [dayInCaseOfLeapYear] = "toDay"
+              
                 class="new-date new-date-month" 
                 placeholder="mm"
                 contenteditable="true"
                 (focusout)="setEndMonth($event)"
             >{{toMonth}}</div>
-            <div validateYear [ifNotValid] = "toYear"
+            <!-- [yearInCaseOfLeapYear] = "toYear"
+            [dayInCaseOfLeapYear] = "toDay" -->
+            <div validateYear [ifNotValid] = "toYear" [monthInCaseOfLeapYear] = "toMonth" [dayInCaseOfLeapYear] = "toDay"
                 class="new-date new-date-year" 
                 placeholder="year"
                 contenteditable="true"

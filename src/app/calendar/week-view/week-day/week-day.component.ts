@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CommunicationService } from '../../../services/communication.service';
 
 @Component({
   selector: 'week-day',
@@ -19,10 +20,22 @@ export class WeekDayComponent implements OnInit {
     return `${day}/${month}/${year}`
   }
   get duration() {return this.dayDescriptor.duration}
-  constructor() { }
+  constructor(private communicator: CommunicationService) { }
 
   ngOnInit(): void {
     console.log(this.dayDescriptor)
+  }
+
+  openDayEditWindow(event:any){
+    let dataToSend = {
+      day: this.dayDescriptor.dayMonthIndex,
+      month: this.dayDescriptor.month,
+      year: this.dayDescriptor.year,
+      cw: 0,
+      dayWeekIndex: this.dayDescriptor.dayWeekIndex,
+      events: this.events
+    }
+    this.communicator.inform('eventViewerShouldBeDisplayed', dataToSend);
   }
 
 }

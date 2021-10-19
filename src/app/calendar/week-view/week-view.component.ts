@@ -33,6 +33,7 @@ export class WeekViewComponent implements OnInit {
     return weeks;
   }
   get daysOfCurrnetCw(){
+    console.log(this.helper.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days)
     return this.helper.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days
   }
   constructor(

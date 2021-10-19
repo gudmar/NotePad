@@ -26,26 +26,76 @@
 .wrapper:hover{
     /* overflow-y: auto; */
 }
+
+/* --light-border: #d0d7de;
+--light-input-background-color: #f6f8fa;
+--input-light-color: #50575e;
+--input-light-background-color-active: #f0fff0; */
+
 .title-wrapper{
     position: relative;
     width: 100%;
+    border-bottom: thin solid var(--light-border);
+}
+.title-wrapper:hover{
+    background-color: var(--input-light-background-color-active);
+    cursor: pointer;
 }
 .title{
     font-weight: bold;
     background-color: hsl(240, 30%, 10%);
+    background-color: var(--light-input-background-color);
     color: white;
+    color: var(--input-light-color);
+    position: relative;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    font-size: 1.2rem;
 }
 .title-date{
     font-style: italic;
     background-color: hsl(240, 30%, 80%);
+    background-color: white;
     color: black;    
+    color: var(--input-light-color);
 }
 .content-wrapper{
     position: relative;
     height: 100%;
     overflow-y: auto;
 }
-.event{
 
+.bounce-right:before{
+    position: absolute;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 0;
+    top:0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    transform: scaleX(0);
+    color: white;
+    background-color: rgb(200,200,200);
+    transition-duration: 0.3s;
+    transform-origin: 0%;
+    content: "";
+    z-index: -1;
+}
+.bounce-right:hover>.title-date{
+    background-color: transparent;
+}
+.bounce-right:hover>.title{
+    background-color: transparent;
+}
+.bounce-right:hover:before{
+    transform: scaleX(1);
+    transition-duration: 0.3s;
 }
 
+.bounce-right:hover{
+    color: white;
+    z-index: 2;
+}
+.bounce-right:hover>*{
+    color:white;
+}

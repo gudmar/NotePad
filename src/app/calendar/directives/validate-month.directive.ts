@@ -6,16 +6,26 @@ import { ValidatorService } from '../services/validator.service';
 })
 export class ValidateMonthDirective {
   @Input('ifNotValid') ifNotValid: any;
+  @Input('yearInCaseOfLeapYear') yearInCaseOfLeapYear: number = -1;
+  @Input('dayInCaseOfLeapYear')  dayInCaseOfLeapYear: number = -1;
   constructor(private validator: ValidatorService) { }
 
   @HostListener('mousedown', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
   onChange(event: any){
-    this.validator.setColorsToMonth(event)
+    if (this.dayInCaseOfLeapYear!=-1 && this.yearInCaseOfLeapYear!=-1){
+      this.validator.setColorsToMonthWithLeapYear(event, this.yearInCaseOfLeapYear, this.dayInCaseOfLeapYear)
+    } else {
+      this.validator.setColorsToMonth(event)
+    } 
   }
 
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
-    this.validator.setEndMonth(event, this.ifNotValid);
+    if (this.dayInCaseOfLeapYear!=-1 && this.yearInCaseOfLeapYear!=-1){
+      this.validator.setEndMonthWithLeapYear(event, this.yearInCaseOfLeapYear, this.dayInCaseOfLeapYear, this.ifNotValid)
+    } else {
+      this.validator.setEndMonth(event, this.ifNotValid);
+    } 
   }
 }

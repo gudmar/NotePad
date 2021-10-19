@@ -45,6 +45,7 @@ toMonth: number = this.month;
 toYear: number = this.year;
 allCalendarEvents: any = [];
 shouldInformDateNotValid: boolean = false;
+currentMonth:string | number = this.month;
 get shouldDisplay() {return this._shouldDisplay}
 uniqueId: string = 'moveEventId'
   constructor(
@@ -75,19 +76,26 @@ uniqueId: string = 'moveEventId'
   }
 
   setEndDay(event: any){
-    if (this.validator.isDayValid(event.target.innerText, this.toMonth - 1, this.toYear)){ // was toDay, and this seems wrong
+    if (this.validator.isDayValid(event.target.innerText, this.toMonth, this.toYear)){ // was toDay, and this seems wrong
       this.toDay = parseInt(event.target.innerText);
+      console.log('day set to .............  ' + this.toDay)
     }
+    console.error('day not valid ' + event.target.innerText + ' '  + this.toMonth, + ' ' + this.toYear)
   }
 
   setEndMonth(event: any){
-      if (this.validator.isMonthValid(event.target.innerText)) {
+      if (this.validator.isMonthValidLeapYear(this.toDay, event.target.innerText, this.toYear)) {
         this.toMonth = parseInt(event.target.innerText);
       }
   }
 
+  setCurrentMonth(event:any){
+    this.currentMonth = event.target.innerText;
+  }
+
   setEndYear(event: any){
-    if (this.validator.isYearValid(event.target.innerText)) this.toYear = parseInt(event.target.innerText);
+    if (this.validator.isYearValidLeapYear(this.toDay, this.toMonth, event.target.innerText)) 
+      this.toYear = parseInt(event.target.innerText);
   }
 
   moveEvent(event:any){

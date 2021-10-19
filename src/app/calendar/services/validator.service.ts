@@ -52,9 +52,31 @@ export class ValidatorService {
     })
   }
 
+  setColorsToYearWithLeapYear(event: any, monthInCaseLeapYear:number, dayInCaseLeapYear:number){
+    setTimeout(()=>{
+      // let isValid = this.isDayValid(dayInCaseLeapYear, monthInCaseLeapYear, event.target.innerText);
+      let isValid = this.isYearValidLeapYear(dayInCaseLeapYear, monthInCaseLeapYear, event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+
   setColorsToMonth(event: any){
     setTimeout(()=>{
       let isValid = this.isMonthValid(event.target.innerText);
+      if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
+      if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
+    })
+  }
+  setColorsToMonthWithLeapYear(event: any, yearInCaseLeapYear:number, dayInCaseLeapYear:number){
+    let month = event.target.innerText
+    setTimeout(()=>{
+      // let isValid = this.isMonthValid(month);
+      let isValid = this.isMonthValidLeapYear(dayInCaseLeapYear, month, yearInCaseLeapYear)
+      if (isValid) 
+        // isValid = this.isDayValid(
+        //   dayInCaseLeapYear, typeof(month)=='string'?parseInt(month):month-1, yearInCaseLeapYear-1
+        // );
       if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
       if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
     })
@@ -111,25 +133,71 @@ export class ValidatorService {
     event.target.style.backgroundColor = '';
   }
 
-
-
   setEndMonth(event: any, valueIfNotValid: any){
     let isValid = this.isMonthValid(event.target.innerText);
+    this.setEndMonthGeneral(event, valueIfNotValid, isValid);
+    // if (!isValid){
+    //   event.target.innerText = valueIfNotValid;
+    // }
+    // event.target.style.backgroundColor = '';
+  }
+
+  setEndMonthWithLeapYear(event: any, yearLeapYear:number, dayLeapYear: number, valueIfNotValid:any){
+    let isValid = this.isMonthValidLeapYear(dayLeapYear, event.target.innerText, yearLeapYear)
+    this.setEndMonthGeneral(event, valueIfNotValid, isValid);
+  }
+
+  isMonthValidLeapYear(day:number | string, month:number | string, year: number | string){
+    let isValid = this.isYearValid(year);
+    console.log(isValid)
+    console.log(this.isMonthValid(month))
+    console.log(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year))
+    console.log(day, month, year)
+    console.log('isDya valid ' + this.isDayValid(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year)))
+    if (isValid) isValid = this.isMonthValid(month)  
+    if (isValid) isValid = this.isDayValid(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year));
+    return isValid;
+  }
+
+  toNumberIfNeeded(val:number|string){
+    return typeof(val)=='string'?parseInt(val):val;
+  }
+
+  private setEndMonthGeneral(event:any, valueIfNotValid:any, isValid:boolean){
     if (!isValid){
       event.target.innerText = valueIfNotValid;
     }
     event.target.style.backgroundColor = '';
   }
 
-
   setEndYear(event: any, valueIfNotValid: any){
-    setTimeout(()=>{
+    // setTimeout(()=>{
+    //   let isValid = this.isYearValid(event.target.innerText);
+    //   if (!isValid){
+    //     event.target.innerText = valueIfNotValid;
+    //   }
+    //   event.target.style.backgroundColor = '';
+    // })
     let isValid = this.isYearValid(event.target.innerText);
-    if (!isValid){
-      event.target.innerText = valueIfNotValid;
-    }
-    event.target.style.backgroundColor = '';
-  })
+    this.setEndYearGeneral(event, valueIfNotValid, isValid);
+  }
+
+  setEndYearWithLeapYear(event: any, monthLeapYear:number, dayLeapYear: number, valueIfNotValid:any){
+    let isValid = this.isYearValidLeapYear(dayLeapYear, monthLeapYear, event.target.innerText);
+    this.setEndYearGeneral(event, valueIfNotValid, isValid);
+  }
+
+  isYearValidLeapYear(day:number | string, month:number | string, year: number | string){
+    return this.isMonthValidLeapYear(day, month, year);
+  }
+
+  private setEndYearGeneral(event: any, valueIfNotValid:any, isValid:boolean){
+    setTimeout(()=>{
+      if(!isValid){
+        event.target.innerText = valueIfNotValid;
+      }
+      event.target.style.backgroundColor = '';
+    })
   }
 
   isYearValid(valueToTest: number | string ){
@@ -141,17 +209,24 @@ export class ValidatorService {
     return true;
   }
 
-  isMonthValid(valueToTest: number){
+  isMonthValid(valueToTest: number | string){
     return this.is2digitValid(valueToTest, 12);
   }
 
   isDayValid(day: number | string, month: number, year: number){
-    if (this.calendar.getMonthDescriptor(year, month) == undefined) debugger;
-    let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month).duration;
+    if (this.calendar.getMonthDescriptor(year, month-1) == undefined)  console.warn('isDayValid: undefined');
+    if (this.calendar.getMonthDescriptor(year, month-1) == undefined) return false; // debugger;
+    let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month-1).duration;
+    console.log('days in month ' + nrOfDaysInMonth)
+    console.log(' year ' + year)
+    console.log(day)
+    console.log(this.is2digitValid(day, nrOfDaysInMonth))
     return this.is2digitValid(day, nrOfDaysInMonth);
   }
 
   is2digitValid(valueToTest: number | string, maxVal: number){
+    console.log(valueToTest)
+    if (valueToTest == '') return false;
     let nonDigitTestPattern = new RegExp('\\D')
     if (nonDigitTestPattern.test(valueToTest.toString())) return false
     if (parseInt(valueToTest.toString()) < 1 || parseInt(valueToTest.toString()) > maxVal) return false

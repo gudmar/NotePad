@@ -41,6 +41,7 @@ export class LinkSearcherComponent implements OnInit {
   }
   close(){
     this.shouldBeDisplayed = false;
+    this.filter = '';
   }
 
   descriptorCompare(a: any, b: any){

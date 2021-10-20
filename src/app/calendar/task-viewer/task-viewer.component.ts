@@ -5,6 +5,7 @@ import { UniqueIdProviderService } from '../../services/unique-id-provider.servi
 import { EventManagerService } from '../services/event-manager.service';
 import { WindowSizeEvaluatorService } from '../../services/window-size-evaluator.service'
 import { ValidatorService } from '../services/validator.service';
+import { Add0prefixPipe } from '../../pipes/add0prefix.pipe'
 
 @Component({
   selector: 'task-viewer',
@@ -65,10 +66,11 @@ export class TaskViewerComponent implements OnInit {
     this.modifyIfValid(uniqueId, 'minutes', event.target.innerText, 
     this.validator.isMinutesValid.bind(this.validator,event.target.innerText)
   )}
-  setTaskHours(event:any, uniqueId: string){
+  setTaskHours(event:any, uniqueId: string, entry:any){
     this.modifyIfValid(uniqueId, 'hours', event.target.innerText, 
-    this.validator.isHoursValid.bind(this.validator,event.target.innerText)
-  )}
+    this.validator.isHoursValid.bind(this.validator,event.target.innerText)    
+  );
+}
   setTaskDuration(event:any, uniqueId: string){
     this.modifyIfValid(uniqueId, 'duration', event.target.innerText, 
     this.validator.isDurationValid.bind(this.validator,event.target.innerText)
@@ -95,9 +97,9 @@ export class TaskViewerComponent implements OnInit {
     this.modifyIfValid(uniqueId, 'description', event.target.innerText, ()=>{return true;})
   }
 
-  add0prefix(n: number){
-    return parseInt(n.toString()) < 10 ? `0${parseInt(n.toString())}` : n;
-  }
+  // add0prefix(n: number){
+  //   return parseInt(n.toString()) < 10 ? `0${parseInt(n.toString())}` : n;
+  // }
 
   handleMessages(eventType: string, data: any){
     if (eventType == 'calendarEvents') {

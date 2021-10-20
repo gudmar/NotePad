@@ -21,6 +21,19 @@ export class ValidateYearDirective {
     } 
   }
 
+  @HostListener('keydown', ['$event'])
+  blurOnEnter(event:any){
+    if (event.keyCode === 13){
+      event.preventDefault();
+      event.target.blur();
+    }
+  }
+
+  // @HostListener('keypress', ['$event'])
+  // preventEnter(event:any){
+  //   if (event.keyCode === 13) event.preventDefault();
+  // }
+
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
     if (this.dayInCaseOfLeapYear!=-1 && this.monthInCaseOfLeapYear!=-1){

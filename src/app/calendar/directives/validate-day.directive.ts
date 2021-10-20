@@ -12,7 +12,7 @@ export class ValidateDayDirective {
   constructor(private validator: ValidatorService) { }
 
   @HostListener('mousedown', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
   onChange(event: any){
     this.validator.setColorsToDay(event, event.target.innerText, this.month, this.year)
     console.log(event.target.innerText)
@@ -21,5 +21,13 @@ export class ValidateDayDirective {
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
     this.validator.setEndDay(event, this.month, this.year, this.ifNotValid);
+  }
+
+  @HostListener('keydown', ['$event'])
+  blurOnEnter(event:any){
+    if (event.keyCode === 13){
+      event.preventDefault();
+      event.target.blur();
+    }
   }
 }

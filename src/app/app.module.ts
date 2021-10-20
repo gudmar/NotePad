@@ -65,6 +65,8 @@ import { PreventEnterDirective } from './directives/prevent-enter.directive';
 import { PreventPasteDirective } from './directives/prevent-paste.directive';
 import { ValidateMenuTabDirective } from './calendar/directives/validate-menu-tab.directive';
 import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
+import { Add0prefixPipe } from './pipes/add0prefix.pipe';
+import { Add0prefixDirective } from './directives/add0prefix.directive';
 
 
 
@@ -123,6 +125,8 @@ import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
     PreventPasteDirective,
     ValidateMenuTabDirective,
     HslOrHexToHexPipe,
+    Add0prefixPipe,
+    Add0prefixDirective,
     
   ],
   imports: [

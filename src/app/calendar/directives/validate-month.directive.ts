@@ -20,6 +20,14 @@ export class ValidateMonthDirective {
     } 
   }
 
+  @HostListener('keydown', ['$event'])
+  blurOnEnter(event:any){
+    if (event.keyCode === 13){
+      event.preventDefault();
+      event.target.blur();
+    }
+  }
+
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
     if (this.dayInCaseOfLeapYear!=-1 && this.yearInCaseOfLeapYear!=-1){

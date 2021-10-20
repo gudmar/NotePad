@@ -9,7 +9,7 @@ export class ValidateDurationDirective {
   constructor(private validator: ValidatorService) { }
 
   @HostListener('mousedown', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
   onChange(event: any){
     this.validator.setColorsToDuration(event)
   }
@@ -17,6 +17,14 @@ export class ValidateDurationDirective {
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
     this.validator.setEndDuration(event, this.ifNotValid);
+  }
+
+  @HostListener('keydown', ['$event'])
+  blurOnEnter(event:any){
+    if (event.keyCode === 13){
+      event.preventDefault();
+      event.target.blur();
+    }
   }
 
 }

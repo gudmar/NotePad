@@ -1,27 +1,17 @@
 <ng-container *ngIf = "shouldBeDisplayed">
     <div class="shutter center">
-    <!-- <task-edit-form
-        *ngIf="shouldShowEditFrom"
-        [task] = "formTask"
-        [day] = 'day'
-        [month] = "month"
-        [year] = "year"
-    >
-    </task-edit-form> -->
         <div class="viewer-window center">
             <div class="nav-bar center">
                 <div class="arrow" (click)="switchToAnotherDay(-1)">&lt;&lt;</div>
                 <div class="date">
                     <span class="conditional-display">{{dayAsString}}</span>
                     <div class="row">
-                        <span>{{add0prefix(day)}}</span> / 
-                        <span>{{add0prefix(month + 1)}}</span> / 
+                        <span>{{day | add0prefix}}</span> / 
+                        <span>{{month + 1 | add0prefix}}</span> / 
                         <span class="conditional-display">{{year}}</span>
                     </div>
                 </div>
                 <div class="arrow" (click)="switchToAnotherDay(1)">&gt;&gt;</div>
-
-                <!-- <div class="arrow button">Save</div> -->
                 <div class="close arrow center" (click)="close()">&times;</div>
             </div>
             <div class="tasks">
@@ -35,23 +25,27 @@
                         </tr>
                         <tr *ngFor="let entry of entries">
                             <td>
-                                <div ValidateHour [ifNotValid] ="entry.hours"  
+                                <div
+                                    Add0prefix 
+                                    ValidateHour [ifNotValid] ="entry.hours"  
                                     class="center hours editable" 
                                     contenteditable="true" 
-                                    (focusout)="setTaskHours($event, entry.uniqueId)"
+                                    (focusout)="setTaskHours($event, entry.uniqueId, entry)"
                                 >
-                                {{add0prefix(entry.hours)}}
+                                {{entry.hours | add0prefix}}
                                     
                                 </div>
                             </td>
                             <td><span class="separator">:</span></td>
                             <td>
-                                <div ValidateMinutes [ifNotValid] ="entry.minutes" 
+                                <div
+                                    Add0prefix 
+                                    ValidateMinutes [ifNotValid] ="entry.minutes" 
                                     class="center minutes editable" 
                                     contenteditable="true" 
                                     (focusout)="setTaskMinutes($event, entry.uniqueId)"
                                 >
-                                    {{add0prefix(entry.minutes)}}
+                                    {{entry.minutes | add0prefix}}
                                 </div>
                             </td>
                             <td>
@@ -110,7 +104,6 @@
 
                  
             <div *ngIf="shouldDisplayMobileVersion" class="wrapper">
-                    <!-- <div class="title">{{add0prefix(day)}}/{{add0prefix(month)}}/{{year}}</div> -->
                 <div class="task-wrapper" *ngFor="let entry of entries" >
                         <div class="row task-header">
                                 <div 
@@ -135,19 +128,21 @@
                             <span class="label">Start time</span>
                             <div class="row">
                                 <div 
+                                    Add0prefix
                                     ValidateHour [ifNotValid]="entry.hours"
                                     class="input" contenteditable="true"
-                                    (focusout)="setTaskHours($event, entry.uniqueId)"
+                                    (focusout)="setTaskHours($event, entry.uniqueId, entry)"
                                 >
-                                    {{add0prefix(entry.hours)}}
+                                    {{entry.hours | add0prefix}}
                                 </div>
                                 <div class="label">:</div>
                                 <div
+                                    Add0prefix
                                     ValidateMinutes [ifNotValid] ="entry.minutes"
                                     class="input" contenteditable="true"
                                     (focusout)="setTaskMinutes($event, entry.uniqueId)"
                                 >
-                                    {{add0prefix(entry.minutes)}}
+                                    {{entry.minutes | add0prefix}}
                                 </div>
                             </div>
                         </div>
@@ -189,50 +184,7 @@
 
 
                 </div>
-                    <!-- <div class="button" (click)="closeTaskEditFrom()">Done</div> -->
                 </div>
-
-                <!-- <table *ngIf="shouldDisplayMobileVersion">
-                    <tr>
-                        <th colspan="2">Time</th>
-                        <th>Duration</th>
-                        <th>Summary</th>
-                        <th>Opt</th>
-                    </tr>
-                    <tr *ngFor="let entry of entries; let i = index" class="hoverable-row">
-                        <td (click)="showEditForm(i)"> 
-                            <div class="center hours">
-                                {{add0prefix(entry.hours)}}
-                            </div>
-                        </td>
-                        <td (click)="showEditForm(i)">
-                            <div class="center minutes">
-                                {{add0prefix(entry.minutes)}}
-                            </div>
-                        </td>
-                        <td (click)="showEditForm(i)">
-                            <div class="center duration">
-                                {{entry.duration}}
-                            </div>
-                        </td>
-                        <td (click)="showEditForm(i)">
-                            <div class="center summary">
-                                {{entry.summary}}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="options center">
-                                    <div 
-                                        class="arrow center icon-button icon-button-fixed icon-button-green" 
-                                        (click) = "addEventAfter($event, entry.uniqueId)"
-                                        >+</div>
-                                </div>
-    
-                        </td>
-                    </tr>
-                </table> -->
-
-                <!-- *ngIf="shouldDisplayMobileVersion" -->
 
                 <div *ngIf="entries.length==0" 
                     class="huge-button center arrow" 

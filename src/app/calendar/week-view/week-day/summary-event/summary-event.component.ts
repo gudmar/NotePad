@@ -7,9 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SummaryEventComponent implements OnInit {
   @Input() event: any;
-  get time(){
-    return `${this.add0prefix(this.event.hours)}:${this.add0prefix(this.event.minutes)}`
-  }
+  // get time(){
+  //   return `${this.add0prefix(this.event.hours)}:${this.add0prefix(this.event.minutes)}`
+  // }
   get duration(){return this.event.duration}
   get summary() {return this.event.summary}
   get description() {return this.event.description}
@@ -18,9 +18,9 @@ export class SummaryEventComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  add0prefix(val: number | string){
-    let toConvert = parseInt(val.toString());
-    return toConvert < 10?`0${val}`:`${val}`
-  }
+  // add0prefix(val: number | string){
+  //   let toConvert = parseInt(val.toString());
+  //   return toConvert < 10?`0${val}`:`${val}`
+  // }
 
 }

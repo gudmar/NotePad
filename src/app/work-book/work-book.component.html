@@ -1,6 +1,22 @@
 <div class="workbook">
     <ng-container *ngIf="application == 'notes'">
-        <div class="rewind-button center" *ngIf="isHiddable" (click)="showMenu()"><span>>></span></div>
+
+        <note-pad
+            [document] = "document"
+        ></note-pad>
+                    <!-- [listOfSheets] = "listOfSheets"
+            [currentSheetId] = "activeSheetId"
+            [uniqueId] = "activeSheetId"
+            [bgColor] = "currentSheetBgColor"
+            [pages] = "currentSheetPages"
+            [currentPageId] = "currentSheetStartPageId"
+            [lastAddedPageId] = "lastAddedPageId"
+            (sheetStartPageChanged) = "switchStartPage($event)"
+            (sheetSwitched) = "switchSheet($event)" -->
+
+
+
+        <!-- <div class="rewind-button center" *ngIf="isHiddable" (click)="showMenu()"><span>>></span></div>
         <div class="menu" [ngClass]="{'hidden':shouldBeHidden, 'not-hidden':!shouldBeHidden}">
             <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>          
         </div>
@@ -14,7 +30,11 @@
                 (sheetStartPageChanged) = "switchStartPage($event)"
             >
             </sheet>
-        </div>
+        </div> -->
+
+
+
+
     </ng-container>
     <ng-container *ngIf="application == 'calendar'">
         <calendar dropZone [events] = "calendarInputs">

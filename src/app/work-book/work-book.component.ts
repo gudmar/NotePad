@@ -28,11 +28,11 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
-  application: string = 'calendar'
+  application: string = 'notes'
   // application: string = 'notes' //'calendar'
   listOfSheets:any[] = this.document.sheets;
   uniqueId: string = "workBookId"
-  @Input() isHiddable: boolean = false;
+  // @Input() isHiddable: boolean = false;
   @Input() shouldBeHidden: boolean = false;
   @Input() documentContent: any;
   
@@ -56,7 +56,8 @@ export class WorkBookComponent implements OnInit {
   }
 
   colorGenerator = new NextColorGeneratorService();
-  constructor(private descriptorTranslator: DescriptorToDataService, 
+  constructor(
+    private descriptorTranslator: DescriptorToDataService, 
     private mockDataProvider: FalseDataMockService, 
     private idProvider: UniqueIdProviderService,
     private messenger: CommunicationService,
@@ -65,7 +66,7 @@ export class WorkBookComponent implements OnInit {
     private fileOperations: FileOperationsService,
     private documentValidator: DocumentValidatorService,
     private activeNoteGetter: GetActiveNoteDataService,
-    private windowSize: WindowSizeEvaluatorService
+    // private windowSize: WindowSizeEvaluatorService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -86,8 +87,6 @@ export class WorkBookComponent implements OnInit {
        'clearAllCalendarInputs',
        'setLastAddedPageId'
       ]
-
-
     )
   }
 
@@ -123,19 +122,19 @@ export class WorkBookComponent implements OnInit {
       }
       // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
     }
-    if (eventType == 'pageWasClicked'){
-      if(this.isHiddable) this.shouldBeHidden = true;
-    }
+    // if (eventType == 'pageWasClicked'){
+    //   if(this.isHiddable) this.shouldBeHidden = true;
+    // }
     if (eventType == 'clearAllCalendarInputs'){
       this.document.calendarInputs = [];
       this.calendarInputs = this.document.calendarInputs;
     }
-    if (eventType === 'addNextSheet'){
-      if (data.after == 'last'){
-        let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
-        this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-      }
-    }
+    // if (eventType === 'addNextSheet'){
+    //   if (data.after == 'last'){
+    //     let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
+    //     this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+    //   }
+    // }
     if (eventType === 'saveDocument'){
       let copyOfDocument = JSON.parse(JSON.stringify(this.document));
       let activeNoteData = this.getActiveNoteData();
@@ -160,11 +159,11 @@ export class WorkBookComponent implements OnInit {
       this.application = 'calendar'
     }
     if (eventType == 'switchToNotes'){this.application = 'notes'}
-    if (eventType == "changeSheetTitle"){
-      if (data.uniqueId == this.activeSheetId){
-        this.extractSheetDescriptor(data.uniqueId).title = data.title;
-      }
-    }
+    // if (eventType == "changeSheetTitle"){
+    //   if (data.uniqueId == this.activeSheetId){
+    //     this.extractSheetDescriptor(data.uniqueId).title = data.title;
+    //   }
+    // }
     if (eventType =='loadFreshDocument'){
       let newDocument = this.storageManager.getNewDocumentAndClearLastUsed();
       this.reloadDocument(newDocument)
@@ -173,9 +172,9 @@ export class WorkBookComponent implements OnInit {
       this.messenger.inform('displaySaveToFileWindow', this.document)
       // this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
-    if (eventType == 'setLastAddedPageId'){
-      this.setLastAddedPageId(data)
-    }
+    // if (eventType == 'setLastAddedPageId'){
+    //   this.setLastAddedPageId(data)
+    // }
   }
 
   // ****************** MOVE TO SERVICE ******************************
@@ -196,18 +195,35 @@ export class WorkBookComponent implements OnInit {
   reloadDocument(documentData: any){
     this.loadDocumentToView(this.mockDataProvider.getFreshDocument())
     this.loadDocumentToView(documentData)
-
   }
 
   loadDocumentToView(documentData: any){
     // this.calendarInputs = []
     this.document = documentData
-    this.listOfSheets = this.document.sheets;
-    this.activeSheetId = this.document.activeSheetId;    
+    // this.listOfSheets = this.document.sheets;
+    // this.activeSheetId = this.document.activeSheetId;    
     setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
-    this.initializeNewSheet(this.activeSheetId);
-    
+    // this.initializeNewSheet(this.activeSheetId);
+
+    console.error(`
+    core.js:6479 ERROR TypeError: Cannot read property 'startsWith' of undefined
+    at HslOrHexToHexPipe.transform (hsl-or-hex-to-hex.pipe.ts:10)
+    at pureFunction1Internal (core.js:25675)
+    at Module.ɵɵpipeBind1 (core.js:25847)
+    at PageMenuComponent_div_3_Template (page-menu.component.html:8)
+    at executeTemplate (core.js:9598)
+    at refreshView (core.js:9464)
+    at refreshEmbeddedViews (core.js:10589)
+    at refreshView (core.js:9488)
+    at refreshComponent (core.js:10635)
+    at refreshChildComponents (core.js:9261)
+
+
+    HERE IS THE PROBLEM: Save and load should stay in this component, however something is missing here
+    `)
+
   }
+
   ngAfterViewInit(){
     setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
   }
@@ -216,20 +232,26 @@ export class WorkBookComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDocument();
-    this.listOfSheets = this.document.sheets;
-    this.activeSheetId = this.document.activeSheetId;
+    // this.listOfSheets = this.document.sheets;
+    // this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;
-    this.initializeNewSheet(this.activeSheetId);
-    this.checkIfmenuNeedsToBeHidden();
+    // this.initializeNewSheet(this.activeSheetId);
+    // this.checkIfmenuNeedsToBeHidden();
 
   }
 
-  initializeNewSheet(newSheetId: string){
-    let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
-    this.currentSheetBgColor = currentSheetDescriptor.bgColor;
-    this.currentSheetPages = currentSheetDescriptor.pages;
-    this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
-  }
+  // initializeNewSheet(newSheetId:string){
+  //   this.activeSheetId = newSheetId;
+  // }
+  // initializeNewSheet(newSheetId: string){
+  //   this.activeSheetId = newSheetId;
+
+  //   let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
+  //   this.currentSheetBgColor = currentSheetDescriptor.bgColor;
+  //   this.currentSheetPages = currentSheetDescriptor.pages;
+  //   this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
+  //   console.log(this.currentSheetStartPageId)
+  // }
 
   extractSheetDescriptor(sheetId: string): any{
     let descriptor = this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, sheetId);
@@ -238,33 +260,33 @@ export class WorkBookComponent implements OnInit {
     return _sheetDescriptor
   }
 
-  switchSheet(data: any){
-    this.activeSheetId = data;
-    this.initializeNewSheet(data);
-  }
+  // switchSheet(data: any){
+  //   this.activeSheetId = data;
+  //   this.initializeNewSheet(data);
+  // }
 
-  switchStartPage(data:any){
-    this.currentSheetStartPageId = data.newPageId;
-    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
-  }
+  // switchStartPage(data:any){
+  //   this.currentSheetStartPageId = data.newPageId;
+  //   this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
+  // }
 
-  get lastAddedPageId() {
-    return this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId;
-  }
+  // get lastAddedPageId() {
+  //   return this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId;
+  // }
 
-  setLastAddedPageId(data:any){
-    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
-  }
+  // setLastAddedPageId(data:any){
+  //   this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
+  // }
 
-  @HostListener('window:resize', ['$event'])
-  checkIfmenuNeedsToBeHidden(){
-    this.isHiddable = this.windowSize.isWindowTooNarrow();
-    this.shouldBeHidden = this.isHiddable;
-  }
+  // @HostListener('window:resize', ['$event'])
+  // checkIfmenuNeedsToBeHidden(){
+  //   this.isHiddable = this.windowSize.isWindowTooNarrow();
+  //   this.shouldBeHidden = this.isHiddable;
+  // }
 
-  showMenu(){
-    this.shouldBeHidden = false;
-  }
-  hideMenu() {this.shouldBeHidden = true;}
+  // showMenu(){
+  //   this.shouldBeHidden = false;
+  // }
+  // hideMenu() {this.shouldBeHidden = true;}
 
 }

@@ -126,6 +126,7 @@ export class SheetComponent implements OnInit {
   }
   
   getCurrentPagesColor(){
+    // console.log(this.getPageDescriptorById(this.currentPageId))
     let pageDescriptor = this.getCurrentPageDescriptor();
     return pageDescriptor == undefined ? undefined : pageDescriptor.bgColor;
   }

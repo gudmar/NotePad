@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-// import { ApplicationPipesModule } from './app-pipes.module'
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { NoteComponent } from './note/note.component';
 import { MovablePointComponent } from './movable-point/movable-point.component';
@@ -67,6 +66,7 @@ import { ValidateMenuTabDirective } from './calendar/directives/validate-menu-ta
 import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
 import { Add0prefixPipe } from './pipes/add0prefix.pipe';
 import { Add0prefixDirective } from './directives/add0prefix.directive';
+import { NotePadComponent } from './note-pad/note-pad.component';
 
 
 
@@ -127,6 +127,7 @@ import { Add0prefixDirective } from './directives/add0prefix.directive';
     HslOrHexToHexPipe,
     Add0prefixPipe,
     Add0prefixDirective,
+    NotePadComponent,
     
   ],
   imports: [

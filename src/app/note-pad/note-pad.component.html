@@ -5,10 +5,10 @@
 <div class="sheet-container">
     <sheet  
         [uniqueId] = "currentSheetId" 
-        [bgColor]="currentSheetBgColor" 
-        [pages]="currentSheetPages"
-        [currentPageId] = "currentSheetStartPageId"
-        [lastAddedPageId] = "lastAddedPageId"
+        [bgColor]="currentSheet.bgColor" 
+        [pages]="currentSheet.pages"
+        [currentPageId] = "currentSheet.startPageId"
+        [lastAddedPageId] = "currentSheet.lastAddedPageId"
         (sheetStartPageChanged) = "switchStartPage($event)"
     >
     </sheet>

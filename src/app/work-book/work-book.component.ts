@@ -32,7 +32,6 @@ export class WorkBookComponent implements OnInit {
   // application: string = 'notes' //'calendar'
   listOfSheets:any[] = this.document.sheets;
   uniqueId: string = "workBookId"
-  // @Input() isHiddable: boolean = false;
   @Input() shouldBeHidden: boolean = false;
   @Input() documentContent: any;
   
@@ -66,26 +65,25 @@ export class WorkBookComponent implements OnInit {
     private fileOperations: FileOperationsService,
     private documentValidator: DocumentValidatorService,
     private activeNoteGetter: GetActiveNoteDataService,
-    // private windowSize: WindowSizeEvaluatorService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
       ['storageOperation', 
-       'addNextSheet', 
+      //  'addNextSheet', 
        'saveDocument', 
        'loadDocument', 
        'LoadFromFile',
        'switchToCalendar', 
        'switchToNotes',
-       'changeSheetTitle',
+      //  'changeSheetTitle',
        'loadFreshDocument',
        'saveToFile',
        'gotFileWithDataToLoad',
        'saveToLastUsedKey',
-       'pageWasClicked',
+      //  'pageWasClicked',
        'clearAllCalendarInputs',
-       'setLastAddedPageId'
+      //  'setLastAddedPageId'
       ]
     )
   }
@@ -170,7 +168,6 @@ export class WorkBookComponent implements OnInit {
     }
     if (eventType == 'saveToFile'){
       this.messenger.inform('displaySaveToFileWindow', this.document)
-      // this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
     // if (eventType == 'setLastAddedPageId'){
     //   this.setLastAddedPageId(data)
@@ -198,30 +195,8 @@ export class WorkBookComponent implements OnInit {
   }
 
   loadDocumentToView(documentData: any){
-    // this.calendarInputs = []
-    this.document = documentData
-    // this.listOfSheets = this.document.sheets;
-    // this.activeSheetId = this.document.activeSheetId;    
+    this.document = documentData;
     setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
-    // this.initializeNewSheet(this.activeSheetId);
-
-    console.error(`
-    core.js:6479 ERROR TypeError: Cannot read property 'startsWith' of undefined
-    at HslOrHexToHexPipe.transform (hsl-or-hex-to-hex.pipe.ts:10)
-    at pureFunction1Internal (core.js:25675)
-    at Module.ɵɵpipeBind1 (core.js:25847)
-    at PageMenuComponent_div_3_Template (page-menu.component.html:8)
-    at executeTemplate (core.js:9598)
-    at refreshView (core.js:9464)
-    at refreshEmbeddedViews (core.js:10589)
-    at refreshView (core.js:9488)
-    at refreshComponent (core.js:10635)
-    at refreshChildComponents (core.js:9261)
-
-
-    HERE IS THE PROBLEM: Save and load should stay in this component, however something is missing here
-    `)
-
   }
 
   ngAfterViewInit(){
@@ -232,26 +207,8 @@ export class WorkBookComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDocument();
-    // this.listOfSheets = this.document.sheets;
-    // this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;
-    // this.initializeNewSheet(this.activeSheetId);
-    // this.checkIfmenuNeedsToBeHidden();
-
   }
-
-  // initializeNewSheet(newSheetId:string){
-  //   this.activeSheetId = newSheetId;
-  // }
-  // initializeNewSheet(newSheetId: string){
-  //   this.activeSheetId = newSheetId;
-
-  //   let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
-  //   this.currentSheetBgColor = currentSheetDescriptor.bgColor;
-  //   this.currentSheetPages = currentSheetDescriptor.pages;
-  //   this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
-  //   console.log(this.currentSheetStartPageId)
-  // }
 
   extractSheetDescriptor(sheetId: string): any{
     let descriptor = this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, sheetId);
@@ -259,34 +216,4 @@ export class WorkBookComponent implements OnInit {
     let _sheetDescriptor = descriptor.content
     return _sheetDescriptor
   }
-
-  // switchSheet(data: any){
-  //   this.activeSheetId = data;
-  //   this.initializeNewSheet(data);
-  // }
-
-  // switchStartPage(data:any){
-  //   this.currentSheetStartPageId = data.newPageId;
-  //   this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
-  // }
-
-  // get lastAddedPageId() {
-  //   return this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId;
-  // }
-
-  // setLastAddedPageId(data:any){
-  //   this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
-  // }
-
-  // @HostListener('window:resize', ['$event'])
-  // checkIfmenuNeedsToBeHidden(){
-  //   this.isHiddable = this.windowSize.isWindowTooNarrow();
-  //   this.shouldBeHidden = this.isHiddable;
-  // }
-
-  // showMenu(){
-  //   this.shouldBeHidden = false;
-  // }
-  // hideMenu() {this.shouldBeHidden = true;}
-
 }

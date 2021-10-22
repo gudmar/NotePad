@@ -12,9 +12,16 @@ import { CommunicationService } from '../../services/communication.service';
 export class SheetComponent implements OnInit {
   
   currentPageNotes: string[] = [];
+
+  private _pages:any[]=[];
+  @Input() set pages(val:any[]){
+    this._pages =val;
+  }
+  get pages(){return this._pages}
+
   @Input() uniqueId: string = '';
   @Input() bgColor: string = 'white';
-  @Input() pages: any[] = [];
+  // @Input() pages: any[] = [];
   @Input() lastAddedPageId: any = undefined;
   // @Input() startPageId:string = '';
   private _currentPageId: string = '';//this.startPageId;
@@ -126,7 +133,6 @@ export class SheetComponent implements OnInit {
   }
   
   getCurrentPagesColor(){
-    // console.log(this.getPageDescriptorById(this.currentPageId))
     let pageDescriptor = this.getCurrentPageDescriptor();
     return pageDescriptor == undefined ? undefined : pageDescriptor.bgColor;
   }
@@ -164,10 +170,6 @@ export class SheetComponent implements OnInit {
     let lastPageIndex:number = this.getPageIndexById(previousPageId) + 1;
     let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
     this.messenger.inform('setLastAddedPageId', {lastAddedPageId: Object.keys(newPage)[0]});
-    console.log(newPage);
-    console.log(lastPageIndex)
-    console.log(this.pages)
-    console.log(previousPageId)
     this.pages.splice(lastPageIndex,0,newPage);
     this.messenger.inform('newPageWasAdded', Object.keys(newPage)[0])
   }
@@ -178,6 +180,7 @@ export class SheetComponent implements OnInit {
     return Object.values(this.pages[index])[0]
   }
 
-
+ngOnChanges(){
+}
 
 }

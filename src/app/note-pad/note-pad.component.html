@@ -1,0 +1,15 @@
+<div class="rewind-button center" *ngIf="isHiddable" (click)="showMenu()"><span>>></span></div>
+<div class="menu" [ngClass]="{'hidden':shouldBeHidden, 'not-hidden':!shouldBeHidden}">
+    <wb-menu [sheets]="listOfSheets" [currentSheetId]="currentSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>          
+</div>
+<div class="sheet-container">
+    <sheet  
+        [uniqueId] = "currentSheetId" 
+        [bgColor]="currentSheet.bgColor" 
+        [pages]="currentSheet.pages"
+        [currentPageId] = "currentSheet.startPageId"
+        [lastAddedPageId] = "currentSheet.lastAddedPageId"
+        (sheetStartPageChanged) = "switchStartPage($event)"
+    >
+    </sheet>
+</div>

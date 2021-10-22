@@ -28,11 +28,10 @@ export class WorkBookComponent implements OnInit {
   currentSheetBgColor: string = '';
   currentSheetPages: any[] = [];
   currentSheetStartPageId: string = '';
-  application: string = 'calendar'
+  application: string = 'notes'
   // application: string = 'notes' //'calendar'
   listOfSheets:any[] = this.document.sheets;
   uniqueId: string = "workBookId"
-  @Input() isHiddable: boolean = false;
   @Input() shouldBeHidden: boolean = false;
   @Input() documentContent: any;
   
@@ -56,7 +55,8 @@ export class WorkBookComponent implements OnInit {
   }
 
   colorGenerator = new NextColorGeneratorService();
-  constructor(private descriptorTranslator: DescriptorToDataService, 
+  constructor(
+    private descriptorTranslator: DescriptorToDataService, 
     private mockDataProvider: FalseDataMockService, 
     private idProvider: UniqueIdProviderService,
     private messenger: CommunicationService,
@@ -65,29 +65,26 @@ export class WorkBookComponent implements OnInit {
     private fileOperations: FileOperationsService,
     private documentValidator: DocumentValidatorService,
     private activeNoteGetter: GetActiveNoteDataService,
-    private windowSize: WindowSizeEvaluatorService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
       ['storageOperation', 
-       'addNextSheet', 
+      //  'addNextSheet', 
        'saveDocument', 
        'loadDocument', 
        'LoadFromFile',
        'switchToCalendar', 
        'switchToNotes',
-       'changeSheetTitle',
+      //  'changeSheetTitle',
        'loadFreshDocument',
        'saveToFile',
        'gotFileWithDataToLoad',
        'saveToLastUsedKey',
-       'pageWasClicked',
+      //  'pageWasClicked',
        'clearAllCalendarInputs',
-       'setLastAddedPageId'
+      //  'setLastAddedPageId'
       ]
-
-
     )
   }
 
@@ -123,19 +120,19 @@ export class WorkBookComponent implements OnInit {
       }
       // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
     }
-    if (eventType == 'pageWasClicked'){
-      if(this.isHiddable) this.shouldBeHidden = true;
-    }
+    // if (eventType == 'pageWasClicked'){
+    //   if(this.isHiddable) this.shouldBeHidden = true;
+    // }
     if (eventType == 'clearAllCalendarInputs'){
       this.document.calendarInputs = [];
       this.calendarInputs = this.document.calendarInputs;
     }
-    if (eventType === 'addNextSheet'){
-      if (data.after == 'last'){
-        let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
-        this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-      }
-    }
+    // if (eventType === 'addNextSheet'){
+    //   if (data.after == 'last'){
+    //     let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
+    //     this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+    //   }
+    // }
     if (eventType === 'saveDocument'){
       let copyOfDocument = JSON.parse(JSON.stringify(this.document));
       let activeNoteData = this.getActiveNoteData();
@@ -160,22 +157,21 @@ export class WorkBookComponent implements OnInit {
       this.application = 'calendar'
     }
     if (eventType == 'switchToNotes'){this.application = 'notes'}
-    if (eventType == "changeSheetTitle"){
-      if (data.uniqueId == this.activeSheetId){
-        this.extractSheetDescriptor(data.uniqueId).title = data.title;
-      }
-    }
+    // if (eventType == "changeSheetTitle"){
+    //   if (data.uniqueId == this.activeSheetId){
+    //     this.extractSheetDescriptor(data.uniqueId).title = data.title;
+    //   }
+    // }
     if (eventType =='loadFreshDocument'){
       let newDocument = this.storageManager.getNewDocumentAndClearLastUsed();
       this.reloadDocument(newDocument)
     }
     if (eventType == 'saveToFile'){
       this.messenger.inform('displaySaveToFileWindow', this.document)
-      // this.fileOperations.writeToFile(this.storageManager.getDefaultKey(), this.document)
     }
-    if (eventType == 'setLastAddedPageId'){
-      this.setLastAddedPageId(data)
-    }
+    // if (eventType == 'setLastAddedPageId'){
+    //   this.setLastAddedPageId(data)
+    // }
   }
 
   // ****************** MOVE TO SERVICE ******************************
@@ -196,18 +192,13 @@ export class WorkBookComponent implements OnInit {
   reloadDocument(documentData: any){
     this.loadDocumentToView(this.mockDataProvider.getFreshDocument())
     this.loadDocumentToView(documentData)
-
   }
 
   loadDocumentToView(documentData: any){
-    // this.calendarInputs = []
-    this.document = documentData
-    this.listOfSheets = this.document.sheets;
-    this.activeSheetId = this.document.activeSheetId;    
+    this.document = documentData;
     setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
-    this.initializeNewSheet(this.activeSheetId);
-    
   }
+
   ngAfterViewInit(){
     setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
   }
@@ -216,19 +207,7 @@ export class WorkBookComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDocument();
-    this.listOfSheets = this.document.sheets;
-    this.activeSheetId = this.document.activeSheetId;
     this.calendarInputs = this.document.calendarInputs;
-    this.initializeNewSheet(this.activeSheetId);
-    this.checkIfmenuNeedsToBeHidden();
-
-  }
-
-  initializeNewSheet(newSheetId: string){
-    let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
-    this.currentSheetBgColor = currentSheetDescriptor.bgColor;
-    this.currentSheetPages = currentSheetDescriptor.pages;
-    this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
   }
 
   extractSheetDescriptor(sheetId: string): any{
@@ -237,34 +216,4 @@ export class WorkBookComponent implements OnInit {
     let _sheetDescriptor = descriptor.content
     return _sheetDescriptor
   }
-
-  switchSheet(data: any){
-    this.activeSheetId = data;
-    this.initializeNewSheet(data);
-  }
-
-  switchStartPage(data:any){
-    this.currentSheetStartPageId = data.newPageId;
-    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.startPageId = data.newPageId;
-  }
-
-  get lastAddedPageId() {
-    return this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId;
-  }
-
-  setLastAddedPageId(data:any){
-    this.descriptorTranslator.getElementFromArrayById(this.listOfSheets, this.activeSheetId)!.content.lastAddedPageId = data.lastAddedPageId;
-  }
-
-  @HostListener('window:resize', ['$event'])
-  checkIfmenuNeedsToBeHidden(){
-    this.isHiddable = this.windowSize.isWindowTooNarrow();
-    this.shouldBeHidden = this.isHiddable;
-  }
-
-  showMenu(){
-    this.shouldBeHidden = false;
-  }
-  hideMenu() {this.shouldBeHidden = true;}
-
 }

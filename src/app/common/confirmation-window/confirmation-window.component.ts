@@ -33,12 +33,10 @@ export class ConfirmationWindowComponent implements OnInit {
   confirmation(){
     if (this.messageType == 'confirmationMessage'){
       this.messenger.inform('obliteratePage', this.incommingMessageData.uniqueId);
-      console.log('Strange code')
       this.confirmationWindowIsVisible = false;  
     }
     if (this.messageType == 'confirmationMessage_deleteSheet'){
       this.messenger.inform('obliterateSheet', this.incommingMessageData.uniqueId);
-      console.log('Obliterate sheet in confirmatiion message')
       this.confirmationWindowIsVisible = false;  
     }
 

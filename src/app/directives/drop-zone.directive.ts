@@ -55,9 +55,7 @@ export class DropZoneDirective {
       if (isFileValid) this.communicator.inform('LoadFromFile', JSON.parse(decodedFileContent));
 
       console.log(`Document validation outcome: ${isFileValid}`)
-      if (isFileValid)console.log(JSON.parse(decodedFileContent));
     }
-    // console.log(data)
     return null;
   }
 

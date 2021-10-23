@@ -20,9 +20,7 @@ export class LinkComponent implements OnInit {
   @Output() pleaseDisplayEditWindow: EventEmitter<any> = new EventEmitter();
 
   displayEditWindow(){
-    // console.log(this.linkDescriptor)
     this.pleaseDisplayEditWindow.emit(this.linkDescriptor)
-    // this.communicator.inform('openEditLinkFrom', this.linkDescriptor);
   }
 
 }

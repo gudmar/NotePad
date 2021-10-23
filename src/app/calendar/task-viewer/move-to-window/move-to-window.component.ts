@@ -78,7 +78,6 @@ uniqueId: string = 'moveEventId'
   setEndDay(event: any){
     if (this.validator.isDayValid(event.target.innerText, this.toMonth, this.toYear)){ // was toDay, and this seems wrong
       this.toDay = parseInt(event.target.innerText);
-      console.log('day set to .............  ' + this.toDay)
     }
     console.error('day not valid ' + event.target.innerText + ' '  + this.toMonth, + ' ' + this.toYear)
   }

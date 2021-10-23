@@ -39,7 +39,6 @@ export class ValidatorService {
   setColorsToHour(event: any){
     setTimeout(()=>{
       let isValid = this.isHoursValid(event.target.innerText);
-      // debugger;
       if(isValid) {event.target.style.backgroundColor = 'rgb(180, 250, 180'}
       if(!isValid) {event.target.style.backgroundColor = 'rgb(250, 180, 180'}
     })

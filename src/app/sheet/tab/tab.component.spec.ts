@@ -48,7 +48,6 @@ xdescribe('TabComponent', () => {
 
   xit('Should change color on bgColor property change', async()=> {
     let getCurrentBGcolor = function(){
-      // console.log(JSON.stringify(window.getComputedStyle(shapeElement).borderBottomColor))
       return window.getComputedStyle(shapeElement).borderBottomColor
     }
     fixture.detectChanges();
@@ -56,12 +55,10 @@ xdescribe('TabComponent', () => {
     component.bgColor = 'red';
     fixture.detectChanges();
     expect(component.bgColor).toBe('red')
-    // debugger
     component.tabTitle = 'some t';
     fixture.detectChanges();
   
     let color = window.getComputedStyle(shapeElement).borderBottomColor
-    // console.log(`Color after change is ${color}`)
     expect(getCurrentBGcolor()).toBe('rgb(255, 0, 0)')
     
   })

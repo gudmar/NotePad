@@ -131,7 +131,6 @@ export class NoteComponent implements OnInit {
   changeNoteHeight(event:any){
     if (event.keyCode != 17){
       let newHeight = this.recalculatedNoteSize();
-      // console.log(`newH: ${newHeight}, initialH: ${this.initialHeight}`)
       if (newHeight > this.initialHeight) {
         this.messenger.inform('noteContentChanged', {
           objectId: this.uniqueId,
@@ -156,7 +155,6 @@ export class NoteComponent implements OnInit {
   toggleEditModeOnShortcut(event:any){
     event.preventDefault();
     event.stopPropagation();
-    // this.toggleEditMode();
     console.log('Edit mode')
   }
 

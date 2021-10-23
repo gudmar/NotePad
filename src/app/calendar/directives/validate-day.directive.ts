@@ -15,7 +15,6 @@ export class ValidateDayDirective {
   @HostListener('keyup', ['$event'])
   onChange(event: any){
     this.validator.setColorsToDay(event, event.target.innerText, this.month, this.year)
-    console.log(event.target.innerText)
   }
 
   @HostListener('focusout', ['$event'])

@@ -22,7 +22,6 @@ export class WeekViewComponent implements OnInit {
   set currentYear(val: number){
     if (this._currentYear != val) this.calendarObjectWithEvents = this.calendar.getYearAsObject(val).months;
     this._currentYear = val;
-    // debugger
   }
   currentCwIndex: number = 0;
   uniqueId: string = 'week-view-id';
@@ -33,16 +32,16 @@ export class WeekViewComponent implements OnInit {
     return weeks;
   }
   get daysOfCurrnetCw(){
-    console.log(this.helper.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days)
     return this.helper.getCwOutOfCalendar(this.calendarObjectWithEvents, this.currentMonthIndex, this.currentCwIndex).days
   }
+  refreshedDaysOfCurrentCw:any[]=[];
   constructor(
     private communicator: CommunicationService,
     private eventManager: EventManagerService,
     private helper: WeekViewHelperService,
     private calendar: CalendarObjectProviderService,
   ) { 
-    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displayWeekView'])
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displayWeekView','weekViewShouldRerender'])
   }
 
   configureHelper() {
@@ -50,11 +49,14 @@ export class WeekViewComponent implements OnInit {
   }
 
   handleMessages(eventType: string, data: any){
-    if (eventType = "displayWeekView"){
+    if (eventType == "displayWeekView"){
       this.currentCwIndex = data.cwIndex;
       this.currentMonthIndex = data.monthIndex;
       this.shouldBeDisplayed = true;
       this.currentYear = data.currentYear;
+    }
+    if (eventType == "weekViewShouldRerender"){
+      this.calendarObjectWithEvents = this.calendar.getYearAsObject(this.currentYear).months;
     }
   }
 

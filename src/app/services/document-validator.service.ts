@@ -45,7 +45,6 @@ export class DocumentValidatorService {
     if (l) {this.logError(`DocumentValidator: notepad is not valid:`); console.dir(parsedDocument);}
     if (m && n) {this.logError(`DocumentValidator: links is not an array, it is ${typeof(parsedDocument.links)}`); console.dir(parsedDocument);}
 
-    // debugger;
     if (!this.objectShouldContainOnlyKeys(parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'])) return false;
     if (!this.objectShouldContainKeysAndMightContainKeys(
       parsedDocument, ['activeSheetId', 'calendarInputs', 'sheets'],
@@ -95,20 +94,13 @@ export class DocumentValidatorService {
   doPageObjectsHaveUniqueId(sheetArray:any[]){
     let allPageIds:any[] = [];
     for(let sheet in sheetArray){
-      // debugger
       let internalObj:any = Object.values(sheetArray[sheet])[0];
       let pages: any = internalObj.pages;
-      // debugger
       for (let pg of pages){
         allPageIds = allPageIds.concat(Object.keys(pg))
       }
-      // let pages:any = internalObj.pages;
-      // pages = Object.values(sheetArray[sheet])[0];
-      // debugger
-      // allPageIds = allPageIds.concat(this.getKeysOfObjectsBeingElementsOfArray(internalObj))
     }
     let doPagesHaveRepetingValues = this.hasStringArrayRepetingValues(allPageIds);
-    // debugger
     return !doPagesHaveRepetingValues;
   }
 
@@ -172,8 +164,7 @@ export class DocumentValidatorService {
     if (links.length == 0) return true;
     for (let link of links){
       let keys = Object.keys(link);
-      let a = this.objectShouldContainOnlyKeys(link, ['title', 'description','url']);
-      // debugger;
+      let a = this.objectShouldContainOnlyKeys(link, ['title', 'description','url']);;
       if (!this.objectShouldContainOnlyKeys(link, ['topic', 'description','link'])) return false
     }
     return true;
@@ -222,7 +213,6 @@ export class DocumentValidatorService {
       }
       if (!e) this.logError(`YearValidator: ${input} has keys other than 'month', 'entries'`)
       if (!d) {this.logError(`YearValidator: Month entries not valid:`); console.dir(input.entries)}
-      // debugger;
       if (!this.objectShouldNotContainKeysOtherThen(input, ['month', 'entries'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['month'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['month', 'entries'])) return false;
@@ -244,7 +234,6 @@ export class DocumentValidatorService {
       }
       if (!b) this.logError(`MonthEntryValidator: ${input} contains keys other than 'day', 'entries'`);
       if (!c) {this.logError(`MonthEntryValidator: Day entries is not valid:`);console.dir(input.entries);}
-      // debugger
       if (!this.objectShouldNotContainKeysOtherThen(input, ['day', 'entries'])) return false;
       if (!this.objectShouldContainOnlyKeys(input, ['day', 'entries'])) return false;
       // if (!this.objectShouldContainOnlyKeys(input, ['day'])) return false;
@@ -270,7 +259,6 @@ export class DocumentValidatorService {
       let i = (entry.hours > 24 || entry.hours < 0);
       let j = (entry.minutes < 0 || entry.minutes > 59);
       let k = (entry.summary.length > 50);
-      // debugger;
   
       if (!b) this.logError(`
         DayEntryValidator: ${entry} contains keys other than 'hours', 'minutes', 'duration', 'summary', 'uniqueId', 'description'`
@@ -364,9 +352,6 @@ export class DocumentValidatorService {
     for (let key of keys){
       if (this.arrayShouldContainStringElement(objectKeys, key)) nrOfMatches++;
     }
-    // console.log('sholdContainKeys')
-    // console.log(nrOfMatches)
-    // console.log(keys.length)
     return nrOfMatches == keys.length;
   }
 
@@ -397,7 +382,6 @@ getArrayOfAllPropertyOccurenceInGetericObject_nested(object: any, queriedPropert
   let arr: any[] = [];
   if (Array.isArray(object)) arr = arr.concat(this.getArrayOfAllPropertyOccurenceInArray_nested(object, queriedPropertyKey));
   else if (typeof(object) == 'object') arr = arr.concat(this.getArrayOfAllPropertyOccurenceInObject_nested(object, queriedPropertyKey));
-  // debugger
   return arr;
 }
 

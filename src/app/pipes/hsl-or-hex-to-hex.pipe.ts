@@ -9,7 +9,6 @@ export class HslOrHexToHexPipe implements PipeTransform {
   transform(value: string): string {
     if (value.startsWith('#')) return value;
     let {h, s, l} = this.dicpmposeHslStirng(value);
-    console.log(this.hslToHex(h, s, l))
     return this.hslToHex(h, s, l);
   }
 

@@ -44,7 +44,6 @@ export class PageMenuComponent implements OnInit {
   }
   changeColor(data: any){
     this.changeColorEvent.emit({newColor: data.srcElement.value});
-    console.log(data.srcElement.value)
     data.stopPropagation()
   }
   addNewPageAfterThis(data: any){

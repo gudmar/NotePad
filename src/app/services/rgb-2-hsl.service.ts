@@ -16,7 +16,6 @@ export class Rgb2HslService {
   }
   convert(red: number, green: number, blue: number){
     let {r, g, b} = this.normalize(red, green, blue);
-    // debugger
     let {h, s, l} = {h: 0, s: 0, l: 0};
     let maxColorIngr = Math.max(r, g, b);
     let minColorIngr = Math.min(r, g, b);
@@ -37,7 +36,6 @@ export class Rgb2HslService {
     let calculateSaturation = function() {
       return delta == 0 ? 0 : delta / (1 - Math.abs(2 * calculateLight() - 1));
     }
-    // debugger
     return {h: this.round(calculateHue()), s: this.round(calculateSaturation()), l: this.round(calculateLight())}
   }
 

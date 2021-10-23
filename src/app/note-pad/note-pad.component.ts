@@ -55,8 +55,6 @@ export class NotePadComponent implements OnInit {
   }
   set currentSheetId(val:string){
     this.document.activeSheetId = val;
-    console.log(val)
-    console.log(this.document.sheets)
   }
   get currentSheetId() {return this.document.activeSheetId;}
   set currentSheetPages(val:any[]) {this.extractSheetDescriptor(this.currentSheetId).pages = val}
@@ -86,7 +84,6 @@ export class NotePadComponent implements OnInit {
     this.currentSheet = this.extractSheetDescriptor(data);
     this.currentPageId = this.currentPageId;
     this.currentPageId = this.currentSheet.startPageId;
-    console.warn('here cotent changed')
     
     this.initializeNewSheet(data);
   }
@@ -137,7 +134,7 @@ export class NotePadComponent implements OnInit {
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
         // this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
         this.document.sheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-        console.log(this.document)
+        (this.document)
       }
     }
     if (eventType == "changeSheetTitle"){
@@ -186,7 +183,6 @@ export class NotePadComponent implements OnInit {
     }
   }
   getSheetId(sheetIndex:number){
-    console.log(Object.keys(this.document.sheets))
     return this.getAllSheetIds()[sheetIndex];
   }
   getAllSheetIds(){

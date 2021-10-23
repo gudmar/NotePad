@@ -142,7 +142,6 @@ class NextValueGetter{
   peepNextValue(currentValue: any, valueGetter?: Function){
     if (valueGetter == undefined) valueGetter = (val: any) => {return val};
     let indexOfCurrnet = this.getIndexOfValue(currentValue, valueGetter);
-    // debugger
 
     if (indexOfCurrnet == -1)  return null;
     if (indexOfCurrnet == this.arrayOfValues.length - 1) return valueGetter(this.arrayOfValues[0])

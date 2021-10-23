@@ -66,7 +66,6 @@ export class CommunicationService {
       return element === receivedEvent
     }
     let indexOfReceivedEvent = typesOfEventsSubscriberIsIterestedIn.findIndex(singleMatch);
-    // debugger
     return indexOfReceivedEvent == -1 ? false : true;
   }
 

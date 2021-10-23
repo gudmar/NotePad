@@ -51,7 +51,6 @@ export class SheetComponent implements OnInit {
       ['killMe_page', 'obliteratePage', 'ObliterateSheet', 'howManyChildrenDoIHave_page', 
        'changeCurrentPageTitle','addNextPageAfterUniqueId']
     )
-    console.error('does obliteratePage do anything?')
   }
 
   handleMessages(eventType: string, data: any){

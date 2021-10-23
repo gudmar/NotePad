@@ -180,8 +180,6 @@ xdescribe('ResizeParentDirective', () => {
     resizeElement(200, 250);
     let sizeAfterChange = getCurrentSize();
     let expectedSize = getExpectedSize(200, 250);
-    // debugger
-    console.dir(movableElement)
     expect(sizeAfterChange).toEqual(expectedSize);
   })
 

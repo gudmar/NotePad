@@ -17,7 +17,6 @@ export class ValidateSummaryDirective {
 
   @HostListener('focusout', ['$event'])
   onFocusOut(event: any){
-    console.log(this.ifNotValid)
     this.validator.setEndSummary(event, this.ifNotValid, this.maxValue);
   }
 }

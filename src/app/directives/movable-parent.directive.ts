@@ -70,22 +70,11 @@ export class MovableParentDirective {
   doMouseMove(data: any){
     this.onMove.call(this, data);
   } 
-  // @HostListener('document:touchmove', ['$event'])
-  // doTouchMove(data: any){
-  //   // console.dir(event)
-  //   this.onMove.call(this, data);
-  // } 
 
   onMove(data: any){
     if (this.isInMoveState) {
       let pageXY = this.getPageXY(data);
-      // console.dir(event)
-      // let newCords = this.calculateNewPosition({x: data.pageX, y: data.pageY})
-      // let correctedPosition = data.type=="touchmove"?
-      //   this.calculateNewPosition({x: data.touches[0].pageX, y: data.touches[0].pageY}):
-      //   this.calculateNewPosition({x: data.pageX, y: data.pageY});
       let correctedPosition = this.calculateNewPosition({x: pageXY.x, y:pageXY.y})
-      // console.log(data.touches[0].pageX)
       this.elementToMove.style.left = correctedPosition.x + 'px';
       this.elementToMove.style.top = correctedPosition.y + 'px';
   }

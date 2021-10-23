@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommunicationService } from '../../../services/communication.service';
+import { UniqueIdProviderService } from '../../../services/unique-id-provider.service';
 
 @Component({
   selector: 'week-day',
@@ -12,6 +13,8 @@ export class WeekDayComponent implements OnInit {
     if (typeof(this.dayDescriptor.events.entries) == "function") return []
     return this.dayDescriptor.events.entries;
   }
+  refreshedEvents:any[] = [];
+
   get dayName() {return this.dayDescriptor.dayName}
   get date() {
     let day = this.dayDescriptor.dayMonthIndex
@@ -19,11 +22,20 @@ export class WeekDayComponent implements OnInit {
     let year = this.dayDescriptor.year;
     return `${day}/${month}/${year}`
   }
+  uniqueId:string = this.idProvider.getGoodEnoughId();
   get duration() {return this.dayDescriptor.duration}
-  constructor(private communicator: CommunicationService) { }
+  constructor(
+    private communicator: CommunicationService,
+    private idProvider: UniqueIdProviderService,
+  ) { 
+  }
+
+  isAFunction(val:any){return typeof(val) == 'function'}
 
   ngOnInit(): void {
-    console.log(this.dayDescriptor)
+  }
+  ngOnDestroy():void{
+    this.communicator.unsubscribe(this.uniqueId);
   }
 
   openDayEditWindow(event:any){

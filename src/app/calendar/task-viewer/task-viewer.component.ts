@@ -145,6 +145,11 @@ export class TaskViewerComponent implements OnInit {
     this.events.splice(eventToAddAfterIndex, 0, {
       hours: 0, minutes: 0, duration: 0, summary: '', description: '', uniqueId: this.uuidProvider.getUniqueId()
     })
+    this.informWeekViewToRerender()
+  }
+
+  informWeekViewToRerender(){
+    this.communicator.inform('weekViewShouldRerender', null)
   }
 
   removeEvent(event:any, uniqueId: string){
@@ -174,7 +179,8 @@ export class TaskViewerComponent implements OnInit {
       this.uuidProvider.getUniqueId()
   )
     this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries
-    this.infromComponentsAboutChange(executionStatus)
+    this.infromComponentsAboutChange(executionStatus);
+    this.informWeekViewToRerender();
   }
 
   infromComponentsAboutChange(whatObjecsWereAdded: any){

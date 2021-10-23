@@ -48,9 +48,10 @@ export class SheetComponent implements OnInit {
     this.messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['killMe_page', 'obliteratePage', 'howManyChildrenDoIHave_page', 
+      ['killMe_page', 'obliteratePage', 'ObliterateSheet', 'howManyChildrenDoIHave_page', 
        'changeCurrentPageTitle','addNextPageAfterUniqueId']
     )
+    console.error('does obliteratePage do anything?')
   }
 
   handleMessages(eventType: string, data: any){
@@ -67,7 +68,12 @@ export class SheetComponent implements OnInit {
     if (eventType == "obliteratePage") {
       if (data.uniqueId == this.currentPageId) this.showOtherPageAfterDeletion(data.uniqueId)
       this.deletePage(data.uniqueId)
+      console.error('This code is probably wrong. Does it in reality delete page?')
     }
+    // if (eventType == "obliterateSheet") {
+    //   if (data.uniqueId == this.uniqueId) this.showOtherSheetAfterDeletion(data.uniqueId)
+    //   this.deleteSheet(data.uniqueId)
+    // }
     if (eventType === 'howManyChildrenDoIHave_page') {
         let queriedPage = this.pages[this.getPageIndexById(data)]
         let queriedPageDescriptor: any = Object.values(queriedPage)[0]
@@ -115,6 +121,19 @@ export class SheetComponent implements OnInit {
       this.currentPageId = newPagesUniqueId
     }
   }
+
+  // showOtherSheetAfterDeletion(deletedSheetId: string){
+  //   let deletedPageIndex = this.getPageIndexById(deletedPageId);
+  //   let nrOfPages = this.pages.length;
+  //   let isDeletedOnFirstIndex = (deletedPageIndex == 0);
+  //   let newPageIndex: number = 0;
+  //   if (nrOfPages > 1){
+  //     newPageIndex = deletedPageIndex - 1
+  //     if (isDeletedOnFirstIndex) newPageIndex = 1;
+  //     let newPagesUniqueId = Object.keys(this.pages[newPageIndex])[0];
+  //     this.currentPageId = newPagesUniqueId
+  //   }
+  // }
 
   getPageIndexById(id: string){
     let singleMatch = function(element: any){return Object.keys(element)[0] === id}

@@ -5,6 +5,7 @@ import { StorageManagerService } from '../services/storage-manager.service';
 import { GetActiveNoteDataService } from '../services/get-active-note-data.service';
 import { DescriptorToDataService } from '../services/descriptor-to-data.service';
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'note-pad',
@@ -33,7 +34,8 @@ export class NotePadComponent implements OnInit {
        'addNextSheet',
        'changeSheetTitle',
        'pageWasClicked',
-       'setLastAddedPageId'
+       'setLastAddedPageId',
+       'obliterateSheet'
       ]
     )
   }
@@ -51,7 +53,11 @@ export class NotePadComponent implements OnInit {
   get listOfSheets() {
     return this.document.sheets;
   }
-  set currentSheetId(val:string){this.document.activeSheetId = val;}
+  set currentSheetId(val:string){
+    this.document.activeSheetId = val;
+    console.log(val)
+    console.log(this.document.sheets)
+  }
   get currentSheetId() {return this.document.activeSheetId;}
   set currentSheetPages(val:any[]) {this.extractSheetDescriptor(this.currentSheetId).pages = val}
   get currentSheetPages() {return this.extractSheetDescriptor(this.currentSheetId).pages;}
@@ -77,6 +83,11 @@ export class NotePadComponent implements OnInit {
 
   switchSheet(data:any){
     this.currentSheetId = data;
+    this.currentSheet = this.extractSheetDescriptor(data);
+    this.currentPageId = this.currentPageId;
+    this.currentPageId = this.currentSheet.startPageId;
+    console.warn('here cotent changed')
+    
     this.initializeNewSheet(data);
   }
   
@@ -124,7 +135,9 @@ export class NotePadComponent implements OnInit {
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
-        this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+        // this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+        this.document.sheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+        console.log(this.document)
       }
     }
     if (eventType == "changeSheetTitle"){
@@ -135,8 +148,59 @@ export class NotePadComponent implements OnInit {
     if (eventType == 'setLastAddedPageId'){
       this.setLastAddedPageId(data)
     }
+    if (eventType == 'obliterateSheet'){
+      let targetSheetId = data;
+      let sheets = this.document.sheets;
+      if (sheets.length <= 1){
+        this.messenger.inform('userInfo', {
+          type: 'error',
+          message: 'Last sheet cannot be deleted',
+          timeout: 2500
+        })
+      } else {
+        if (this.currentSheetId === data){
+          let indexOfTargetSheet = this.findSheetIndex(data);
+
+          
+          if (indexOfTargetSheet == 0) {
+            let nextSheetId = this.getAllSheetIds()[1];
+            this.currentSheet = this.extractSheetDescriptor(nextSheetId);
+            this.currentSheetId = this.getSheetId(1);
+            this.document.activeSheetId = this.currentSheetId;
+            // this.currentPageId= this.extractSheetDescriptor(data).startPageId;
+            this.deleteSheet(data)
+          } else {
+            // this.currentSheet = this.document.sheets[indexOfTargetSheet - 1];
+            let nextSheetId = this.getAllSheetIds()[indexOfTargetSheet - 1];
+            this.currentSheet = this.extractSheetDescriptor(nextSheetId);
+            this.currentSheetId = this.getSheetId(indexOfTargetSheet - 1);
+            this.document.activeSheetId = this.currentSheetId;
+            
+            this.deleteSheet(data)
+            // this.currentPageId= this.extractSheetDescriptor(data).startPageId;
+          }
+        } else {
+          this.deleteSheet(data)
+        }
+      }
+    }
   }
-
-
+  getSheetId(sheetIndex:number){
+    console.log(Object.keys(this.document.sheets))
+    return this.getAllSheetIds()[sheetIndex];
+  }
+  getAllSheetIds(){
+    let ids:string[]=[];
+    for(let item of this.document.sheets) ids.push(Object.keys(item)[0])
+    return ids;
+  }
+  deleteSheet(id:string){
+    let index:number = this.findSheetIndex(id);
+    this.document.sheets.splice(index,1);
+  }
+  findSheetIndex(id:string){
+    let singleMatch = function(element: any){return Object.keys(element)[0] === id}
+    return this.document.sheets.findIndex(singleMatch)      
+  }
 
 }

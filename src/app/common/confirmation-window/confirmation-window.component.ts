@@ -12,19 +12,36 @@ export class ConfirmationWindowComponent implements OnInit {
   @Input() message: string  = '';
   @Input() listenToMessages: string[] = [];
   incommingMessageData: any = null;
+  messageType:string = '';
   constructor(private messenger: CommunicationService) { }
 
   ngOnInit(): void {
-    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), ['confirmationMessage']);
+    // "confirmationMessage"){ // Mess in code :( Not sure this does anything
+    this.messenger.subscribe(this.uniqueId, this.handleMessages.bind(this), 
+      [
+        'confirmationMessage',
+        'confirmationMessage_deleteSheet'
+      ]
+    );
   }
   handleMessages(eventType: string, data: any){
-      this.incommingMessageData = data;
-      this.confirmationWindowIsVisible = true;
-      this.message = data.message;
+    this.messageType = eventType;
+    this.incommingMessageData = data;
+    this.confirmationWindowIsVisible = true;
+    this.message = data.message;
   }
   confirmation(){
-    this.messenger.inform('obliteratePage', this.incommingMessageData.uniqueId);
-    this.confirmationWindowIsVisible = false;
+    if (this.messageType == 'confirmationMessage'){
+      this.messenger.inform('obliteratePage', this.incommingMessageData.uniqueId);
+      console.log('Strange code')
+      this.confirmationWindowIsVisible = false;  
+    }
+    if (this.messageType == 'confirmationMessage_deleteSheet'){
+      this.messenger.inform('obliterateSheet', this.incommingMessageData.uniqueId);
+      console.log('Obliterate sheet in confirmatiion message')
+      this.confirmationWindowIsVisible = false;  
+    }
+
   }
   negation(){
     this.messenger.inform('iWantToBeClosed', this.incommingMessageData.uniqueId);

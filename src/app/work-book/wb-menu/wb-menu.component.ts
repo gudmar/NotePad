@@ -21,6 +21,7 @@ export class WbMenuComponent implements OnInit {
   // @Input() shouldBeHidden: boolean = false;
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
+  @Input() currentPageId: string = '';
   @Output() sheetAdded: EventEmitter<any> = new EventEmitter();
   colorGenerator = new NextColorGeneratorService();
   constructor(private descriptorTranslator: DescriptorToDataService, 
@@ -40,19 +41,6 @@ export class WbMenuComponent implements OnInit {
     // this.shouldBeHidden = this.isHiddable;
   }
 
-  // @HostListener('window:resize', ['$event'])
-  // checkIfmenuNeedsToBeHidden(){
-  //   this.isHiddable = this.windowSize.isWindowTooNarrow();
-  //   this.shouldBeHidden = this.isHiddable;
-  //   console.log(this.isHiddable)
-  //   if (this.isHiddable) console.log('isHiddable')
-  // }
-
-  // showMenu(){
-  //   this.shouldBeHidden = false;
-  // }
-  // hideMenu() {this.shouldBeHidden = true;}
-
   handleMessages(eventType: string, data:any){
     let getNrOfNotesFirstPageHas = function(sheetDescriptor: any){
       let firstPageDescriptor:any = Object.values(sheetDescriptor.pages[0])[0]
@@ -63,6 +51,7 @@ export class WbMenuComponent implements OnInit {
     //   if(this.isHiddable) this.shouldBeHidden = true;
     // }
     if (eventType == 'killSheet') {
+      console.error('Clean this, as this is same functionality as in note-pad')
       if (this.sheets.length > 1){
         let sheetForDeletionIndex = this.getIndexOfSheetById(data)
         let sheetPlannedForDeletionObject: any = this.sheets[sheetForDeletionIndex]
@@ -70,20 +59,30 @@ export class WbMenuComponent implements OnInit {
         let nrOfChildrenSheetHas = sheetForDeletionDescriptor.pages.length;
         let nrOfNotesFirstPageHas = getNrOfNotesFirstPageHas(sheetForDeletionDescriptor)
         if (nrOfChildrenSheetHas == 0) {
-          if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-          this.deleteSheet(data);
+          // if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
+          this.messenger.inform('obliterateSheet', data)
+          // this.deleteSheet(data);
         } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) == 0) {
-          if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-          this.deleteSheet(data)
-        } else {
+          // if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
+          this.messenger.inform('obliterateSheet', data)
+          // this.deleteSheet(data)
+        } else if (nrOfChildrenSheetHas > 1){
           this.messenger.inform(
-            'confirmationMessage',
+            'confirmationMessage_deleteSheet',
             {
               message: 'Sheet selected for deletion has child pages. Are you sure you want to delete it?',
               uniqueId: data
             }
           )
-        } 
+        } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) > 0){
+          this.messenger.inform(
+            'confirmationMessage_deleteSheet',
+            {
+              message: 'Child page has child notes. Are you sure you want to delete it?',
+              uniqueId: data
+            }
+          )          
+        }
       } else {
         this.messenger.inform('userInfo', {
           message: 'Last sheet cannot be deleted', timeout: 2500, type: 'error'
@@ -94,8 +93,10 @@ export class WbMenuComponent implements OnInit {
     if (eventType == "obliteratePage"){
       let sheetForDeletionIndex = this.getIndexOfSheetById(data)
       if (sheetForDeletionIndex > -1) {
-        if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-        this.deleteSheet(data);
+        if (data == this.currentSheetId) {
+          this.showOtherSheetAfterDeletion(data);
+          this.deleteSheet(data);
+        }
       }
       
     }

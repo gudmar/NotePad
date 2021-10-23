@@ -25,6 +25,11 @@
     width: calc( 100% - 1rem );
     position: relative;
     display: inline-block;
+    min-width:  3rem;
+    height: 100%;
+}
+.add-button{
+    min-width: 0;
 }
 .active{
     z-index: 100;

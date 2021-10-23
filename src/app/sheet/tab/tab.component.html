@@ -4,9 +4,9 @@
         [shouldSetBgColor]="isRectangleTab"
         [ngClass] = "tabShapeClasses" 
         [style.border-bottom-color]="bgColor">
-        <span>
+        <span [attr.contenteditable]="false">
             <span class = "title-holder" [attr.contenteditable]="inTitleEditMode"
-            [ngClass] = "{'content-editable':inTitleEditMode}"
+            [ngClass] = "{'content-editable':inTitleEditMode, 'add-button': setBehind}"
             PreventEnter
             PreventPaste
             ValidateMenuTab

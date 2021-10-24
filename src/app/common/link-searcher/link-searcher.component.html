@@ -1,8 +1,9 @@
-<ng-container *ngIf = "shouldBeDisplayed">
+<!-- <ng-container *ngIf = "shouldBeDisplayed"> -->
     <div class="shutter">
         <div class="wrapper">
             <div class="navigation-section">
                 <div class="arrow explain" data-explain="Add new link" (click)="openAddLinkForm()">+</div>
+                <expandable-menu [whatAppAmIIn]="'linker'"></expandable-menu>
                 <div class="serachBox" (keyup)="getFilter($event)" contenteditable="true"></div>
                 <div class="arrow" (click)="close()">&times;</div>
             </div>
@@ -17,4 +18,4 @@
             </div>
         </div>
     </div>
-</ng-container>
+<!-- </ng-container> -->

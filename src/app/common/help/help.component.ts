@@ -34,6 +34,7 @@ export class HelpComponent implements OnInit {
 
   close(){
     this.shouldDisplay = false;
+    this.currentEntries = this.entries;
   }
 
   onSearchBoxChange(event:any){

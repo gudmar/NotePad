@@ -13,14 +13,20 @@ export class SaveLoadWindowComponent implements OnInit {
 
   itemsFromStorage: any[] = [];
   private _currentlySelectedItem: string = '';
-  
+  private _shouldBeDisplayed = false;
   set currentlySelectedItem(val: string){
     this._currentlySelectedItem = val;
 
   }
   get currentlySelectedItem() {return this._currentlySelectedItem}
   keys: any[] = [];
-  @Input() shouldBeDisplayed: boolean = false;
+  @Input() set shouldBeDisplayed(val: boolean) {
+    this._shouldBeDisplayed = val;
+    this.currentlySelectedItem = '';
+    this.isInputFieldEmpty = true;
+    this.setShouldLoadRemoveButtonBeLockedVariable();
+  }
+  get shouldBeDisplayed() {return this._shouldBeDisplayed}
   @Input() saveLoadMode: 'save' | 'load' = 'save';
   uniqueId: string = 'saveLoadId';
   constructor(
@@ -43,14 +49,16 @@ export class SaveLoadWindowComponent implements OnInit {
     }    
   }
 
-  get isInputFieldEmpty() {
-    if (this.inputFiled == undefined) return true;
-    return this.inputFiled.nativeElement.innerText.trim() == '' ? true : false;
-  }
+  isInputFieldEmpty: boolean = true;
+  // get isInputFieldEmpty() {
+  //   if (this.inputFiled == undefined) return true;
+  //   return this.inputFiled.nativeElement.innerText.trim() == '' ? true : false;
+  // }
 
-  keyChosen(data: any){
-    this.currentlySelectedItem = data;
-
+  keyChosen(data: any, key:string){
+    this.currentlySelectedItem = key;
+    this.setShouldLoadRemoveButtonBeLockedVariable();
+    this.unlockKeysIfNotEmpty({target:{innerText:key}});
   }
 
   handleMessages(eventType: string, data: any){
@@ -64,9 +72,12 @@ export class SaveLoadWindowComponent implements OnInit {
     }
   }
 
-  isCurrentlySelectedItemOnList(){
+  shouldLoadRemoveButtonBeLocked:boolean = true;
+
+  setShouldLoadRemoveButtonBeLockedVariable(){
     let indexOfItemInList = this.keys.findIndex((element: string)=>{return element == this.currentlySelectedItem})
-    return indexOfItemInList == -1 ? false : true;
+    this.shouldLoadRemoveButtonBeLocked = indexOfItemInList == -1 ? true : false;
+    return indexOfItemInList == -1 ? true : false;
   }
 
   getAllKesyFromStorage(){
@@ -112,7 +123,7 @@ export class SaveLoadWindowComponent implements OnInit {
   }
 
   loadKey(){
-    if (this.isCurrentlySelectedItemOnList()){
+    if (!this.shouldLoadRemoveButtonBeLocked){
       if (this.storageManager.hasKey(this.currentlySelectedItem)){
         this.communicator.inform('loadDocument', this.currentlySelectedItem)
       }
@@ -130,6 +141,15 @@ export class SaveLoadWindowComponent implements OnInit {
 
   onChange(data: any){
     this.currentlySelectedItem = data.target.innerText;
+  }
+  unlockKeysIfNotEmpty(data:any){
+    this.setShouldLoadRemoveButtonBeLockedVariable();
+    if (data.target.innerText.trim().length > 0) {
+      this.isInputFieldEmpty = false;
+    } else {
+      this.isInputFieldEmpty = true;
+    }
+    
   }
 
   ngOnInit(): void {

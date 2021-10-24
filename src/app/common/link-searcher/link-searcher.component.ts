@@ -21,14 +21,24 @@ export class LinkSearcherComponent implements OnInit {
     private uuidProvider: UniqueIdProviderService, 
     private communicator: CommunicationService
   ) { 
-    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['openLinkSearcher'])
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), 
+      [
+        'openLinkSearcher',
+        'providingDocumentObjectToWorkbookChild'
+      ]
+    )
   }
 
   ngOnInit(): void {
+    this.communicator.inform('provideDocumentToChildComponent', null);
   }
+
 
   handleMessages(eventType: string, data: any){
     if (eventType == "openLinkSearcher"){this.shouldBeDisplayed=true;}
+    if (eventType == 'providingDocumentObjectToWorkbookChild'){
+      this.linkDescriptorArray = data.links;
+    }
   }
 
 

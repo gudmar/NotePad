@@ -17,18 +17,28 @@
     <!-- <div class="button" *ngIf="whatAppAmIIn==='note'" (click) = "menu.switchToCalendar()">Calendar app</div> -->
     <!-- <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.switchToNotepad()">Notes app</div>
     <div class="button" *ngIf="whatAppAmIIn==='calendar'" (click) = "menu.clearCalendar()">Celar calendar</div> -->
-    <div class="button" *ngIf="whatAppAmIIn==='calendar'">
+    <div class="button" *ngIf="whatAppAmIIn!='note'">
         <a routerLink="/notePad" routerLinkActive="active">
-            Notes app
+            <span class="fill100 center">
+                Notes app
+            </span>
         </a>
     </div>
-    <div class="button" *ngIf="whatAppAmIIn==='note'">
+    <div class="button" *ngIf="whatAppAmIIn!='calendar'">
         <a routerLink="/calendar" routerLinkActive="active">
-            Calendar
+            <span class="fill100 center">
+                Calendar
+            </span>
         </a>
     </div>
 
-    <div class="button" (click) = "openLinker()">Linker</div>
+    <div class="button" *ngIf="whatAppAmIIn!='linker'">
+        <a routerLink="/linker" routerLinkActive="active">
+            <span class="fill100 center">
+                Linker
+            </span>
+        </a>
+    </div>
     <div class="button" (click) = "menu.displayHelp()">Help</div>
 </div>
 </div>

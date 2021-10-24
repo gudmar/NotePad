@@ -13,7 +13,8 @@
                     <div *ngFor="let key of keys" 
                         class="key" 
                         [ngClass] = "isThisActive(key)" 
-                        (click)="keyChosen(key)"
+                        (click)="keyChosen($event, key)"
+                        
                         [attr.data-content] = "key"
                     >
                         {{key}}
@@ -27,8 +28,10 @@
                     [attr.contenteditable]="saveLoadMode == 'save'" 
                     [ngClass]="{'non-editable': saveLoadMode == 'load'}" 
                     (focusout) = "onChange($event)"
+                    (keyup) = "unlockKeysIfNotEmpty($event)"
+                    [innerText]="currentlySelectedItem"
                 >
-                    {{currentlySelectedItem}}
+                    <!-- {{currentlySelectedItem}} -->
                 </div>
                 <div class="button-wrapper">
                         <div *ngIf="saveLoadMode=='save'" 
@@ -39,11 +42,11 @@
                             Save
                         </div>
                         <div *ngIf="saveLoadMode=='load'" class="button" 
-                            (click) = "loadKey()" [ngClass]="{'disabled': !isCurrentlySelectedItemOnList()}">Load
+                            (click) = "loadKey()" [ngClass]="{'disabled': shouldLoadRemoveButtonBeLocked}">Load
                         </div>
                         <div class="button" (click) = "shutSaveLoadWindow()">Close</div>
                         <div class="button" (click) = "removeCurrent()"
-                            [ngClass]="{'disabled': !isCurrentlySelectedItemOnList()}">Remove
+                            [ngClass]="{'disabled': shouldLoadRemoveButtonBeLocked}">Remove
                         </div>
                         <!-- <div class="button" (click) = "clearAllContent()">Clear all</div> -->
                         <!-- <div class="button" (click) = "refresh()">Refresh</div> -->

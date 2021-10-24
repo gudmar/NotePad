@@ -3,6 +3,7 @@ import { CalendarObjectProviderService } from '../services/calendar-object-provi
 import { CommunicationService } from '../../services/communication.service';
 import { EventManagerService } from '../services/event-manager.service';
 import { StorageManagerService } from '../../services/storage-manager.service';
+import { GetDocumentService } from '../../services/get-document.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class CalendarComponent implements OnInit {
   uniqueId = 'calendarId'
   calendarEvents: any[] = []; // kept here, because view is dynamic, and this is static, not to be deleted
   constructor(
+    private documentProvider: GetDocumentService,
     private calendarProvider: CalendarObjectProviderService,
     private communicator: CommunicationService,
     private eventManager: EventManagerService,
@@ -31,14 +33,27 @@ export class CalendarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.events = this.documentProvider.getDocument().calendarInputs;
+
     this.communicator.subscribe(this.uniqueId, 
       this.messageHandler.bind(this), 
-      ['provideCalendarEvents', 'provideCalendarEventsForSingleDay','loadDocument','loadFreshDocument','LoadFromFile']);
+      ['provideCalendarEvents', 
+       'provideCalendarEventsForSingleDay',
+       'loadDocument',
+       'loadFreshDocument',
+       'LoadFromFile',
+       'providingDocumentObjectToWorkbookChild'
+      ]);
     this.calendarProvider.injectEvents(this.events)
+    this.communicator.inform('provideDocumentToChildComponent', null);
   }
 
 
   messageHandler(eventType: string, data: any){
+    if (eventType == 'providingDocumentObjectToWorkbookChild'){
+      // setTimeout(()=>{this.document = data;});
+      this.events = data.calendarInputs;
+    }
     if (eventType == 'provideCalendarEvents'){
       this.communicator.inform('calendarEvents', this.events);
     }

@@ -1,45 +1,12 @@
 <div class="workbook">
-    <ng-container *ngIf="application == 'notes'">
 
-        <note-pad
+        <!-- <note-pad
             [document] = "document"
         ></note-pad>
-                    <!-- [listOfSheets] = "listOfSheets"
-            [currentSheetId] = "activeSheetId"
-            [uniqueId] = "activeSheetId"
-            [bgColor] = "currentSheetBgColor"
-            [pages] = "currentSheetPages"
-            [currentPageId] = "currentSheetStartPageId"
-            [lastAddedPageId] = "lastAddedPageId"
-            (sheetStartPageChanged) = "switchStartPage($event)"
-            (sheetSwitched) = "switchSheet($event)" -->
 
-
-
-        <!-- <div class="rewind-button center" *ngIf="isHiddable" (click)="showMenu()"><span>>></span></div>
-        <div class="menu" [ngClass]="{'hidden':shouldBeHidden, 'not-hidden':!shouldBeHidden}">
-            <wb-menu [sheets]="listOfSheets" [currentSheetId]="activeSheetId" (sheetSwitched) = "switchSheet($event)"></wb-menu>          
-        </div>
-        <div class="sheet-container">
-            <sheet  
-                [uniqueId] = "activeSheetId" 
-                [bgColor]="currentSheetBgColor" 
-                [pages]="currentSheetPages"
-                [currentPageId] = "currentSheetStartPageId"
-                [lastAddedPageId] = "lastAddedPageId"
-                (sheetStartPageChanged) = "switchStartPage($event)"
-            >
-            </sheet>
-        </div> -->
-
-
-
-
-    </ng-container>
-    <ng-container *ngIf="application == 'calendar'">
         <calendar dropZone [events] = "calendarInputs">
-            
-        </calendar>
-    </ng-container>
+        </calendar> -->
+
+    <router-outlet></router-outlet>
     <link-searcher [linkDescriptorArray]="document.links"></link-searcher>
 </div>

@@ -6,6 +6,7 @@ import { GetActiveNoteDataService } from '../services/get-active-note-data.servi
 import { DescriptorToDataService } from '../services/descriptor-to-data.service';
 import { NextColorGeneratorService } from '../services/next-color-generator.service'
 import { timingSafeEqual } from 'crypto';
+import { GetDocumentService } from '../services/get-document.service';
 
 @Component({
   selector: 'note-pad',
@@ -25,7 +26,8 @@ export class NotePadComponent implements OnInit {
     private windowSize: WindowSizeEvaluatorService,
     private storageManager: StorageManagerService,
     private activeNoteGetter: GetActiveNoteDataService,
-    private descriptorTranslator: DescriptorToDataService
+    private descriptorTranslator: DescriptorToDataService,
+    private documentProvider: GetDocumentService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -35,7 +37,8 @@ export class NotePadComponent implements OnInit {
        'changeSheetTitle',
        'pageWasClicked',
        'setLastAddedPageId',
-       'obliterateSheet'
+       'obliterateSheet',
+       'providingDocumentObjectToWorkbookChild'
       ]
     )
   }
@@ -92,6 +95,8 @@ export class NotePadComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.document = this.documentProvider.getDocument();
+    this.messenger.inform('provideDocumentToChildComponent', null);
     this.initializeNewSheet(this.currentSheetId)
   }
 
@@ -126,15 +131,21 @@ export class NotePadComponent implements OnInit {
 
 
   handleMessages(eventType: string, data: any){
+    if (eventType == 'providingDocumentObjectToWorkbookChild'){
+      // setTimeout(()=>{this.document = data;});
+      this.document = data;
+    }
     if (eventType == 'pageWasClicked'){
       if(this.isHiddable) this.shouldBeHidden = true;
     }
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
+        let a = this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor))
         // this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
+
         this.document.sheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-        (this.document)
+        // (this.document)
       }
     }
     if (eventType == "changeSheetTitle"){

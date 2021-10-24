@@ -9,6 +9,7 @@ import { FileOperationsService } from '../services/file-operations.service';
 import { DocumentValidatorService } from '../services/document-validator.service';
 import { GetActiveNoteDataService } from '../services/get-active-note-data.service';
 import { WindowSizeEvaluatorService } from '../services/window-size-evaluator.service';
+import { GetDocumentService } from '../services/get-document.service';
 
 
 @Component({
@@ -65,6 +66,7 @@ export class WorkBookComponent implements OnInit {
     private fileOperations: FileOperationsService,
     private documentValidator: DocumentValidatorService,
     private activeNoteGetter: GetActiveNoteDataService,
+    private documentProvider: GetDocumentService
   ) { 
     messenger.subscribe(
       this.uniqueId, 
@@ -83,21 +85,22 @@ export class WorkBookComponent implements OnInit {
        'saveToLastUsedKey',
       //  'pageWasClicked',
        'clearAllCalendarInputs',
+       'provideDocumentToChildComponent'
       //  'setLastAddedPageId'
       ]
     )
   }
 
-  getDocument(){
-    let lastUsedDocument = this.storageManager.getLastUsedNoteDocument();
-    if (lastUsedDocument != null){
-      this.document = this.storageManager.loadContent(lastUsedDocument)
-    } else {
-      // this.document = this.storageManager.getFreshDocument();
-      this.document = this.storageManager.getNewDocumentWithInstructions();
-    }
-    console.dir(this.document)
-  }
+  // getDocument(){
+  //   let lastUsedDocument = this.storageManager.getLastUsedNoteDocument();
+  //   if (lastUsedDocument != null){
+  //     this.document = this.storageManager.loadContent(lastUsedDocument)
+  //   } else {
+  //     // this.document = this.storageManager.getFreshDocument();
+  //     this.document = this.storageManager.getNewDocumentWithInstructions();
+  //   }
+  //   console.dir(this.document)
+  // }
 
   handleMessages(eventType: string, data: any){
     if (eventType === "storageOperation") { 
@@ -119,6 +122,10 @@ export class WorkBookComponent implements OnInit {
         this.loadDocumentToView(feedback.payload)
       }
       // feedback.information: [dataSaved, dataLoaded, storageCleared, keysExistingInStorage]
+    }
+    if (eventType == "provideDocumentToChildComponent"){
+      console.log(this.document)
+      this.messenger.inform('providingDocumentObjectToWorkbookChild', this.document)
     }
     // if (eventType == 'pageWasClicked'){
     //   if(this.isHiddable) this.shouldBeHidden = true;
@@ -192,11 +199,13 @@ export class WorkBookComponent implements OnInit {
   reloadDocument(documentData: any){
     this.loadDocumentToView(this.mockDataProvider.getFreshDocument())
     this.loadDocumentToView(documentData)
+
   }
 
   loadDocumentToView(documentData: any){
     this.document = documentData;
-    setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
+    this.messenger.inform('providingDocumentObjectToWorkbookChild', this.document);
+    // setTimeout(()=>{this.calendarInputs = this.document.calendarInputs;});
   }
 
   ngAfterViewInit(){
@@ -206,7 +215,8 @@ export class WorkBookComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getDocument();
+    // this.getDocument();
+    this.document = this.documentProvider.getDocument();
     this.calendarInputs = this.document.calendarInputs;
   }
 

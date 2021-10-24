@@ -67,6 +67,7 @@ import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
 import { Add0prefixPipe } from './pipes/add0prefix.pipe';
 import { Add0prefixDirective } from './directives/add0prefix.directive';
 import { NotePadComponent } from './note-pad/note-pad.component';
+import { GetDocumentService } from './services/get-document.service'
 
 
 
@@ -143,7 +144,8 @@ import { NotePadComponent } from './note-pad/note-pad.component';
               StorageManagerService,
               CalendarObjectProviderService,
               AppMenuOperationsService,
-              WindowSizeEvaluatorService
+              WindowSizeEvaluatorService,
+              GetDocumentService
             ],
   bootstrap: [AppComponent]
 })

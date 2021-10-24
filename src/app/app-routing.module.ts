@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './calendar/calendar/calendar.component';
+import { NotePadComponent } from './note-pad/note-pad.component';
+
+
 
 const routes: Routes = [
   {path: 'calendar', component: CalendarComponent},
-  // {path: 'notePad' , component: }
+  {path: 'notePad' , component: NotePadComponent},
+  {path: '**' , component: NotePadComponent}
 ];
 
 @NgModule({

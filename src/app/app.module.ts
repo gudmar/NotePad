@@ -67,7 +67,8 @@ import { HslOrHexToHexPipe } from './pipes/hsl-or-hex-to-hex.pipe';
 import { Add0prefixPipe } from './pipes/add0prefix.pipe';
 import { Add0prefixDirective } from './directives/add0prefix.directive';
 import { NotePadComponent } from './note-pad/note-pad.component';
-import { GetDocumentService } from './services/get-document.service'
+import { GetDocumentService } from './services/get-document.service';
+import { ChoseToolMenuComponent } from './common/chose-tool-menu/chose-tool-menu.component'
 
 
 
@@ -129,6 +130,7 @@ import { GetDocumentService } from './services/get-document.service'
     Add0prefixPipe,
     Add0prefixDirective,
     NotePadComponent,
+    ChoseToolMenuComponent,
     
   ],
   imports: [

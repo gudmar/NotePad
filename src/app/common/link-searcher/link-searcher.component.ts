@@ -31,6 +31,7 @@ export class LinkSearcherComponent implements OnInit {
 
   ngOnInit(): void {
     this.communicator.inform('provideDocumentToChildComponent', null);
+    this.communicator.inform('routeSwitched', 'linker')
   }
 
 

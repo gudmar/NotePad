@@ -4,6 +4,7 @@
     --input-light-color: #50575e;
     --input-light-background-color-active: #f0fff0;
     --button-border-radius: 63% 37% 67% 33% / 34% 54% 46% 66%;
+    --tool-navigator-height: 1.3rem;
 }
 body, html{
     height: 100%;
@@ -15,6 +16,11 @@ body, html{
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
+}
+.flex-column{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;    
 }
 .center{
     display: flex;

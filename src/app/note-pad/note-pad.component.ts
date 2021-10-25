@@ -33,6 +33,7 @@ export class NotePadComponent implements OnInit {
       this.uniqueId, 
       this.handleMessages.bind(this), 
       [
+       'deleteSheetRequest',
        'addNextSheet',
        'changeSheetTitle',
        'pageWasClicked',
@@ -95,7 +96,6 @@ export class NotePadComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.document = this.documentProvider.getDocument();
     this.messenger.inform('provideDocumentToChildComponent', null);
     this.initializeNewSheet(this.currentSheetId);
     this.messenger.inform('routeSwitched', 'notePad')
@@ -110,9 +110,6 @@ export class NotePadComponent implements OnInit {
   initializeNewSheet(newSheetId: string){
     let currentSheetDescriptor = this.extractSheetDescriptor(newSheetId);
     this.currentSheet = currentSheetDescriptor;
-    // this.currentSheetBgColor = currentSheetDescriptor.bgColor;
-    // this.currentSheetPages = currentSheetDescriptor.pages;
-    // this.currentSheetStartPageId = currentSheetDescriptor.startPageId;
   }
 
   extractSheetDescriptor(sheetId: string): any{
@@ -133,7 +130,6 @@ export class NotePadComponent implements OnInit {
 
   handleMessages(eventType: string, data: any){
     if (eventType == 'providingDocumentObjectToWorkbookChild'){
-      // setTimeout(()=>{this.document = data;});
       this.document = data;
     }
     if (eventType == 'pageWasClicked'){
@@ -142,11 +138,8 @@ export class NotePadComponent implements OnInit {
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]
-        let a = this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor))
-        // this.listOfSheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-
-        this.document.sheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)))
-        // (this.document)
+        let a = this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor));
+        this.document.sheets.push(this.storageManager.getNextSheet(this.colorGenerator.getColorAfterGiven(lastSheetDescriptor.originalColor)));
       }
     }
     if (eventType == "changeSheetTitle"){
@@ -157,43 +150,82 @@ export class NotePadComponent implements OnInit {
     if (eventType == 'setLastAddedPageId'){
       this.setLastAddedPageId(data)
     }
+    if (eventType == 'deleteSheetRequest') {
+      this.sheetDeletionConfirmationProcedure(data);
+    }
     if (eventType == 'obliterateSheet'){
-      let targetSheetId = data;
-      let sheets = this.document.sheets;
-      if (sheets.length <= 1){
-        this.messenger.inform('userInfo', {
-          type: 'error',
-          message: 'Last sheet cannot be deleted',
-          timeout: 2500
-        })
-      } else {
-        if (this.currentSheetId === data){
-          let indexOfTargetSheet = this.findSheetIndex(data);
+      this.deleteSheetAsItIsConfirmed(data);
+    }
+  }
 
-          
-          if (indexOfTargetSheet == 0) {
-            let nextSheetId = this.getAllSheetIds()[1];
-            this.currentSheet = this.extractSheetDescriptor(nextSheetId);
-            this.currentSheetId = this.getSheetId(1);
-            this.document.activeSheetId = this.currentSheetId;
-            // this.currentPageId= this.extractSheetDescriptor(data).startPageId;
-            this.deleteSheet(data)
-          } else {
-            // this.currentSheet = this.document.sheets[indexOfTargetSheet - 1];
-            let nextSheetId = this.getAllSheetIds()[indexOfTargetSheet - 1];
-            this.currentSheet = this.extractSheetDescriptor(nextSheetId);
-            this.currentSheetId = this.getSheetId(indexOfTargetSheet - 1);
-            this.document.activeSheetId = this.currentSheetId;
-            
-            this.deleteSheet(data)
-            // this.currentPageId= this.extractSheetDescriptor(data).startPageId;
-          }
+  deleteSheetAsItIsConfirmed(data:any){
+    let targetSheetId = data;
+    let sheets = this.document.sheets;
+    if (sheets.length <= 1){
+      this.messenger.inform('userInfo', {
+        type: 'error',
+        message: 'Last sheet cannot be deleted',
+        timeout: 2500
+      })
+    } else {
+      if (this.currentSheetId === data){
+        let indexOfTargetSheet = this.findSheetIndex(data);
+        if (indexOfTargetSheet == 0) {
+          let nextSheetId = this.getAllSheetIds()[1];
+          this.currentSheet = this.extractSheetDescriptor(nextSheetId);
+          this.currentSheetId = this.getSheetId(1);
+          this.document.activeSheetId = this.currentSheetId;
+          this.deleteSheet(data)
         } else {
+          let nextSheetId = this.getAllSheetIds()[indexOfTargetSheet - 1];
+          this.currentSheet = this.extractSheetDescriptor(nextSheetId);
+          this.currentSheetId = this.getSheetId(indexOfTargetSheet - 1);
+          this.document.activeSheetId = this.currentSheetId;
           this.deleteSheet(data)
         }
+      } else {
+        this.deleteSheet(data)
       }
     }
   }
+
+  sheetDeletionConfirmationProcedure(data:any){
+    let sheets = this.document.sheets
+    if (sheets.length > 1){
+      let sheetForDeletionIndex = this.findSheetIndex(data)
+      let sheetPlannedForDeletionObject: any = sheets[sheetForDeletionIndex]
+      let sheetForDeletionDescriptor: any = Object.values(sheetPlannedForDeletionObject)[0];
+      let nrOfChildrenSheetHas = sheetForDeletionDescriptor.pages.length;
+      let nrOfNotesFirstPageHas = this.getNrOfNotesFirstPageHas(sheetForDeletionDescriptor)
+      if (nrOfChildrenSheetHas == 0) {
+        this.messenger.inform('', data)
+        console.error('Wow, this sheet seems to have no child pages. How is this possible?')
+      } else if (nrOfChildrenSheetHas == 1 && this.getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) == 0) {
+        this.messenger.inform('obliterateSheet', data)
+      } else if (nrOfChildrenSheetHas > 1){
+        this.messenger.inform(
+          'confirmationMessage_deleteSheet',
+          {
+            message: 'Sheet selected for deletion has child pages. Are you sure you want to delete it?',
+            uniqueId: data
+          }
+        )
+      } else if (nrOfChildrenSheetHas == 1 && this.getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) > 0){
+        this.messenger.inform(
+          'confirmationMessage_deleteSheet',
+          {
+            message: 'Child page has child notes. Are you sure you want to delete it?',
+            uniqueId: data
+          }
+        )          
+      }
+    } else {
+      this.messenger.inform('userInfo', {
+        message: 'Last sheet cannot be deleted', timeout: 2500, type: 'error'
+      })
+    }
+  }
+
   getSheetId(sheetIndex:number){
     return this.getAllSheetIds()[sheetIndex];
   }
@@ -209,6 +241,11 @@ export class NotePadComponent implements OnInit {
   findSheetIndex(id:string){
     let singleMatch = function(element: any){return Object.keys(element)[0] === id}
     return this.document.sheets.findIndex(singleMatch)      
+  }
+  getNrOfNotesFirstPageHas(sheetDescriptor: any){
+    let firstPageDescriptor:any = Object.values(sheetDescriptor.pages[0])[0]
+    let nrOfPages = firstPageDescriptor.notes.length;
+    return nrOfPages;
   }
 
 }

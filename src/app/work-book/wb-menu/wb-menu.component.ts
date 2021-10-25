@@ -17,8 +17,6 @@ export class WbMenuComponent implements OnInit {
   private idOfSheetSelectedForTermination: string = '';
   menu: AppMenuOperationsService = new AppMenuOperationsService(this.messenger);
   @Input() sheets: any = []
-  // @Input() isHiddable: boolean = false;
-  // @Input() shouldBeHidden: boolean = false;
   @Output() sheetSwitched: EventEmitter<string> = new EventEmitter();
   @Input() currentSheetId: string = '';
   @Input() currentPageId: string = '';
@@ -27,97 +25,14 @@ export class WbMenuComponent implements OnInit {
   constructor(private descriptorTranslator: DescriptorToDataService, 
     private messenger: CommunicationService,
     private fileOperations: FileOperationsService,
-    // private windowSize: WindowSizeEvaluatorService,
     menu: AppMenuOperationsService,
   ) { }
 
-  ngOnInit(): void {
-    this.messenger.subscribe(
-      this.uniqueId, 
-      this.handleMessages.bind(this), 
-      ['killSheet', 'obliteratePage', 'pageWasClicked']
-    )
-    // this.checkIfmenuNeedsToBeHidden();
-    // this.shouldBeHidden = this.isHiddable;
-  }
-
-  handleMessages(eventType: string, data:any){
-    let getNrOfNotesFirstPageHas = function(sheetDescriptor: any){
-      let firstPageDescriptor:any = Object.values(sheetDescriptor.pages[0])[0]
-      let nrOfPages = firstPageDescriptor.notes.length;
-      return nrOfPages;
-    }
-    // if (eventType == 'pageWasClicked'){
-    //   if(this.isHiddable) this.shouldBeHidden = true;
-    // }
-    if (eventType == 'killSheet') {
-      console.error('Clean this, as this is same functionality as in note-pad')
-      if (this.sheets.length > 1){
-        let sheetForDeletionIndex = this.getIndexOfSheetById(data)
-        let sheetPlannedForDeletionObject: any = this.sheets[sheetForDeletionIndex]
-        let sheetForDeletionDescriptor: any = Object.values(sheetPlannedForDeletionObject)[0];
-        let nrOfChildrenSheetHas = sheetForDeletionDescriptor.pages.length;
-        let nrOfNotesFirstPageHas = getNrOfNotesFirstPageHas(sheetForDeletionDescriptor)
-        if (nrOfChildrenSheetHas == 0) {
-          // if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-          this.messenger.inform('obliterateSheet', data)
-          // this.deleteSheet(data);
-        } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) == 0) {
-          // if (data == this.currentSheetId) this.showOtherSheetAfterDeletion(data);
-          this.messenger.inform('obliterateSheet', data)
-          // this.deleteSheet(data)
-        } else if (nrOfChildrenSheetHas > 1){
-          this.messenger.inform(
-            'confirmationMessage_deleteSheet',
-            {
-              message: 'Sheet selected for deletion has child pages. Are you sure you want to delete it?',
-              uniqueId: data
-            }
-          )
-        } else if (nrOfChildrenSheetHas == 1 && getNrOfNotesFirstPageHas(sheetForDeletionDescriptor) > 0){
-          this.messenger.inform(
-            'confirmationMessage_deleteSheet',
-            {
-              message: 'Child page has child notes. Are you sure you want to delete it?',
-              uniqueId: data
-            }
-          )          
-        }
-      } else {
-        this.messenger.inform('userInfo', {
-          message: 'Last sheet cannot be deleted', timeout: 2500, type: 'error'
-        })
-      }
-      
-    }
-    if (eventType == "obliteratePage"){
-      let sheetForDeletionIndex = this.getIndexOfSheetById(data)
-      if (sheetForDeletionIndex > -1) {
-        if (data == this.currentSheetId) {
-          this.showOtherSheetAfterDeletion(data);
-          this.deleteSheet(data);
-        }
-      }
-      
-    }
-  }
+  ngOnInit(): void {}
 
   deleteSheet(idOfSheetToDelete: string){
     let deletedSheetIndex = this.getIndexOfSheetById(idOfSheetToDelete)
     this.sheets.splice(deletedSheetIndex, 1);
-  }
-
-  showOtherSheetAfterDeletion(deletedSheetId: string){
-    let deletedSheetIndex = this.getIndexOfSheetById(deletedSheetId);
-    let nrOfSheets = this.sheets.length;
-    let isDeletedOnFirstIndex = (deletedSheetIndex == 0);
-    let newSheetIndex: number = 0;
-    if (nrOfSheets > 1){
-      newSheetIndex = deletedSheetIndex - 1
-      if (isDeletedOnFirstIndex) newSheetIndex = 1;
-      let newSheetsUniqueId = Object.keys(this.sheets[newSheetIndex])[0];
-      this.currentSheetId = newSheetsUniqueId
-    }
   }
 
   getIndexOfSheetById(id: string){
@@ -132,7 +47,6 @@ export class WbMenuComponent implements OnInit {
 
   passDataFromStorageToWBComponent(data:string){
     this.messenger.inform('storageOperation', data)
-    // !!!!!!!!!!! NOT NEEDED - CLEAR EVERYTHING RELATED
   }
 
   addNextSheet(){

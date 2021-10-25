@@ -3,6 +3,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { StorageManagerService } from '../../services/storage-manager.service';
 import { CommunicationService } from '../../services/communication.service';
+import { ConcatSource } from 'webpack-sources';
 
 @Component({
   selector: 'sheet',
@@ -21,10 +22,8 @@ export class SheetComponent implements OnInit {
 
   @Input() uniqueId: string = '';
   @Input() bgColor: string = 'white';
-  // @Input() pages: any[] = [];
   @Input() lastAddedPageId: any = undefined;
-  // @Input() startPageId:string = '';
-  private _currentPageId: string = '';//this.startPageId;
+  private _currentPageId: string = '';
   @Input() set currentPageId(val: string) {
     this._currentPageId = val;
     this.currentPageNotes = this.getPageNotesById(val)
@@ -48,8 +47,12 @@ export class SheetComponent implements OnInit {
     this.messenger.subscribe(
       this.uniqueId, 
       this.handleMessages.bind(this), 
-      ['killMe_page', 'obliteratePage', 'ObliterateSheet', 'howManyChildrenDoIHave_page', 
-       'changeCurrentPageTitle','addNextPageAfterUniqueId']
+      [
+        'deletePageRequest', 
+        'deletePageConfirmed', 
+        'ObliterateSheet', 
+        'changeCurrentPageTitle',
+        'addNextPageAfterUniqueId']
     )
   }
 
@@ -57,35 +60,29 @@ export class SheetComponent implements OnInit {
     if (eventType == 'addNextPageAfterUniqueId'){
       this.addNewPageAfterCertainPage(data.uniqueId)
     }
-    if (eventType == "killMe_page") {
-      if (data.nrOfChidren > 0) this.ensureUserIsPositive(data)
+    if (eventType == "deletePageRequest") {
+      let nrOfChildrenTargetPageHas = this.getNrOfChildrenPageHas(data.targetPageId)
+      if (nrOfChildrenTargetPageHas > 0) this.ensureUserIsPositive(data.targetPageId)
       else {
-        if (data.uniqueId == this.currentPageId) this.showOtherPageAfterDeletion(data.uniqueId)
-        this.deletePage(data.uniqueId)
+        if (data.targetPageId == this.currentPageId) this.showOtherPageAfterDeletion(data.targetPageId)
+        this.deletePage(data.targetPageId)
       }
     }
-    if (eventType == "obliteratePage") {
-      if (data.uniqueId == this.currentPageId) this.showOtherPageAfterDeletion(data.uniqueId)
-      this.deletePage(data.uniqueId)
-      console.error('This code is probably wrong. Does it in reality delete page?')
-    }
-    // if (eventType == "obliterateSheet") {
-    //   if (data.uniqueId == this.uniqueId) this.showOtherSheetAfterDeletion(data.uniqueId)
-    //   this.deleteSheet(data.uniqueId)
-    // }
-    if (eventType === 'howManyChildrenDoIHave_page') {
-        let queriedPage = this.pages[this.getPageIndexById(data)]
-        let queriedPageDescriptor: any = Object.values(queriedPage)[0]
-        this.messenger.inform(
-          'nrOfChidrenYouHave', 
-          {uniqueId: data, nrOfOwnChildren: queriedPageDescriptor.notes.length}
-        )
+    if (eventType == "deletePageConfirmed") {
+      if (data == this.currentPageId) this.showOtherPageAfterDeletion(data)
+      this.deletePage(data)
     }
     if (eventType === 'changeCurrentPageTitle'){
       if (this.currentPageId == data.pageId) {
         this.getCurrentPageDescriptor().title = data.title;
       }
     }
+  }
+
+  getNrOfChildrenPageHas(pageUniqueId:string){
+    let queriedPage = this.pages[this.getPageIndexById(pageUniqueId)]
+    let queriedPageDescriptor: any = Object.values(queriedPage)[0]
+    return queriedPageDescriptor.notes.length
   }
 
   ensureUserIsPositive(pagesId: string){
@@ -121,21 +118,12 @@ export class SheetComponent implements OnInit {
     }
   }
 
-  // showOtherSheetAfterDeletion(deletedSheetId: string){
-  //   let deletedPageIndex = this.getPageIndexById(deletedPageId);
-  //   let nrOfPages = this.pages.length;
-  //   let isDeletedOnFirstIndex = (deletedPageIndex == 0);
-  //   let newPageIndex: number = 0;
-  //   if (nrOfPages > 1){
-  //     newPageIndex = deletedPageIndex - 1
-  //     if (isDeletedOnFirstIndex) newPageIndex = 1;
-  //     let newPagesUniqueId = Object.keys(this.pages[newPageIndex])[0];
-  //     this.currentPageId = newPagesUniqueId
-  //   }
-  // }
-
   getPageIndexById(id: string){
-    let singleMatch = function(element: any){return Object.keys(element)[0] === id}
+    console.log(id)
+    let singleMatch = function(element: any){
+      console.log(Object.keys(element)[0])
+      return Object.keys(element)[0] === id
+    }
     return this.pages.findIndex(singleMatch)
   }
 
@@ -173,17 +161,11 @@ export class SheetComponent implements OnInit {
   }
 
   addNewPage(){
-    // let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
-    // let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
-    // this.pages.push(newPage);
-    // this.messenger.inform('newPageWasAdded', Object.keys(newPage)[0])
     let lastPageId = Object.keys(this.pages[this.pages.length - 1])[0];
     this.addNewPageAfterCertainPage(lastPageId)
   }
 
   addNewPageAfterCertainPage(previousPageId:string){
-    
-    // let lastPageDesciptor:any = Object.values(this.pages[this.pages.length - 1])[0]
     let lastPageDesciptor = this.getLastPageDescriptor();
     let lastPageIndex:number = this.getPageIndexById(previousPageId) + 1;
     let newPage = this.storageManater.getNextAddedPage(lastPageDesciptor['originalColor'])
@@ -198,7 +180,5 @@ export class SheetComponent implements OnInit {
     return Object.values(this.pages[index])[0]
   }
 
-ngOnChanges(){
-}
-
+  ngOnChanges(){}
 }

@@ -64,12 +64,15 @@ export class TabComponent implements OnInit {
 
   killRelatedPage(data: any){
     // nrOfChidren uniqueId)
-    this.messenger.inform('howManyChildrenDoIHave_page', this.uniqueId)
-    this.messenger.inform('killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.nrOfOwnChildren})
+    // this.messenger.inform('howManyChildrenDoIHave_page', this.uniqueId)
+    this.messenger.inform('deletePageRequest', {targetPageId: this.uniqueId})
     data.stopPropagation();
   }
   handleMessages(eventType: string, data:any){
-    if (data.uniqueId == this.uniqueId) this.nrOfOwnChildren = data.nrOfOwnChildren
+    if (data.uniqueId == this.uniqueId) {
+      this.nrOfOwnChildren = data.nrOfOwnChildren
+      console.log(this.nrOfOwnChildren)
+    }
   }
 
   ngOnInit(): void {

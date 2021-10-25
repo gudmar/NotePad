@@ -127,7 +127,7 @@ export class PageComponent implements OnInit {
   }
 
   deleteThisPage(){
-    this.messenger.inform('killMe_page', {uniqueId: this.uniqueId, nrOfChidren: this.notes.length})
+    this.messenger.inform('deletePageRequest', {targetPageId: this.uniqueId})
   }
   addAfterThisPage() {
     this.messenger.inform('addNextPageAfterUniqueId', {uniqueId: this.uniqueId})

@@ -32,7 +32,7 @@ export class ConfirmationWindowComponent implements OnInit {
   }
   confirmation(){
     if (this.messageType == 'confirmationMessage'){
-      this.messenger.inform('obliteratePage', this.incommingMessageData.uniqueId);
+      this.messenger.inform('deletePageConfirmed', this.incommingMessageData.uniqueId);
       this.confirmationWindowIsVisible = false;  
     }
     if (this.messageType == 'confirmationMessage_deleteSheet'){

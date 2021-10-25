@@ -35,7 +35,7 @@ export class WbMenuEntryComponent implements OnInit {
 
   killRelatedSheet(data: any){
     data.stopPropagation();
-    this.messenger.inform('killSheet', this.uniqueId)
+    this.messenger.inform('deleteSheetRequest', this.uniqueId)
   }
 
   enterChangeSheetsTitleMode(event: any){

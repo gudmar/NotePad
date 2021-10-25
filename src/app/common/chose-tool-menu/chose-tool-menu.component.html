@@ -1,0 +1,21 @@
+<div class="placeholder center">
+    <div class="wrapper center">
+        <div class="radio-button-wrapper center">
+            <div class="moving-tab constant-width" 
+                [ngClass] = "{'option1':isThisRadioActive(1), 'option2':isThisRadioActive(2), 'option3':isThisRadioActive(3)}"
+            >
+            </div>
+            <div *ngFor="let tool of tools; let i = index" 
+                [ngClass]="{'interactable':!isThisRadioActive(i)}"
+                class="radio-button constant-width" 
+                (click)="activateRadio(i)">
+                <a [routerLink]="[tool.link]" routerLinkActive="active">
+                    <span class="full100 center">
+                        {{tool.name}}
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="click-button center" (click)="displayHelp()">Help</div>
+    </div>
+</div>

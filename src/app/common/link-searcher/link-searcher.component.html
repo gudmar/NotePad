@@ -1,11 +1,12 @@
 <!-- <ng-container *ngIf = "shouldBeDisplayed"> -->
-    <div class="shutter">
+    <!-- <div class="shutter"> -->
         <div class="wrapper">
             <div class="navigation-section">
-                <div class="arrow explain" data-explain="Add new link" (click)="openAddLinkForm()">+</div>
+                <!-- <div class="arrow explain" data-explain="Add new link" (click)="openAddLinkForm()">+</div> -->
                 <expandable-menu [whatAppAmIIn]="'linker'"></expandable-menu>
                 <div class="serachBox" (keyup)="getFilter($event)" contenteditable="true"></div>
-                <div class="arrow" (click)="close()">&times;</div>
+                <!-- <div class="arrow" (click)="close()">&times;</div> -->
+                <div class="arrow explain" data-explain="Add new link" (click)="openAddLinkForm()">+</div>
             </div>
             <div class="link-section">
                 <custom-link 
@@ -17,5 +18,5 @@
                 </custom-link>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 <!-- </ng-container> -->

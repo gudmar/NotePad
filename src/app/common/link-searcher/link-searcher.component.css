@@ -1,28 +1,21 @@
-.shutter{
-    position: absolute;
-    top: 0;
-    left: 0;
+:host{
+    overflow: hidden;
+    position: relative;
     width: 100vw;
-    height: 100vh;
-    background-color: rgba(250,250,250,0.5);
-    z-index: 500;
+    height: calc( 100vh - var(--tool-navigator-height));
+    display: flex;
 }
 
 .wrapper{
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: white;
     display: flex;
     flex-direction: column;
-    right: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     padding: 7px;
     border-radius: 7px;
     border: thin solid var(--light-border);
-    /* overflow: auto; */
 }
 .navigation-section{
     width :100%;
@@ -33,7 +26,6 @@
     align-items: center;
     border-bottom: solid thin var(--light-border);
 }
-.button{} 
 .arrow{
     text-align: center;
 }

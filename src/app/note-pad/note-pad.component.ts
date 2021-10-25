@@ -97,7 +97,8 @@ export class NotePadComponent implements OnInit {
   ngOnInit(): void {
     // this.document = this.documentProvider.getDocument();
     this.messenger.inform('provideDocumentToChildComponent', null);
-    this.initializeNewSheet(this.currentSheetId)
+    this.initializeNewSheet(this.currentSheetId);
+    this.messenger.inform('routeSwitched', 'notePad')
   }
 
   @HostListener('window:resize', ['$event'])

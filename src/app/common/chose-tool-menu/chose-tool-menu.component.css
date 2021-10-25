@@ -1,0 +1,94 @@
+*{
+    --component-height: var(--tool-navigator-height);
+    --constant-button-width: 70px;
+    --moving-border-color: #fd8c73;
+    box-sizing: border-box;
+    /* --light-border: #d0d7de;
+    --light-input-background-color: #f6f8fa;
+    --input-light-color: #50575e;
+    --input-light-background-color-active: #f0fff0; */
+}
+a{text-decoration: none;}
+a:link{color:var(--input-light-color);}
+a:visited{color:var(--input-light-color);}
+a:hover{color:var(--input-light-color);cursor: default;}
+a:active{color:var(--input-light-color);}
+.placeholder{
+    position: relative;
+    height: var(--component-height);
+    background-color: white;
+    color: var(--input-light-color);
+    font-family: Arial, Helvetica, sans-serif;
+}
+.radio-button-wrapper{
+    position: relative;
+    height: 100%;
+    width: calc( 3 * var(--constant-button-width));
+    color: var(--input-light-color);
+}
+.moving-tab{
+    position: absolute;
+    width: var(--constant-button-width);
+    height: var(--component-height);
+    border-bottom: solid medium var(--moving-border-color);
+    top:0;
+    left:0;
+    transition: 0.3s;
+    z-index: 1;
+}
+.option1{
+    left: calc( 1 * var(--constant-button-width));
+    transition: 0.3s;
+}
+.option2{
+    left: calc( 2 * var(--constant-button-width));
+    transition: 0.3s;
+}
+.option3{
+    left: calc( 3 * var(--constant-button-width));
+    transition: 0.3s;
+}
+.interactable>a{
+    cursor: pointer;
+    background-color: white;
+}
+.radio-button{
+    position: relative;
+    height: var(--component-height);
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--light-input-background-color);
+}
+.click-button{
+    text-align: center;
+    position: relative;
+    border-radius: 5px;
+    padding: 3px;
+    /* width: var(--tool-navigator-height); */
+    /* height: var(--tool-navigator-height); */
+    background-color: green;
+    color: white;
+    box-shadow: inset 0px 0px 23px -10px #000000;
+    cursor: pointer;
+}
+.constant-width{
+    width: var(--constant-button-width);
+}
+.full100{
+    position: relative;
+    width: 100%;height: 100%;
+}
+
+
+/* <div class="placeholder">
+    <div class="wrapper">
+        <div class="radio-button-wrapper">
+            <div class="moving-tab constant-width" 
+                [ngClass] = "{'option1':isThisRadioActive(1), 'option2':isThisRadioActive(2), 'option3':isThisRadioActive(3)}"
+            >
+            </div>
+            <div *ngFor="let tool of tools; let i = index" class="radio-button constant-width" (click)="activateRadio(i)">
+                <a routerLink="tool.link" routerLinkActive="active">
+                    <span class="full100">
+                        {{tool.name}}
+                    </span>
+                </a> */

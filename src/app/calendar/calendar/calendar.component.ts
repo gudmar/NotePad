@@ -34,7 +34,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     // this.events = this.documentProvider.getDocument().calendarInputs;
-
+    this.communicator.inform('routeSwitched', 'calendar')
     this.communicator.subscribe(this.uniqueId, 
       this.messageHandler.bind(this), 
       ['provideCalendarEvents', 

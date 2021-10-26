@@ -64,6 +64,10 @@ export class DayComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   ngOnInit(): void {
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this),
      ['eventWasMovedAndDayWasCreated', 'calendarEventsForDay', 'switchTaskViewerToNextDayOfTheSameYear'])

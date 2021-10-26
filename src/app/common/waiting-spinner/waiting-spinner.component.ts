@@ -17,6 +17,10 @@ export class WaitingSpinnerComponent implements OnInit {
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['show/hideSpinner'])
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   handleMessages(eventType: String, data: any){
     this.shouldBeDisplayed = data;
   }

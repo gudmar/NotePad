@@ -48,6 +48,10 @@ export class CalendarComponent implements OnInit {
     this.communicator.inform('provideDocumentToChildComponent', null);
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
 
   messageHandler(eventType: string, data: any){
     if (eventType == 'providingDocumentObjectToWorkbookChild'){

@@ -42,6 +42,10 @@ export class LinkSearcherComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
 
   openAddLinkForm(){
     this.communicator.inform('openAddLinkForm', this.linkDescriptorArray);

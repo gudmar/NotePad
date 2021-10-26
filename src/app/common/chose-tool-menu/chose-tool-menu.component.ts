@@ -14,6 +14,11 @@ export class ChoseToolMenuComponent implements OnInit {
   ) { 
     this.communicator.subscribe(this.uniqueId, this.messageHandler.bind(this),['routeSwitched'])
   }
+
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   messageHandler(eventType:string, data:any){
     if (eventType=='routeSwitched'){
         this._radioActiveButton = this.getToolIndex(data)

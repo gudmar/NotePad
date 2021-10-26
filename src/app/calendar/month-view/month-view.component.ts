@@ -135,4 +135,8 @@ export class MonthViewComponent implements OnInit {
   validateYear(event:any){
 
   }
+
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
 }

@@ -13,8 +13,14 @@ export class UserMessageComponent implements OnInit {
   shouldBeDisplayed: boolean = false;
   message: string = ''
   title: string = '';
-  constructor(private communicator: CommunicationService) { 
+  constructor(private communicator: CommunicationService) { }
+
+  ngOnInit(): void {
     this.communicator.subscribe(this.uniqueId,this.handleMessages.bind(this), ['userInfo', 'informUser'])
+  }
+
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
   }
 
   handleMessages(eventType: string, data: any){
@@ -28,8 +34,6 @@ export class UserMessageComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-  }
 
   selfTurnOff(){
     if (this.timeout != null) {

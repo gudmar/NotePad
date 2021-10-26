@@ -130,6 +130,7 @@ export class NotePadComponent implements OnInit {
 
   handleMessages(eventType: string, data: any){
     if (eventType == 'providingDocumentObjectToWorkbookChild'){
+      console.log(data)
       this.document = data;
     }
     if (eventType == 'pageWasClicked'){
@@ -246,6 +247,9 @@ export class NotePadComponent implements OnInit {
     let firstPageDescriptor:any = Object.values(sheetDescriptor.pages[0])[0]
     let nrOfPages = firstPageDescriptor.notes.length;
     return nrOfPages;
+  }
+  ngOnDestroy(){
+    this.messenger.unsubscribe(this.uniqueId);
   }
 
 }

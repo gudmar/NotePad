@@ -174,5 +174,9 @@ export class PageComponent implements OnInit {
     this.changePageColor.emit(data);
   }
 
+  ngOnDestroy(){
+    this.messenger.unsubscribe(this.uniqueId);
+  }
+
 }
 

@@ -54,6 +54,8 @@ export class SheetComponent implements OnInit {
         'changeCurrentPageTitle',
         'addNextPageAfterUniqueId']
     )
+    console.log(this.uniqueId)
+    console.log(this.pages)
   }
 
   handleMessages(eventType: string, data: any){
@@ -61,6 +63,7 @@ export class SheetComponent implements OnInit {
       this.addNewPageAfterCertainPage(data.uniqueId)
     }
     if (eventType == "deletePageRequest") {
+      console.log(data)
       let nrOfChildrenTargetPageHas = this.getNrOfChildrenPageHas(data.targetPageId)
       if (nrOfChildrenTargetPageHas > 0) this.ensureUserIsPositive(data.targetPageId)
       else {
@@ -81,6 +84,9 @@ export class SheetComponent implements OnInit {
 
   getNrOfChildrenPageHas(pageUniqueId:string){
     let queriedPage = this.pages[this.getPageIndexById(pageUniqueId)]
+    console.log(pageUniqueId)
+    console.log(queriedPage);
+    console.log(this.pages)
     let queriedPageDescriptor: any = Object.values(queriedPage)[0]
     return queriedPageDescriptor.notes.length
   }
@@ -119,14 +125,12 @@ export class SheetComponent implements OnInit {
   }
 
   getPageIndexById(id: string){
-    console.log(id)
+    console.log(this.pages)
     let singleMatch = function(element: any){
-      console.log(Object.keys(element)[0])
       return Object.keys(element)[0] === id
     }
     return this.pages.findIndex(singleMatch)
   }
-
   changePageColor(data:any){
     let pageIndex = this.getPageIndexById(this.currentPageId);
     let currentPageDescriptor:any = Object.values(this.pages[pageIndex])[0]
@@ -181,4 +185,7 @@ export class SheetComponent implements OnInit {
   }
 
   ngOnChanges(){}
+  ngOnDestroy(){
+    this.messenger.unsubscribe(this.uniqueId);
+  }
 }

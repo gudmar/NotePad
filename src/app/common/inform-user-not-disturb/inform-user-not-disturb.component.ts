@@ -20,6 +20,10 @@ export class InformUserNotDisturbComponent implements OnInit {
     communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displayMessageAndDoNotDisturb'])
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   handleMessages(eventType: string, data: any){
     if (eventType == 'displayMessageAndDoNotDisturb'){
       this.shouldDisplay = true;

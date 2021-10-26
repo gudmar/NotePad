@@ -62,6 +62,10 @@ uniqueId: string = 'moveEventId'
     this.getAllCalendarEvents();
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   closeMoveWindow(){
     this.closeMoveWindowEvent.emit();
   }

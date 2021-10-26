@@ -23,6 +23,10 @@ export class HelpComponent implements OnInit {
   ) { 
     this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displayHelp'])
   }
+
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
   
   handleMessages(eventType: string, data: any){
     if (eventType == 'displayHelp') this.shouldDisplay = true;

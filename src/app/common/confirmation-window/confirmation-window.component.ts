@@ -41,6 +41,11 @@ export class ConfirmationWindowComponent implements OnInit {
     }
 
   }
+
+  ngOnDestroy(){
+    this.messenger.unsubscribe(this.uniqueId);
+  }
+  
   negation(){
     this.messenger.inform('iWantToBeClosed', this.incommingMessageData.uniqueId);
     this.confirmationWindowIsVisible = false;

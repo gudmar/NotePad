@@ -194,5 +194,7 @@ export class TaskViewerComponent implements OnInit {
     this.communicator.inform('eventWasMovedAndMonthWasCreated', {month: this.month})
   }
   
-
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
 }

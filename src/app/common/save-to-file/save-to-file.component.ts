@@ -11,16 +11,14 @@ import { FileOperationsService } from '../../services/file-operations.service';
 export class SaveToFileComponent implements OnInit {
   fileName: string = this.getProposedFileName();
   title: string = 'Save to file:'
-  uniqueIs: string = 'saveToFileWindowId'
+  uniqueId: string = 'saveToFileWindowId'
   shouldDisplay: boolean = false;
   document: any = {};
   constructor(
     private communicator: CommunicationService, 
     private storageManager: StorageManagerService,
     private fileOperations: FileOperationsService
-  ) { 
-    communicator.subscribe(this.uniqueIs, this.handleMessages.bind(this), ['displaySaveToFileWindow'])
-  }
+  ) { }
   handleMessages(eventType:string, data:any){
     if (eventType == 'displaySaveToFileWindow'){
       this.shouldDisplay = true;
@@ -29,6 +27,11 @@ export class SaveToFileComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    this.communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), ['displaySaveToFileWindow'])
+  }
+
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
   }
 
   confirm(){

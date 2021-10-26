@@ -41,6 +41,10 @@ export class SaveLoadWindowComponent implements OnInit {
     )
   }
 
+  ngOnDestroy(){
+    this.communicator.unsubscribe(this.uniqueId);
+  }
+
   @ViewChild('inputField') inputFiled: any;
 
   isThisActive(key: string){

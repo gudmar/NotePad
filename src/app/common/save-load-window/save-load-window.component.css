@@ -79,6 +79,10 @@
     border: thin solid var(--light-border);
     border-radius: 5px;
     color: var(--input-light-color);
+    overflow-y: hidden;
+    white-space: nowrap;
+    
+    overflow-x: auto;
 }
 .label{
     margin-top: 1rem;

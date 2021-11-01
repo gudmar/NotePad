@@ -30,6 +30,7 @@
     text-align: center;
 }
 .serachBox{
+    
     font-family: Arial, Helvetica, sans-serif;
     font-size: 2rem;
     position: relative;
@@ -42,6 +43,9 @@
     outline: none;
     border-radius: 7px;
     display: inline-block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 .serachBox:focus{
     background-color: var(--input-light-background-color-active);

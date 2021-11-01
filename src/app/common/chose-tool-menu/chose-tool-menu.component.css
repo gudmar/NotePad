@@ -1,7 +1,9 @@
 *{
     --component-height: var(--tool-navigator-height);
-    --constant-button-width: 70px;
+    --constant-button-width: 90px;
     --moving-border-color: #fd8c73;
+    --font-size: 1.3rem;
+    --button-timing: cubic-bezier(0.47, 2, 0.31, -0.36);
     box-sizing: border-box;
     /* --light-border: #d0d7de;
     --light-input-background-color: #f6f8fa;
@@ -69,6 +71,18 @@ a:active{color:var(--input-light-color);}
     color: white;
     box-shadow: inset 0px 0px 23px -10px #000000;
     cursor: pointer;
+    transition-timing-function: cubic-bezier(0.47, 2, 0.31, -0.36);
+    transition: 0.3s;
+}
+.click-button:hover{
+    transform: scale(1.2);
+    transition-timing-function: cubic-bezier(0.47, 2, 0.31, -0.36);
+    transition: 0.3s;
+}
+.click-button:active{
+    transform:scale(0.8);
+    transition-timing-function: cubic-bezier(0.47, 2, 0.31, -0.36);
+    transition: 0.3s;
 }
 .constant-width{
     width: var(--constant-button-width);
@@ -76,19 +90,9 @@ a:active{color:var(--input-light-color);}
 .full100{
     position: relative;
     width: 100%;height: 100%;
+    font-size: var(--font-size);
 }
 
-
-/* <div class="placeholder">
-    <div class="wrapper">
-        <div class="radio-button-wrapper">
-            <div class="moving-tab constant-width" 
-                [ngClass] = "{'option1':isThisRadioActive(1), 'option2':isThisRadioActive(2), 'option3':isThisRadioActive(3)}"
-            >
-            </div>
-            <div *ngFor="let tool of tools; let i = index" class="radio-button constant-width" (click)="activateRadio(i)">
-                <a routerLink="tool.link" routerLinkActive="active">
-                    <span class="full100">
-                        {{tool.name}}
-                    </span>
-                </a> */
+.help{
+    cursor:help;
+}

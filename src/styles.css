@@ -4,7 +4,7 @@
     --input-light-color: #50575e;
     --input-light-background-color-active: #f0fff0;
     --button-border-radius: 63% 37% 67% 33% / 34% 54% 46% 66%;
-    --tool-navigator-height: 1.3rem;
+    --tool-navigator-height: 2.5rem;
 }
 body, html{
     height: 100%;
@@ -54,23 +54,27 @@ body, html{
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
   }
   
   /* Track */
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
     border-radius: 10px;
+    cursor: all-scroll;
   }
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #aaa; 
     border-radius: 5px;
+    cursor: all-scroll;
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #888; 
+    cursor: all-scroll;
   }
 
 

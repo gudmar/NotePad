@@ -6,7 +6,9 @@
                 <div class="button close center" (click)="close()">&times;</div>
             </div>
             <div class="section center">
-                <div class="search-box" contenteditable="true" (keyup)="onSearchBoxChange($event)"></div>
+                <div 
+                PreventEnter
+                class="search-box" contenteditable="true" (keyup)="onSearchBoxChange($event)"></div>
             </div>
             <div class="content">
                 <help-entry 

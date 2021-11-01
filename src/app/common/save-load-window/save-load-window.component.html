@@ -23,7 +23,11 @@
                 <span class="label">
                     {{saveLoadMode=='save' ? 'Name to save under: ' : 'Name to load from: '}}
                 </span>
-                <div class="edit-field" 
+                <div                 
+                    PreventEnter
+                    PreventPaste
+                    ValidateMenuTab [maxValue] = '25' 
+                    class="edit-field" 
                     #inputField
                     [attr.contenteditable]="saveLoadMode == 'save'" 
                     [ngClass]="{'non-editable': saveLoadMode == 'load'}" 

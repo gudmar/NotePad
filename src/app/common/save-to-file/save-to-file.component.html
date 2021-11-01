@@ -3,7 +3,11 @@
         <div class="window center">
             <div class="title">{{title}}</div>
             <div class="input center">
-                <div class="editable" contenteditable="true" (focusout)="updateProposedFileName($event)">{{fileName}}</div>
+                <div 
+                PreventEnter
+                PreventPaste
+                ValidateMenuTab [maxValue] = '25'
+                class="editable" contenteditable="true" (focusout)="updateProposedFileName($event)">{{fileName}}</div>
             </div>
             <div class="buttons">
                 <div class="button" (click)="confirm()">Save</div>

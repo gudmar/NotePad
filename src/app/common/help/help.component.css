@@ -100,6 +100,9 @@
     padding: 2px;
     border-radius: 5px;
     border: solid thin var(--light-border);
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: auto;
     /* caret-color: black; */
 }
 .search-box:focus{

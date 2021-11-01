@@ -12,7 +12,7 @@
             </div>
             <div class="content">
                 <help-entry 
-                    *ngFor="let entry of currentEntries" 
+                    *ngFor="let entry of currentEntries of sortBy('title')"  
                     [title]="entry.title" 
                     [content]='entry.content'
                 >

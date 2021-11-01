@@ -36,6 +36,10 @@ export class HelpComponent implements OnInit {
     this.currentEntries = this.entries;
   }
 
+  sortBy(prop: string) {
+    return this.currentEntries.sort((a, b) => a[prop] > b[prop] ? 1 : a[prop] === b[prop] ? 0 : -1);
+  }
+
   close(){
     this.shouldDisplay = false;
     this.currentEntries = this.entries;

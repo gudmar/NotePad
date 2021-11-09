@@ -71,7 +71,6 @@ export class TabComponent implements OnInit {
   handleMessages(eventType: string, data:any){
     if (data.uniqueId == this.uniqueId) {
       this.nrOfOwnChildren = data.nrOfOwnChildren
-      console.log(this.nrOfOwnChildren)
     }
   }
 

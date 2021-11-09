@@ -17,7 +17,8 @@ export class TaskViewerComponent implements OnInit {
   dayWeekIndex: number = 0;
   uniqueId: string = 'taskViewerId'
   allCalendarEvents: any;
-  get shouldDisplayMobileVersion() {return this.windowSizeEvaluator.isWindowTooNarrow(750)}
+  // get shouldDisplayMobileVersion() {return this.windowSizeEvaluator.isWindowTooNarrow(750)}
+  shouldDisplayMobileVersion = false;
   @Input() day: number = 0;
   @Input() month: number = 0;
   @Input() year: number = 0;
@@ -59,6 +60,11 @@ export class TaskViewerComponent implements OnInit {
   ) { 
     communicator.subscribe(this.uniqueId, this.handleMessages.bind(this), 
     ['eventViewerShouldBeDisplayed', 'calendarEvents', 'taskEditFormShouldBeClosed'])
+  }
+
+  @HostListener('window:resize', ['$event'])
+  changeComponentOnResize(event:any){
+    this.shouldDisplayMobileVersion = this.windowSizeEvaluator.isWindowTooNarrow(750);
   }
 
 
@@ -132,7 +138,8 @@ export class TaskViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.communicator.inform('provideCalendarEvents', '')
+    this.communicator.inform('provideCalendarEvents', '');
+    this.shouldDisplayMobileVersion = this.windowSizeEvaluator.isWindowTooNarrow(750);
   }
 
   close(){

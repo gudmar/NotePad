@@ -37,6 +37,7 @@ export class NotePadComponent implements OnInit {
        'addNextSheet',
        'changeSheetTitle',
        'pageWasClicked',
+       'noteWasClicked',
        'setLastAddedPageId',
        'obliterateSheet',
        'providingDocumentObjectToWorkbookChild'
@@ -98,7 +99,9 @@ export class NotePadComponent implements OnInit {
   ngOnInit(): void {
     this.messenger.inform('provideDocumentToChildComponent', null);
     this.initializeNewSheet(this.currentSheetId);
-    this.messenger.inform('routeSwitched', 'notePad')
+    this.messenger.inform('routeSwitched', 'notePad');
+    this.isHiddable = this.windowSize.isWindowTooNarrow();
+    this.shouldBeHidden = this.isHiddable;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -133,9 +136,10 @@ export class NotePadComponent implements OnInit {
       console.log(data)
       this.document = data;
     }
-    if (eventType == 'pageWasClicked'){
+    if (eventType == 'pageWasClicked' || eventType == 'noteWasClicked'){
       if(this.isHiddable) this.shouldBeHidden = true;
     }
+
     if (eventType === 'addNextSheet'){
       if (data.after == 'last'){
         let lastSheetDescriptor: any = Object.values(this.listOfSheets[this.listOfSheets.length - 1])[0]

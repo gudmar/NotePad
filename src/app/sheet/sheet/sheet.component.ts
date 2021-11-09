@@ -54,8 +54,6 @@ export class SheetComponent implements OnInit {
         'changeCurrentPageTitle',
         'addNextPageAfterUniqueId']
     )
-    console.log(this.uniqueId)
-    console.log(this.pages)
   }
 
   handleMessages(eventType: string, data: any){
@@ -63,7 +61,6 @@ export class SheetComponent implements OnInit {
       this.addNewPageAfterCertainPage(data.uniqueId)
     }
     if (eventType == "deletePageRequest") {
-      console.log(data)
       let nrOfChildrenTargetPageHas = this.getNrOfChildrenPageHas(data.targetPageId)
       if (nrOfChildrenTargetPageHas > 0) this.ensureUserIsPositive(data.targetPageId)
       else {
@@ -84,9 +81,6 @@ export class SheetComponent implements OnInit {
 
   getNrOfChildrenPageHas(pageUniqueId:string){
     let queriedPage = this.pages[this.getPageIndexById(pageUniqueId)]
-    console.log(pageUniqueId)
-    console.log(queriedPage);
-    console.log(this.pages)
     let queriedPageDescriptor: any = Object.values(queriedPage)[0]
     return queriedPageDescriptor.notes.length
   }
@@ -125,7 +119,6 @@ export class SheetComponent implements OnInit {
   }
 
   getPageIndexById(id: string){
-    console.log(this.pages)
     let singleMatch = function(element: any){
       return Object.keys(element)[0] === id
     }

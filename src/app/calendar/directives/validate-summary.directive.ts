@@ -10,7 +10,7 @@ export class ValidateSummaryDirective {
   constructor(private validator: ValidatorService) { }
 
   @HostListener('mousedown', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener('keyup', ['$event'])
   onChange(event: any){
     this.validator.setColorsToSummary(event, this.maxValue)
   }

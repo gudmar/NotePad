@@ -65,10 +65,12 @@
                                     #summary
                                     contenteditable="true" 
                                     (focusout)="setTaskSummary($event, entry.uniqueId)"
-                                    (keyup) = "setLastTaskSummary($event)"
-                                    [innerHTML] = "entry.summary"
+                                    (keyup) = "setLastTaskSummary($event)"        
+                                    
                                 >
+                                {{entry.summary}}
                                 </div>
+
                             </td>
                             <td>
                                 <div class="center description editable" 

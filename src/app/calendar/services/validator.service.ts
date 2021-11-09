@@ -149,11 +149,6 @@ export class ValidatorService {
 
   isMonthValidLeapYear(day:number | string, month:number | string, year: number | string){
     let isValid = this.isYearValid(year);
-    console.log(isValid)
-    console.log(this.isMonthValid(month))
-    console.log(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year))
-    console.log(day, month, year)
-    console.log('isDya valid ' + this.isDayValid(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year)))
     if (isValid) isValid = this.isMonthValid(month)  
     if (isValid) isValid = this.isDayValid(day, this.toNumberIfNeeded(month), this.toNumberIfNeeded(year));
     return isValid;
@@ -217,15 +212,10 @@ export class ValidatorService {
     if (this.calendar.getMonthDescriptor(year, month-1) == undefined)  console.warn('isDayValid: undefined');
     if (this.calendar.getMonthDescriptor(year, month-1) == undefined) return false; // debugger;
     let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month-1).duration;
-    console.log('days in month ' + nrOfDaysInMonth)
-    console.log(' year ' + year)
-    console.log(day)
-    console.log(this.is2digitValid(day, nrOfDaysInMonth))
     return this.is2digitValid(day, nrOfDaysInMonth);
   }
 
   is2digitValid(valueToTest: number | string, maxVal: number){
-    console.log(valueToTest)
     if (valueToTest == '') return false;
     let nonDigitTestPattern = new RegExp('\\D')
     if (nonDigitTestPattern.test(valueToTest.toString())) return false

@@ -210,7 +210,7 @@ export class ValidatorService {
 
   isDayValid(day: number | string, month: number, year: number){
     if (this.calendar.getMonthDescriptor(year, month-1) == undefined)  console.warn('isDayValid: undefined');
-    if (this.calendar.getMonthDescriptor(year, month-1) == undefined) return false; // debugger;
+    if (this.calendar.getMonthDescriptor(year, month-1) == undefined) return false; 
     let nrOfDaysInMonth = this.calendar.getMonthDescriptor(year, month-1).duration;
     return this.is2digitValid(day, nrOfDaysInMonth);
   }

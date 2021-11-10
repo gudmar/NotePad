@@ -173,11 +173,6 @@ export class NoteComponent implements OnInit {
     }
   }
 
-  @HostListener('click', ['$event'])
-  informThatThisNoteWasClicked($event: any){
-    $event.stopPropagation();
-    this.messenger.inform('noteWasClicked', $event)
-  }
 
   getSelectedText(){
     if (window.getSelection){

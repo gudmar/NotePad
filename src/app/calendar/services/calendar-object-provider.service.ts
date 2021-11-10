@@ -236,7 +236,9 @@ export class CalendarObjectProviderService {
   }
 
   getDateAsString(year: number, month: number | string, day: number){
-    if (typeof(month) != 'string') month = this.getMonthDescriptor(year, month).name;
+    if (typeof(month) != 'string') {
+      month = this.getMonthDescriptor(year, month).name;
+    }
     return `${month} ${day}, ${year}`
   }
 

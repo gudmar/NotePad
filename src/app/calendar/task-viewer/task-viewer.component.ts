@@ -185,7 +185,8 @@ export class TaskViewerComponent implements OnInit {
       this.allCalendarEvents, 
       this.uuidProvider.getUniqueId()
   )
-    this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries
+    this.events = this.eventManager.fetchDayEvents(this.year, this.month, this.day, this.allCalendarEvents).entries;
+    
     this.infromComponentsAboutChange(executionStatus);
     this.informWeekViewToRerender();
   }

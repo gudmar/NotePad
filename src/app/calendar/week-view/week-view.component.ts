@@ -56,7 +56,9 @@ export class WeekViewComponent implements OnInit {
       this.currentYear = data.currentYear;
     }
     if (eventType == "weekViewShouldRerender"){
-      this.calendarObjectWithEvents = this.calendar.getYearAsObject(this.currentYear).months;
+      if (this.shouldBeDisplayed){
+        this.calendarObjectWithEvents = this.calendar.getYearAsObject(this.currentYear).months;
+      }
     }
   }
 

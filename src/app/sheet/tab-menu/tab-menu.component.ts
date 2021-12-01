@@ -4,6 +4,7 @@ import { UniqueIdProviderService } from '../../services/unique-id-provider.servi
 import { DescriptorToDataService } from '../../services/descriptor-to-data.service'
 import { CommunicationService } from '../../services/communication.service'
 import { ConcatSource } from 'webpack-sources';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'tab-menu',
@@ -87,6 +88,7 @@ export class TabMenuComponent implements OnInit {
     let widths:number[] = []
     for(let child of allChildren){
       widths.push(child.getBoundingClientRect().width);
+      // widths.push(child.querySelector('.title-holder-parent').getBoundingClientRect().width);
     }
     return widths;
   }
@@ -95,6 +97,7 @@ export class TabMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.messenger.subscribe('pageMenuId', this.handleMessages.bind(this), ['pageWasDeleted', 'newPageWasAdded']);
+    setTimeout(()=>{this.devideMenu();},100);
     
   }
 

@@ -19,6 +19,8 @@ export class TabMenuComponent implements OnInit {
     this.pagesForFirstMenu = val;
     this.pagesForSecondMenu = [];
     let timer = setTimeout(()=>{this.devideMenu(); clearTimeout(timer)}, 10);
+    let timer1 = setTimeout(()=>{this.devideMenu(); clearTimeout(timer1)}, 20);
+    let timer2 = setTimeout(()=>{this.devideMenu(); clearTimeout(timer2)}, 30);
   }
   get pages() {return this._pages}
   @Input() currentId: string = '';
@@ -47,7 +49,7 @@ export class TabMenuComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    setTimeout(()=>{this.devideMenu();});
+    // setTimeout(()=>{this.devideMenu();});
   }
 
   pagesForFirstMenu: any[] = this.pages;
@@ -77,6 +79,7 @@ export class TabMenuComponent implements OnInit {
     let tabWidths = this.getWidthsOfTabElements();
     let aggregationButtonWidth = 50;
     let freeSpaceForTabs = this.elRef.nativeElement.querySelector('.tab-menu').getBoundingClientRect().width;
+    console.log(freeSpaceForTabs)
     let widthLimit = freeSpaceForTabs - aggregationButtonWidth;
     let a = getLastMatchingIndex();
     return getLastMatchingIndex();
@@ -98,7 +101,7 @@ export class TabMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.messenger.subscribe('pageMenuId', this.handleMessages.bind(this), ['pageWasDeleted', 'newPageWasAdded']);
-    let timer = setTimeout(()=>{this.devideMenu();clearTimeout(timer)},10);
+    // let timer = setTimeout(()=>{this.devideMenu();clearTimeout(timer)},10);
     
   }
 

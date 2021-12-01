@@ -16,7 +16,9 @@ export class TabMenuComponent implements OnInit {
   private _pages: any[] = [];
   @Input() set pages(val: any[]) {
     this._pages = val;
-    this.devideMenu();
+    this.pagesForFirstMenu = val;
+    this.pagesForSecondMenu = [];
+    let timer = setTimeout(()=>{this.devideMenu(); clearTimeout(timer)}, 10);
   }
   get pages() {return this._pages}
   @Input() currentId: string = '';
@@ -88,7 +90,6 @@ export class TabMenuComponent implements OnInit {
     let widths:number[] = []
     for(let child of allChildren){
       widths.push(child.getBoundingClientRect().width);
-      // widths.push(child.querySelector('.title-holder-parent').getBoundingClientRect().width);
     }
     return widths;
   }
@@ -97,7 +98,7 @@ export class TabMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.messenger.subscribe('pageMenuId', this.handleMessages.bind(this), ['pageWasDeleted', 'newPageWasAdded']);
-    setTimeout(()=>{this.devideMenu();},100);
+    let timer = setTimeout(()=>{this.devideMenu();clearTimeout(timer)},10);
     
   }
 

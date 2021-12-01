@@ -18,7 +18,7 @@
             [isActive] = "true"
             [tabTitle] = "'...'"
             [style.color] = "'white'"
-            (tabChosen) = "addNewTabToView($event)"
+            
         ></tab>
         <div class="hidden-tabs">
             <tab *ngFor = "let page of pagesForSecondMenu" 
@@ -28,7 +28,6 @@
                 [tabTitle]= "getPageConfigurationData(page).title"
                 [isRectangleTab] = "true"
                 (tabChosen) = "tabWantsToBeActive($event)"
-                
             >
             </tab>
         </div>

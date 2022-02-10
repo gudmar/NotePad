@@ -18,9 +18,8 @@ export class HelpContentService {
         unavailable. 
         <b>The data is not saved automatically, hit <i>ctrl+s</i> or go to <q>Manu->Save as</q> for saving the data</b>. 
         There is a save to the file and load from the
-        file features if the data needs to be migrated to a different browser, however the data between browsers and machines 
-        will not be synchronized,
-        due to lack of server. <br>
+        file features if the data needs to be migrated to a different browser. 
+        However, the data between browsers and machines will not be synchronized, due to lack of server. <br>
         User can store notes in the notePad application, notes are divided into movable resizable note elements, 
         those elements are stored 
         on the page elements, and a set of page elements forms a sheet element. In this way notes can be gruped into 
@@ -44,7 +43,7 @@ export class HelpContentService {
         content:`An application that can be used to note some data in resizable, movable notes, 
         stored on pages inside sheets. 
         New sheets, pages and notes can be created. There is a shortcut ctrl+l for creating a link from a highlighted 
-        note element text, and a ctrl+m shortcut for creating a copyable element from a notes highlighted text.`
+        note element text, and a ctrl+m shortcut for creating a copyable element from a notes of the highlighted text.`
       },
       {
         title: 'Calendar',
@@ -53,13 +52,13 @@ export class HelpContentService {
       },
       {
         title: 'Linker',
-        content: `This component is designed for storing user's links. It can be activated from the upper tool-chose 
+        content: `This component is designed for storing user's links. It can be activated from the upper tool-choice 
         navigation or from 
         Menu element in the left upper corner. In the right upper corner of the linker there is a plus button, 
         that opens a link addition window.
         A user inputs a link title (there is a lenght limitation), description, and a link itself. A <i>submit</i> button 
         will add a link to 
-        the document object stored on the browser. <b>Beware. Link is not saved after clicking submit</b>. After refreshing 
+        the document object stored on the browser. <b>Beware. The link is not saved after clicking submit</b>. After refreshing 
         the browser it will be gone,
         so remember to hit ctrl+s to save the whole document object to the local storage.<br>
         A link object can be edited after it is added (click a "..." symbol in the upper right corner of a link element). 
@@ -102,7 +101,7 @@ export class HelpContentService {
         Those shortcuts will work
         only when the edit mode is activated. Links will be opened only if the edit mode is disactivated. 
         After clicking a copyable element in notes
-        while in non edit mode, a content of this element will be copied to the clipboard`
+        while in non edit mode, the content of this element will be copied to the clipboard`
       },
       {
         title: 'Calendar year view',
@@ -147,7 +146,7 @@ export class HelpContentService {
       },
       {
         title: 'Selecting notes',
-        content: `Click an area, where a note is located to focus it`
+        content: `Click the area, where a note is located to focus it`
       },
 
       {
@@ -194,9 +193,9 @@ export class HelpContentService {
       }, 
       {
         title: 'Removing sheet',
-        content: `Click <i>X</i> symbol in the left part of the sheet tab. If some notes exist there, 
+        content: `Click <i>X</i> symbol on the left part of the sheet tab. If some notes exist there, 
         or there are more pages than a single one, added by default, the confiramtion box will be displayed to 
-        ensure a the delete button was not clicked accidentally`
+        ensure a the delete button was not clicked fby accident.`
       }, 
       {
         title: 'Renaming sheet',
@@ -210,7 +209,7 @@ export class HelpContentService {
       }, 
       {
         title: 'Saving current document to a file',
-        content: `Menu (upper left corner), save file. 
+        content: `Menu (upper left corner) -> save file. 
         A dialogue window will be shown and a default name of a file will be proposed. A name of a file is length limited.`
       }, 
       {
@@ -221,12 +220,12 @@ export class HelpContentService {
       {
         title: 'File validation',
         content: `Files that are to be loaded by the application are validated. Not valid files cannot be uploaded. 
-        However files saved within this application are valid.`
+        However, files saved within this application are valid.`
       },      
       {
         title: 'Loading from local storage',
-        content: `The menu (upper left corner), Load button. Name of data key should be chosen by a user, 
-        and operation should be confirmed with a <i>Load</i> button`
+        content: `The menu (upper left corner) -> load button. Name of the data key should be chosen by a user, 
+        and the operation should be confirmed with the <i>Load</i> button`
       },
       {
         title: 'Deleting a key from the local storage',
@@ -245,7 +244,7 @@ export class HelpContentService {
       },
       {
         title: 'Tasks in year view',
-        content: `If there are any tasks added to a day in the year view, number of tasks will be displayed in the red 
+        content: `If there are any tasks added to a day in the year view, the number of tasks will be displayed in the red 
         circle in the right upper day corner. The more tasks are added for the day, the darker the day element background 
         is.`
       },
@@ -273,7 +272,7 @@ export class HelpContentService {
       {
         title: 'Date validation',
         content: `A year field in a year view and date fields in <i>move event</i> window are validated. 
-        If a not valid option is chosen, a field background will change to red, and after the field loses its focus, 
+        If a not valid option is chosen, a field background will change to red, and after the field loses focus, 
         the last valid value will be inserted into the field.`
       },        
       {
@@ -285,7 +284,7 @@ export class HelpContentService {
         title: 'Add link to notes',
         content: `A note component in notes supports links. In edit mode press Ctrl + l to create link out of highlighted
         text. A link can be activated by a click in not editable mode. A link description may be modified in an editable mode,
-        however the link itself cannot. Pasted link will be clickable in not editable mode, but hold Ctrl while clicking on it,
+        however, the link itself cannot. Pasted link will be clickable in not editable mode, but hold Ctrl while clicking on it,
         or else a current tab will be redirected`
       },          
       {
@@ -305,7 +304,7 @@ export class HelpContentService {
       },
       {
         title: 'Edit mode',
-        content: `When in a notePad component on page hit ctrl+e or go to Options (right upper corner) and select 
+        content: `When in a notePad component on a page hits ctrl+e or goes to Options (right upper corner) and selects 
         Edit mode to enter it.
         In edit mode new notes can be added, the content of notes can be altered, links in notes element and copyable 
         elements can be altered in this mode.
@@ -316,11 +315,11 @@ export class HelpContentService {
         title: 'Non edit mode',
         content: `In this mode a user can take advantage of copyable and link elements from the note component. 
         In this mode a user cannot 
-        edit the content of notes component. However notes components can be moved, resized or deleted from here.`
+        edit the content of the notes component. However, notes components can be moved, resized or deleted from here.`
       },
       {
         title: 'Routing',
-        content: `This is a pure front end application, however routes /notePad, /linker and /calendar work. 
+        content: `This is a pure front end application, however, routes /notePad, /linker and /calendar work. 
         Thanks to this a user may use the browser history, and refreshing the browser will return the same component.`
       },
       {
@@ -330,7 +329,7 @@ export class HelpContentService {
       },
       {
         title: 'Future work',
-        content: `There is planned implementation of a <i>to do</i> component for storing and tracing different 
+        content: `There is planned an implementation of a <i>to do</i> component for storing and tracing different 
         <i>to do</i> activities.`
       },
 

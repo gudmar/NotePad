@@ -79,7 +79,6 @@ export class TabMenuComponent implements OnInit {
     let tabWidths = this.getWidthsOfTabElements();
     let aggregationButtonWidth = 50;
     let freeSpaceForTabs = this.elRef.nativeElement.querySelector('.tab-menu').getBoundingClientRect().width;
-    console.log(freeSpaceForTabs)
     let widthLimit = freeSpaceForTabs - aggregationButtonWidth;
     let a = getLastMatchingIndex();
     return getLastMatchingIndex();

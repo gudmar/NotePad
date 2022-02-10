@@ -18,9 +18,8 @@ export class HelpContentService {
         unavailable. 
         <b>The data is not saved automatically, hit <i>ctrl+s</i> or go to <q>Manu->Save as</q> for saving the data</b>. 
         There is a save to the file and load from the
-        file features if the data needs to be migrated to a different browser, however the data between browsers and machines 
-        will not be synchronized,
-        due to lack of server. <br>
+        file features if the data needs to be migrated to a different browser. 
+        However, the data between browsers and machines will not be synchronized, due to lack of server. <br>
         User can store notes in the notePad application, notes are divided into movable resizable note elements, 
         those elements are stored 
         on the page elements, and a set of page elements forms a sheet element. In this way notes can be gruped into 
@@ -221,7 +220,7 @@ export class HelpContentService {
       {
         title: 'File validation',
         content: `Files that are to be loaded by the application are validated. Not valid files cannot be uploaded. 
-        However files saved within this application are valid.`
+        However, files saved within this application are valid.`
       },      
       {
         title: 'Loading from local storage',
@@ -285,7 +284,7 @@ export class HelpContentService {
         title: 'Add link to notes',
         content: `A note component in notes supports links. In edit mode press Ctrl + l to create link out of highlighted
         text. A link can be activated by a click in not editable mode. A link description may be modified in an editable mode,
-        however the link itself cannot. Pasted link will be clickable in not editable mode, but hold Ctrl while clicking on it,
+        however, the link itself cannot. Pasted link will be clickable in not editable mode, but hold Ctrl while clicking on it,
         or else a current tab will be redirected`
       },          
       {
@@ -320,7 +319,7 @@ export class HelpContentService {
       },
       {
         title: 'Routing',
-        content: `This is a pure front end application, however routes /notePad, /linker and /calendar work. 
+        content: `This is a pure front end application, however, routes /notePad, /linker and /calendar work. 
         Thanks to this a user may use the browser history, and refreshing the browser will return the same component.`
       },
       {
